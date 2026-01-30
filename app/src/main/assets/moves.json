@@ -1,0 +1,1188 @@
+{
+  "10 000 000 Volt Tonnerre": {
+    "num": 719,
+    "name": "10 000 000 Volt Tonnerre",
+    "type": "Électrik",
+    "basePower": 195,
+    "accuracy": 1.0,
+    "pp": 1,
+    "critRatio": 0.5,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Électrocute la cible et inflige des dégâts colossaux de type Électrik, a un taux de critique élevé."
+  },
+  "Charge": {
+    "num": 33,
+    "name": "Charge",
+    "type": "Normal",
+    "basePower": 40,
+    "accuracy": 1.0,
+    "pp": 35,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Frappe la cible et inflige de légers dégâts de type Normal."
+  },
+  "Vive-Attaque": {
+    "num": 98,
+    "name": "Vive-Attaque",
+    "type": "Normal",
+    "basePower": 40,
+    "accuracy": 1.0,
+    "pp": 30,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige de légers dégâts de type Normal."
+  },
+  "Vif Roc": {
+    "num": 709,
+    "name": "Vif Roc",
+    "type": "Roche",
+    "basePower": 40,
+    "accuracy": 1.0,
+    "pp": 20,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige de légers dégâts de type Roche."
+  },
+  "Lame d'Air": {
+    "num": 332,
+    "name": "Lame d'Air",
+    "type": "Vol",
+    "basePower": 75,
+    "accuracy": 0.95,
+    "pp": 15,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Entaille la cible et inflige des dégâts de type Vol."
+  },
+  "Aéroblast": {
+    "num": 177,
+    "name": "Aéroblast",
+    "type": "Vol",
+    "basePower": 100,
+    "accuracy": 0.95,
+    "pp": 5,
+    "critRatio": 0.12,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige de lourds dégâts de type Vol, a un taux de critique élevé."
+  },
+  "Hâte": {
+    "num": 97,
+    "name": "Hâte",
+    "type": "Psy",
+    "basePower": 0,
+    "accuracy": 1.0,
+    "pp": 30,
+    "critRatio": 0,
+    "drain": false,
+    "bonus": [
+      {
+        "vit": 2
+      }
+    ],
+    "malus": [],
+    "heal": 0,
+    "description": "Augmente énormément la vitesse du lanceur."
+  },
+  "Aérotranchant": {
+    "num": 403,
+    "name": "Aérotranchant",
+    "type": "Vol",
+    "basePower": 75,
+    "accuracy": 0.95,
+    "pp": 15,
+    "critRatio": 0.12,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Entaille la cible et inflige des dégâts de type Vol, a un taux de critique élevé."
+  },
+  "Amnésie": {
+    "num": 133,
+    "name": "Amnésie",
+    "type": "Psy",
+    "basePower": 0,
+    "accuracy": 1.0,
+    "pp": 20,
+    "critRatio": 0,
+    "drain": false,
+    "bonus": [
+      {
+        "def": 2
+      }
+    ],
+    "malus": [],
+    "heal": 0,
+    "description": "Augmente énormément la défense du lanceur."
+  },
+  "Ancrage": {
+    "num": 677,
+    "name": "Ancrage",
+    "type": "Acier",
+    "basePower": 80,
+    "accuracy": 1.0,
+    "pp": 20,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige de lourds dégâts de type Acier."
+  },
+  "Aqua-Jet": {
+    "num": 453,
+    "name": "Aqua-Jet",
+    "type": "Eau",
+    "basePower": 40,
+    "accuracy": 1.0,
+    "pp": 20,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige de légers dégâts de type Eau."
+  },
+  "Étonnement": {
+    "num": 310,
+    "name": "Étonnement",
+    "type": "Spectre",
+    "basePower": 30,
+    "accuracy": 1.0,
+    "pp": 15,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige de légers dégâts de type Spectre."
+  },
+  "Sphère Aura": {
+    "num": 396,
+    "name": "Sphère Aura",
+    "type": "Combat",
+    "basePower": 80,
+    "accuracy": 1.0,
+    "pp": 20,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige de lourds dégâts de type Combat."
+  },
+  "Roue Aura": {
+    "num": 783,
+    "name": "Roue Aura",
+    "type": "Électrik",
+    "basePower": 110,
+    "accuracy": 1.0,
+    "pp": 5,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [
+      {
+        "vit": 1
+      }
+    ],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige de lourds dégâts de type Électrik, augmente la vitesse du lanceur."
+  },
+  "Allègement": {
+    "num": 475,
+    "name": "Allègement",
+    "type": "Acier",
+    "basePower": 0,
+    "accuracy": 1.0,
+    "pp": 15,
+    "critRatio": 0,
+    "drain": false,
+    "bonus": [
+      {
+        "vit": 2
+      }
+    ],
+    "malus": [],
+    "heal": 0,
+    "description": "Augmente énormément la vitesse du lanceur."
+  },
+  "Éructation": {
+    "num": 562,
+    "name": "Éructation",
+    "type": "Poison",
+    "basePower": 120,
+    "accuracy": 0.9,
+    "pp": 10,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige des dégâts colossaux de type Poison."
+  },
+  "Corps à Corps": {
+    "num": 776,
+    "name": "Corps à Corps",
+    "type": "Combat",
+    "basePower": 120,
+    "accuracy": 0.9,
+    "pp": 5,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [
+      {
+        "def": -1
+      }
+    ],
+    "heal": 0,
+    "description": "Inflige des dégâts colossaux de type Combat, baisse la défense de la cible."
+  },
+  "Ruée d'Os": {
+    "num": 198,
+    "name": "Ruée d'Os",
+    "type": "Sol",
+    "basePower": 50,
+    "accuracy": 0.9,
+    "pp": 10,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige des dégâts de type Sol."
+  },
+  "Tapotige": {
+    "num": 785,
+    "name": "Tapotige",
+    "type": "Plante",
+    "basePower": 40,
+    "accuracy": 1.0,
+    "pp": 40,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige de légers dégâts de type Plante."
+  },
+  "Centrifugifle": {
+    "num": 693,
+    "name": "Centrifugifle",
+    "type": "Ténèbres",
+    "basePower": 60,
+    "accuracy": 1.0,
+    "pp": 20,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige des dégâts de type Ténèbres."
+  },
+  "Écume": {
+    "num": 145,
+    "name": "Écume",
+    "type": "Eau",
+    "basePower": 40,
+    "accuracy": 1.0,
+    "pp": 30,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Submerge la cible et inflige de légers dégâts de type Eau."
+  },
+  "Piétisol": {
+    "num": 523,
+    "name": "Piétisol",
+    "type": "Sol",
+    "basePower": 60,
+    "accuracy": 1.0,
+    "pp": 20,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [
+      {
+        "vit": -1
+      }
+    ],
+    "heal": 0,
+    "description": "Frappe la cible et inflige des dégâts de type Sol, baisse la vitesse de la cible."
+  },
+  "Jalousie Brûlante": {
+    "num": 807,
+    "name": "Jalousie Brûlante",
+    "type": "Feu",
+    "basePower": 70,
+    "accuracy": 1.0,
+    "pp": 5,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige des dégâts de type Feu."
+  },
+  "Méditation": {
+    "num": 347,
+    "name": "Méditation",
+    "type": "Psy",
+    "basePower": 0,
+    "accuracy": 1.0,
+    "pp": 20,
+    "critRatio": 0,
+    "drain": false,
+    "bonus": [
+      {
+        "atk": 1
+      }
+    ],
+    "malus": [],
+    "heal": 0,
+    "description": "Augmente l'attaque du lanceur."
+  },
+  "Mâchouille": {
+    "num": 242,
+    "name": "Mâchouille",
+    "type": "Ténèbres",
+    "basePower": 80,
+    "accuracy": 1.0,
+    "pp": 15,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [
+      {
+        "def": -1
+      }
+    ],
+    "heal": 0,
+    "description": "Inflige de lourds dégâts de type Ténèbres, baisse la défense de la cible."
+  },
+  "Coup d’Jus": {
+    "num": 435,
+    "name": "Coup d’Jus",
+    "type": "Électrik",
+    "basePower": 80,
+    "accuracy": 1.0,
+    "pp": 15,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige de lourds dégâts de type Électrik."
+  },
+  "Tunnelier": {
+    "num": 529,
+    "name": "Tunnelier",
+    "type": "Sol",
+    "basePower": 80,
+    "accuracy": 0.95,
+    "pp": 10,
+    "critRatio": 0.12,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige de lourds dégâts de type Sol, a un taux de critique élevé."
+  },
+  "Séisme": {
+    "num": 89,
+    "name": "Séisme",
+    "type": "Sol",
+    "basePower": 100,
+    "accuracy": 1.0,
+    "pp": 10,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige de lourds dégâts de type Sol."
+  },
+  "Toile Élek": {
+    "num": 527,
+    "name": "Toile Élek",
+    "type": "Électrik",
+    "basePower": 55,
+    "accuracy": 0.95,
+    "pp": 15,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [
+      {
+        "vit": -1
+      }
+    ],
+    "heal": 0,
+    "description": "Inflige des dégâts de type Électrik, baisse la vitesse de la cible."
+  },
+  "Flammèche": {
+    "num": 52,
+    "name": "Flammèche",
+    "type": "Feu",
+    "basePower": 40,
+    "accuracy": 1.0,
+    "pp": 25,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Brûle la cible et inflige de légers dégâts de type Feu."
+  },
+  "Éruption": {
+    "num": 284,
+    "name": "Éruption",
+    "type": "Feu",
+    "basePower": 150,
+    "accuracy": 1.0,
+    "pp": 5,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige des dégâts colossaux de type Feu."
+  },
+  "Déflagration": {
+    "num": 126,
+    "name": "Déflagration",
+    "type": "Feu",
+    "basePower": 110,
+    "accuracy": 0.85,
+    "pp": 5,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige de lourds dégâts de type Feu."
+  },
+  "Lance-Flammes": {
+    "num": 53,
+    "name": "Lance-Flammes",
+    "type": "Feu",
+    "basePower": 90,
+    "accuracy": 1.0,
+    "pp": 15,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Brûle la cible et inflige de lourds dégâts de type Feu."
+  },
+  "Croc de Feu": {
+    "num": 424,
+    "name": "Croc de Feu",
+    "type": "Feu",
+    "basePower": 65,
+    "accuracy": 0.95,
+    "pp": 15,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Entaille la cible et inflige des dégâts de type Feu."
+  },
+  "Eau Revoir": {
+    "num": 812,
+    "name": "Eau Revoir",
+    "type": "Eau",
+    "basePower": 60,
+    "accuracy": 1.0,
+    "pp": 20,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Submerge la cible et inflige des dégâts de type Eau."
+  },
+  "Exploforce": {
+    "num": 411,
+    "name": "Exploforce",
+    "type": "Combat",
+    "basePower": 120,
+    "accuracy": 0.7,
+    "pp": 5,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige des dégâts colossaux de type Combat."
+  },
+  "Mitra-Poing": {
+    "num": 264,
+    "name": "Mitra-Poing",
+    "type": "Combat",
+    "basePower": 150,
+    "accuracy": 1.0,
+    "pp": 20,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Frappe la cible et inflige des dégâts colossaux de type Combat."
+  },
+  "Ère Glaciaire": {
+    "num": 549,
+    "name": "Ère Glaciaire",
+    "type": "Glace",
+    "basePower": 65,
+    "accuracy": 0.95,
+    "pp": 10,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Gèle la cible et inflige des dégâts de type Glace."
+  },
+  "Laser Glace": {
+    "num": 58,
+    "name": "Laser Glace",
+    "type": "Glace",
+    "basePower": 90,
+    "accuracy": 1.0,
+    "pp": 10,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Gèle la cible et inflige de lourds dégâts de type Glace."
+  },
+  "Détritosphère": {
+    "num": 441,
+    "name": "Détritosphère",
+    "type": "Poison",
+    "basePower": 120,
+    "accuracy": 0.8,
+    "pp": 5,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige des dégâts colossaux de type Poison."
+  },
+  "Canicule": {
+    "num": 257,
+    "name": "Canicule",
+    "type": "Feu",
+    "basePower": 95,
+    "accuracy": 0.9,
+    "pp": 10,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige de lourds dégâts de type Feu."
+  },
+  "Châtiment": {
+    "num": 506,
+    "name": "Châtiment",
+    "type": "Spectre",
+    "basePower": 65,
+    "accuracy": 1.0,
+    "pp": 10,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige des dégâts de type Spectre."
+  },
+  "Pied Voltige": {
+    "num": 136,
+    "name": "Pied Voltige",
+    "type": "Combat",
+    "basePower": 130,
+    "accuracy": 0.9,
+    "pp": 10,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige des dégâts colossaux de type Combat."
+  },
+  "Crocs Givré": {
+    "num": 423,
+    "name": "Crocs Givré",
+    "type": "Glace",
+    "basePower": 65,
+    "accuracy": 0.95,
+    "pp": 15,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Entaille la cible et inflige des dégâts de type Glace."
+  },
+  "Vent Glacé": {
+    "num": 196,
+    "name": "Vent Glacé",
+    "type": "Glace",
+    "basePower": 55,
+    "accuracy": 0.95,
+    "pp": 15,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [
+      {
+        "vit": -1
+      }
+    ],
+    "heal": 0,
+    "description": "Gèle la cible et inflige des dégâts de type Glace, baisse la vitesse de la cible."
+  },
+  "Tête de Fer": {
+    "num": 442,
+    "name": "Tête de Fer",
+    "type": "Acier",
+    "basePower": 80,
+    "accuracy": 1.0,
+    "pp": 15,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige de lourds dégâts de type Acier."
+  },
+  "Queue de Fer": {
+    "num": 231,
+    "name": "Queue de Fer",
+    "type": "Acier",
+    "basePower": 100,
+    "accuracy": 0.75,
+    "pp": 15,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige de lourds dégâts de type Acier."
+  },
+  "Aqua-Brèche": {
+    "num": 710,
+    "name": "Aqua-Brèche",
+    "type": "Eau",
+    "basePower": 85,
+    "accuracy": 1.0,
+    "pp": 10,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [
+      {
+        "def": -1
+      }
+    ],
+    "heal": 0,
+    "description": "Inflige de lourds dégâts de type Eau, baisse la défense de la cible."
+  },
+  "Mégacorne": {
+    "num": 224,
+    "name": "Mégacorne",
+    "type": "Insecte",
+    "basePower": 120,
+    "accuracy": 0.85,
+    "pp": 10,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige des dégâts colossaux de type Insecte."
+  },
+  "Tir de Boue": {
+    "num": 341,
+    "name": "Tir de Boue",
+    "type": "Sol",
+    "basePower": 55,
+    "accuracy": 0.95,
+    "pp": 15,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [
+      {
+        "vit": -1
+      }
+    ],
+    "heal": 0,
+    "description": "Inflige des dégâts de type Sol, baisse la vitesse de la cible."
+  },
+  "Colère": {
+    "num": 200,
+    "name": "Colère",
+    "type": "Dragon",
+    "basePower": 120,
+    "accuracy": 1.0,
+    "pp": 10,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige des dégâts colossaux de type Dragon."
+  },
+  "Représailles": {
+    "num": 371,
+    "name": "Représailles",
+    "type": "Ténèbres",
+    "basePower": 50,
+    "accuracy": 1.0,
+    "pp": 10,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige des dégâts de type Ténèbres."
+  },
+  "Choc Psy": {
+    "num": 473,
+    "name": "Choc Psy",
+    "type": "Psy",
+    "basePower": 80,
+    "accuracy": 1.0,
+    "pp": 10,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Frappe la cible et inflige de lourds dégâts de type Psy."
+  },
+  "Ballon Brûlant": {
+    "num": 780,
+    "name": "Ballon Brûlant",
+    "type": "Feu",
+    "basePower": 120,
+    "accuracy": 0.9,
+    "pp": 5,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige des dégâts colossaux de type Feu."
+  },
+  "Soin": {
+    "num": 105,
+    "name": "Soin",
+    "type": "Normal",
+    "basePower": 0,
+    "accuracy": 1.0,
+    "pp": 10,
+    "critRatio": 0,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 50,
+    "description": "Soigne grandement le lanceur."
+  },
+  "Tomberoche": {
+    "num": 317,
+    "name": "Tomberoche",
+    "type": "Roche",
+    "basePower": 60,
+    "accuracy": 0.95,
+    "pp": 15,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [
+      {
+        "vit": -1
+      }
+    ],
+    "heal": 0,
+    "description": "Projette des rochers sur la cible et inflige des dégâts de type Roche, baisse la vitesse de la cible."
+  },
+  "Ébullition": {
+    "num": 503,
+    "name": "Ébullition",
+    "type": "Eau",
+    "basePower": 80,
+    "accuracy": 1.0,
+    "pp": 15,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Brûle la cible et inflige de lourds dégâts de type Eau."
+  },
+  "Affûtage": {
+    "num": 159,
+    "name": "Affûtage",
+    "type": "Normal",
+    "basePower": 0,
+    "accuracy": 1.0,
+    "pp": 30,
+    "critRatio": 0,
+    "drain": false,
+    "bonus": [
+      {
+        "atk": 1
+      }
+    ],
+    "malus": [],
+    "heal": 0,
+    "description": "Augmente l'attaque du lanceur."
+  },
+  "Détritus": {
+    "num": 124,
+    "name": "Détritus",
+    "type": "Poison",
+    "basePower": 65,
+    "accuracy": 1.0,
+    "pp": 20,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige des dégâts de type Poison."
+  },
+  "Purédpois": {
+    "num": 123,
+    "name": "Purédpois",
+    "type": "Poison",
+    "basePower": 30,
+    "accuracy": 0.7,
+    "pp": 20,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige de légers dégâts de type Poison."
+  },
+  "Étincelle": {
+    "num": 209,
+    "name": "Étincelle",
+    "type": "Électrik",
+    "basePower": 65,
+    "accuracy": 1.0,
+    "pp": 20,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige des dégâts de type Électrik."
+  },
+  "Surf": {
+    "num": 57,
+    "name": "Surf",
+    "type": "Eau",
+    "basePower": 90,
+    "accuracy": 1.0,
+    "pp": 15,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Submerge la cible et inflige de lourds dégâts de type Eau."
+  },
+  "Météores": {
+    "num": 129,
+    "name": "Météores",
+    "type": "Normal",
+    "basePower": 60,
+    "accuracy": 1.0,
+    "pp": 20,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige des dégâts de type Normal."
+  },
+  "Synthèse": {
+    "num": 235,
+    "name": "Synthèse",
+    "type": "Plante",
+    "basePower": 0,
+    "accuracy": 1.0,
+    "pp": 5,
+    "critRatio": 0,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 50,
+    "description": "Soigne grandement le lanceur."
+  },
+  "Lumiqueue": {
+    "num": 294,
+    "name": "Lumiqueue",
+    "type": "Insecte",
+    "basePower": 0,
+    "accuracy": 1.0,
+    "pp": 20,
+    "critRatio": 0,
+    "drain": false,
+    "bonus": [
+      {
+        "atk": 3
+      }
+    ],
+    "malus": [],
+    "heal": 0,
+    "description": "Augmente énormément l'attaque du lanceur."
+  },
+  "Mimi-Queue": {
+    "num": 39,
+    "name": "Mimi-Queue",
+    "type": "Normal",
+    "basePower": 0,
+    "accuracy": 1.0,
+    "pp": 30,
+    "critRatio": 0,
+    "drain": false,
+    "bonus": [],
+    "malus": [
+      {
+        "def": -1
+      }
+    ],
+    "heal": 0,
+    "description": "Baisse la défense de la cible."
+  },
+  "Botte Secrète": {
+    "num": 688,
+    "name": "Botte Secrète",
+    "type": "Plante",
+    "basePower": 70,
+    "accuracy": 1.0,
+    "pp": 15,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [
+      {
+        "atk": -1
+      }
+    ],
+    "heal": 0,
+    "description": "Inflige des dégâts de type Plante, baisse l'attaque de la cible."
+  },
+  "Fouet Lianes": {
+    "num": 22,
+    "name": "Fouet Lianes",
+    "type": "Plante",
+    "basePower": 45,
+    "accuracy": 1.0,
+    "pp": 25,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige des dégâts de type Plante."
+  },
+  "Rengorgement": {
+    "num": 526,
+    "name": "Rengorgement",
+    "type": "Normal",
+    "basePower": 0,
+    "accuracy": 1.0,
+    "pp": 30,
+    "critRatio": 0,
+    "drain": false,
+    "bonus": [
+      {
+        "atk": 1
+      }
+    ],
+    "malus": [],
+    "heal": 0,
+    "description": "Augmente l'attaque du lanceur."
+  },
+  "Zing Zap": {
+    "num": 716,
+    "name": "Zing Zap",
+    "type": "Électrik",
+    "basePower": 80,
+    "accuracy": 1.0,
+    "pp": 10,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige de lourds dégâts de type Électrik."
+  },
+  "Giga-Sangsue": {
+    "num": 202,
+    "name": "Giga-Sangsue",
+    "type": "Plante",
+    "basePower": 75,
+    "accuracy": 1.0,
+    "pp": 10,
+    "critRatio": 0.04,
+    "drain": true,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Vole la vie de la cible en infligeant des dégâts de type Plante."
+  },
+  "Vampirisme": {
+    "num": 141,
+    "name": "Vampirisme",
+    "type": "Insecte",
+    "basePower": 80,
+    "accuracy": 1.0,
+    "pp": 10,
+    "critRatio": 0.04,
+    "drain": true,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Vole la vie de la cible en infligeant de lourds dégâts de type Insecte."
+  },
+  "Danse Lames": {
+    "num": 14,
+    "name": "Danse Lames",
+    "type": "Normal",
+    "basePower": 0,
+    "accuracy": 1.0,
+    "pp": 20,
+    "critRatio": 0,
+    "drain": false,
+    "bonus": [
+      {
+        "atk": 2
+      }
+    ],
+    "malus": [],
+    "heal": 0,
+    "description": "Augmente énormément l'attaque du lanceur."
+  },
+  "Rugissement": {
+    "num": 45,
+    "name": "Rugissement",
+    "type": "Normal",
+    "basePower": 0,
+    "accuracy": 1.0,
+    "pp": 40,
+    "critRatio": 0,
+    "drain": false,
+    "bonus": [],
+    "malus": [
+      {
+        "atk": -1
+      }
+    ],
+    "heal": 0,
+    "description": "Baisse l'attaque de la cible."
+  },
+  "Tonnerre": {
+    "num": 85,
+    "name": "Tonnerre",
+    "type": "Électrik",
+    "basePower": 90,
+    "accuracy": 1.0,
+    "pp": 15,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Électrocute la cible et inflige de lourds dégâts de type Électrik."
+  },
+  "Lame de Roc": {
+    "num": 444,
+    "name": "Lame de Roc",
+    "type": "Roche",
+    "basePower": 100,
+    "accuracy": 0.8,
+    "pp": 5,
+    "critRatio": 0.12,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Entaille la cible et inflige de lourds dégâts de type Roche, a un taux de critique élevé."
+  },
+  "Ball'Ombre": {
+    "num": 247,
+    "name": "Ball'Ombre",
+    "type": "Spectre",
+    "basePower": 80,
+    "accuracy": 1.0,
+    "pp": 15,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige de lourds dégâts de type Spectre."
+  },
+  "Pistolet à O": {
+    "num": 55,
+    "name": "Pistolet à O",
+    "type": "Eau",
+    "basePower": 40,
+    "accuracy": 1.0,
+    "pp": 25,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige de légers dégâts de type Eau."
+  },
+  "Psyko": {
+    "num": 94,
+    "name": "Psyko",
+    "type": "Psy",
+    "basePower": 90,
+    "accuracy": 1.0,
+    "pp": 10,
+    "critRatio": 0.04,
+    "drain": false,
+    "bonus": [],
+    "malus": [],
+    "heal": 0,
+    "description": "Inflige de lourds dégâts de type Psy."
+  }
+}
