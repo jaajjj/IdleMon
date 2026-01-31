@@ -1,25 +1,27 @@
 package com.example.idlemon
 
-enum class PokemonType(val nom: String) {
-    ACIER("Acier"),
-    COMBAT("Combat"),
-    DRAGON("Dragon"),
-    EAU("Eau"),
-    FEU("Feu"),
-    FEE("Fée"),
-    GLACE("Glace"),
-    INSECTE("Insecte"),
-    NORMAL("Normal"),
-    PLANTE("Plante"),
-    POISON("Poison"),
-    PSY("Psy"),
-    ROCHE("Roche"),
-    SOL("Sol"),
-    SPECTRE("Spectre"),
-    TENEBRES("Ténèbres"),
-    VOL("Vol"),
-    ELECTRIK("Électrik");
+import com.google.gson.annotations.SerializedName
 
+enum class PokemonType(val nom: String) {
+    //SerializedName permet de checker le Json sans faire attention à la Casse
+    @SerializedName("Acier") ACIER("Acier"),
+    @SerializedName("Combat") COMBAT("Combat"),
+    @SerializedName("Dragon") DRAGON("Dragon"),
+    @SerializedName("Eau") EAU("Eau"),
+    @SerializedName("Feu") FEU("Feu"),
+    @SerializedName("Fee") FEE("Fee"),
+    @SerializedName("Glace") GLACE("Glace"),
+    @SerializedName("Insecte") INSECTE("Insecte"),
+    @SerializedName("Normal") NORMAL("Normal"),
+    @SerializedName("Plante") PLANTE("Plante"),
+    @SerializedName("Poison") POISON("Poison"),
+    @SerializedName("Psy") PSY("Psy"),
+    @SerializedName("Roche") ROCHE("Roche"),
+    @SerializedName("Sol") SOL("Sol"),
+    @SerializedName("Spectre") SPECTRE("Spectre"),
+    @SerializedName("Tenebre") TENEBRES("Tenebre"),
+    @SerializedName("Vol") VOL("Vol"),
+    @SerializedName("Electrik") ELECTRIK("Electrik");
     var faiblesses: List<PokemonType> = emptyList()
     var resistances: List<PokemonType> = emptyList()
     var immunites: List<PokemonType> = emptyList()
@@ -91,7 +93,7 @@ enum class PokemonType(val nom: String) {
 
     fun calculerEfficaciteContre(typeAttaque: PokemonType, pokemonDefenseur: Pokemon): Double {
         var multiplicateur = 1.0
-        val typeDef = pokemonDefenseur.species.types
+        val typeDef = pokemonDefenseur.species.type
         for (type in typeDef) {
             if (type.faiblesses.contains(typeAttaque)) {
                 multiplicateur *= 2.0

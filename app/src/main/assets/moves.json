@@ -2,7 +2,7 @@
   "10 000 000 Volt Tonnerre": {
     "num": 719,
     "name": "10 000 000 Volt Tonnerre",
-    "type": "Électrik",
+    "type": "Electrik",
     "basePower": 195,
     "accuracy": 1.0,
     "pp": 1,
@@ -11,7 +11,7 @@
     "bonus": [],
     "malus": [],
     "heal": 0,
-    "description": "Électrocute la cible et inflige des dégâts colossaux de type Électrik, a un taux de critique élevé."
+    "description": "Électrocute la cible et inflige des dégâts colossaux de type Electrik, a un taux de critique élevé."
   },
   "Charge": {
     "num": 33,
@@ -192,7 +192,7 @@
   "Roue Aura": {
     "num": 783,
     "name": "Roue Aura",
-    "type": "Électrik",
+    "type": "Electrik",
     "basePower": 110,
     "accuracy": 1.0,
     "pp": 5,
@@ -205,7 +205,7 @@
     ],
     "malus": [],
     "heal": 0,
-    "description": "Inflige de lourds dégâts de type Électrik, augmente la vitesse du lanceur."
+    "description": "Inflige de lourds dégâts de type Electrik, augmente la vitesse du lanceur."
   },
   "Allègement": {
     "num": 475,
@@ -288,7 +288,7 @@
   "Centrifugifle": {
     "num": 693,
     "name": "Centrifugifle",
-    "type": "Ténèbres",
+    "type": "Tenebre",
     "basePower": 60,
     "accuracy": 1.0,
     "pp": 20,
@@ -297,7 +297,7 @@
     "bonus": [],
     "malus": [],
     "heal": 0,
-    "description": "Inflige des dégâts de type Ténèbres."
+    "description": "Inflige des dégâts de type Tenebre."
   },
   "Écume": {
     "num": 145,
@@ -366,7 +366,7 @@
   "Mâchouille": {
     "num": 242,
     "name": "Mâchouille",
-    "type": "Ténèbres",
+    "type": "Tenebre",
     "basePower": 80,
     "accuracy": 1.0,
     "pp": 15,
@@ -379,12 +379,12 @@
       }
     ],
     "heal": 0,
-    "description": "Inflige de lourds dégâts de type Ténèbres, baisse la défense de la cible."
+    "description": "Inflige de lourds dégâts de type Tenebre, baisse la défense de la cible."
   },
   "Coup d’Jus": {
     "num": 435,
     "name": "Coup d’Jus",
-    "type": "Électrik",
+    "type": "Electrik",
     "basePower": 80,
     "accuracy": 1.0,
     "pp": 15,
@@ -393,7 +393,7 @@
     "bonus": [],
     "malus": [],
     "heal": 0,
-    "description": "Inflige de lourds dégâts de type Électrik."
+    "description": "Inflige de lourds dégâts de type Electrik."
   },
   "Tunnelier": {
     "num": 529,
@@ -426,7 +426,7 @@
   "Toile Élek": {
     "num": 527,
     "name": "Toile Élek",
-    "type": "Électrik",
+    "type": "Electrik",
     "basePower": 55,
     "accuracy": 0.95,
     "pp": 15,
@@ -439,7 +439,7 @@
       }
     ],
     "heal": 0,
-    "description": "Inflige des dégâts de type Électrik, baisse la vitesse de la cible."
+    "description": "Inflige des dégâts de type Electrik, baisse la vitesse de la cible."
   },
   "Flammèche": {
     "num": 52,
@@ -764,7 +764,7 @@
   "Représailles": {
     "num": 371,
     "name": "Représailles",
-    "type": "Ténèbres",
+    "type": "Tenebre",
     "basePower": 50,
     "accuracy": 1.0,
     "pp": 10,
@@ -773,7 +773,7 @@
     "bonus": [],
     "malus": [],
     "heal": 0,
-    "description": "Inflige des dégâts de type Ténèbres."
+    "description": "Inflige des dégâts de type Tenebre."
   },
   "Choc Psy": {
     "num": 473,
@@ -898,7 +898,7 @@
   "Étincelle": {
     "num": 209,
     "name": "Étincelle",
-    "type": "Électrik",
+    "type": "Electrik",
     "basePower": 65,
     "accuracy": 1.0,
     "pp": 20,
@@ -907,7 +907,7 @@
     "bonus": [],
     "malus": [],
     "heal": 0,
-    "description": "Inflige des dégâts de type Électrik."
+    "description": "Inflige des dégâts de type Electrik."
   },
   "Surf": {
     "num": 57,
@@ -1040,7 +1040,7 @@
   "Zing Zap": {
     "num": 716,
     "name": "Zing Zap",
-    "type": "Électrik",
+    "type": "Electrik",
     "basePower": 80,
     "accuracy": 1.0,
     "pp": 10,
@@ -1049,7 +1049,7 @@
     "bonus": [],
     "malus": [],
     "heal": 0,
-    "description": "Inflige de lourds dégâts de type Électrik."
+    "description": "Inflige de lourds dégâts de type Electrik."
   },
   "Giga-Sangsue": {
     "num": 202,
@@ -1118,7 +1118,7 @@
   "Tonnerre": {
     "num": 85,
     "name": "Tonnerre",
-    "type": "Électrik",
+    "type": "Electrik",
     "basePower": 90,
     "accuracy": 1.0,
     "pp": 15,
@@ -1127,7 +1127,7 @@
     "bonus": [],
     "malus": [],
     "heal": 0,
-    "description": "Électrocute la cible et inflige de lourds dégâts de type Électrik."
+    "description": "Électrocute la cible et inflige de lourds dégâts de type Electrik."
   },
   "Lame de Roc": {
     "num": 444,

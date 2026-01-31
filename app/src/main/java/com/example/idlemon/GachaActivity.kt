@@ -12,17 +12,11 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.bumptech.glide.Glide
 
-class MainActivity : AppCompatActivity() {
+class GachaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        //lecture JSON
-
-        DataManager.setup(this)
-        var modelJson = DataManager.model
-
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_gacha)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.homePage)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -33,7 +27,10 @@ class MainActivity : AppCompatActivity() {
         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
         windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 
-        //Init var xml
+        //Json
+        var modelJson = DataManager.model
+
+        //var xml
         val pokemonDisplay = findViewById<ImageView>(R.id.pokemonDisplay)
         val playBtn = findViewById<ImageView>(R.id.playBtn)
         val homeBtn = findViewById<ImageView>(R.id.homeBtn)
@@ -43,28 +40,25 @@ class MainActivity : AppCompatActivity() {
         val settingsBtn = findViewById<ImageView>(R.id.settingsBtn)
 
 
-        //Init player
+        //Récup Player
         val player = Player
-        player.addEquipe(modelJson.creerPokemon("Félinferno"))
-        player.addEquipe(modelJson.creerPokemon(42))
-        player.addEquipe(modelJson.creerPokemon(878))
-        player.addEquipe(modelJson.creerPokemon(534))
-
         //mettre le frontSprite du premier pokemon de la liste du Player
         Glide.with(this).load(modelJson.getFrontSprite(player.getPremierPokemon().species.num )).into(pokemonDisplay)
 
-        //redirection vers l'équipe
+
+        // Redirection vers l'équipe
         teamBtn.setOnClickListener {
             val intent = Intent(this, TeamActivity::class.java)
             startActivity(intent)
         }
 
-        //redirection vers le Gacha
-        gachaBtn.setOnClickListener {
-            val intent = Intent(this, GachaActivity::class.java)
+        // Redirection vers le Home
+        homeBtn.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 
-
     }
+
+
 }

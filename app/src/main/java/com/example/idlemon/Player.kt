@@ -1,44 +1,43 @@
 package com.example.idlemon
 
-class Player(
-    val nom: String,
-    private var nbPieces: Int = 0,
-    val tabPokemon: MutableList<Pokemon> = mutableListOf(),
-    val tabEquipe: MutableList<Pokemon> = mutableListOf(),
-    //val tabObjet: MutableList<Pokemon> = mutableListOf()
-) {
-    // Méthode pour ajouter un pokémon au tableau
+//1 seul Player
+object Player {
+    var nom: String = "Sacha"
+    private var nbPieces: Int = 1000
+    val tabPokemon: MutableList<Pokemon> = mutableListOf()
+    val tabEquipe: MutableList<Pokemon> = mutableListOf()
+
     fun addPokemon(pokemon: Pokemon) {
         tabPokemon.add(pokemon)
     }
-     fun getPieces(): Int {
-        return nbPieces
+
+    fun getPieces(): Int = nbPieces
+
+    fun addPieces(montant: Int) {
+        this.nbPieces += montant
     }
-    fun addPieces(nbPieces: Int) {
-        this.nbPieces += nbPieces
+
+    fun removePieces(montant: Int) {
+        this.nbPieces -= montant
     }
-    fun removePieces(nbPieces: Int) {
-        this.nbPieces -= nbPieces
-    }
-    fun getNbPokemon(): Int {
-        return tabPokemon.size
-    }
-    fun getPokemon(index: Int): Pokemon {
-        return tabPokemon[index]
-    }
-    fun getEquipe(): MutableList<Pokemon> {
-        return tabEquipe
-    }
+
+    fun getNbPokemon(): Int = tabPokemon.size
+
+    fun getPokemon(index: Int): Pokemon = tabPokemon[index]
+
+    fun getEquipe(): MutableList<Pokemon> = tabEquipe
+
     fun addEquipe(pokemon: Pokemon) {
-        tabEquipe.add(pokemon)
+        if (tabEquipe.size < 6) {
+            tabEquipe.add(pokemon)
+        }
     }
+
     fun removeEquipe(pokemon: Pokemon) {
         tabEquipe.remove(pokemon)
     }
-    fun getNbEquipe(): Int {
-        return tabEquipe.size
-    }
-    fun getPokemonEquipe(index: Int): Pokemon {
-        return tabEquipe[index]
+
+    fun getPremierPokemon() : Pokemon{
+        return tabEquipe[0]
     }
 }

@@ -3,7 +3,7 @@ package com.example.idlemon
 data class PokemonSpecies(
         val num: Int,
         val nom: String,
-        val types: List<PokemonType>,
+        val type: List<PokemonType>,
         val rarete: String,
         val baseStats: Stats,
         val prevo: String?,

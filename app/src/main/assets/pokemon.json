@@ -389,7 +389,7 @@
     "num": 25,
     "nom": "Pikachu",
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Peu commun",
     "baseStats": {
@@ -406,7 +406,7 @@
     "num": 26,
     "nom": "Raichu",
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -544,7 +544,7 @@
     "num": 35,
     "nom": "Mélofée",
     "type": [
-      "Fée"
+      "Fee"
     ],
     "rarete": "Peu commun",
     "baseStats": {
@@ -579,7 +579,7 @@
     "nom": "Rondoudou",
     "type": [
       "Normal",
-      "Fée"
+      "Fee"
     ],
     "rarete": "Peu commun",
     "baseStats": {
@@ -927,7 +927,7 @@
     "num": 81,
     "nom": "Magnéti",
     "type": [
-      "Électrik",
+      "Electrik",
       "Acier"
     ],
     "rarete": "Commun",
@@ -1138,7 +1138,7 @@
     "num": 100,
     "nom": "Voltorbe",
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -1345,7 +1345,7 @@
     "nom": "M. Mime",
     "type": [
       "Psy",
-      "Fée"
+      "Fee"
     ],
     "rarete": "Peu commun",
     "baseStats": {
@@ -1398,7 +1398,7 @@
     "num": 125,
     "nom": "Élektek",
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Peu commun",
     "baseStats": {
@@ -1627,7 +1627,7 @@
       "Glace",
       "Vol"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 90,
       "vit": 85,
@@ -1642,10 +1642,10 @@
     "num": 145,
     "nom": "Électhor",
     "type": [
-      "Électrik",
+      "Electrik",
       "Vol"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 90,
       "vit": 100,
@@ -1663,7 +1663,7 @@
       "Feu",
       "Vol"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 90,
       "vit": 90,
@@ -1732,7 +1732,7 @@
     "type": [
       "Psy"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 106,
       "vit": 130,
@@ -2007,7 +2007,7 @@
     "nom": "Marill",
     "type": [
       "Eau",
-      "Fée"
+      "Fee"
     ],
     "rarete": "Peu commun",
     "baseStats": {
@@ -2078,7 +2078,7 @@
     "num": 198,
     "nom": "Cornèbre",
     "type": [
-      "Ténèbres",
+      "Tenebre",
       "Vol"
     ],
     "rarete": "Commun",
@@ -2182,7 +2182,7 @@
     "num": 209,
     "nom": "Snubbull",
     "type": [
-      "Fée"
+      "Fee"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -2235,7 +2235,7 @@
     "num": 215,
     "nom": "Farfuret",
     "type": [
-      "Ténèbres",
+      "Tenebre",
       "Glace"
     ],
     "rarete": "Commun",
@@ -2394,7 +2394,7 @@
     "num": 228,
     "nom": "Malosse",
     "type": [
-      "Ténèbres",
+      "Tenebre",
       "Feu"
     ],
     "rarete": "Commun",
@@ -2480,9 +2480,9 @@
     "num": 243,
     "nom": "Raikou",
     "type": [
-      "Électrik"
+      "Electrik"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 90,
       "vit": 115,
@@ -2499,7 +2499,7 @@
     "type": [
       "Feu"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 115,
       "vit": 100,
@@ -2516,7 +2516,7 @@
     "type": [
       "Eau"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 100,
       "vit": 85,
@@ -2568,7 +2568,7 @@
     "nom": "Tyranocif",
     "type": [
       "Roche",
-      "Ténèbres"
+      "Tenebre"
     ],
     "rarete": "Epique",
     "baseStats": {
@@ -2588,7 +2588,7 @@
       "Psy",
       "Vol"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 106,
       "vit": 110,
@@ -2606,7 +2606,7 @@
       "Feu",
       "Vol"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 106,
       "vit": 90,
@@ -2920,7 +2920,7 @@
     "num": 309,
     "nom": "Dynavolt",
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -3168,7 +3168,7 @@
     "type": [
       "Roche"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 80,
       "vit": 50,
@@ -3185,7 +3185,7 @@
     "type": [
       "Glace"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 80,
       "vit": 50,
@@ -3202,7 +3202,7 @@
     "type": [
       "Acier"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 80,
       "vit": 50,
@@ -3220,7 +3220,7 @@
       "Dragon",
       "Psy"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 80,
       "vit": 110,
@@ -3238,7 +3238,7 @@
       "Dragon",
       "Psy"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 80,
       "vit": 110,
@@ -3255,7 +3255,7 @@
     "type": [
       "Eau"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 100,
       "vit": 90,
@@ -3272,7 +3272,7 @@
     "type": [
       "Sol"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 100,
       "vit": 90,
@@ -3290,7 +3290,7 @@
       "Dragon",
       "Vol"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 105,
       "vit": 95,
@@ -3480,7 +3480,7 @@
     "num": 403,
     "nom": "Lixy",
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -3497,7 +3497,7 @@
     "num": 404,
     "nom": "Luxio",
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Peu commun",
     "baseStats": {
@@ -3514,7 +3514,7 @@
     "num": 405,
     "nom": "Luxray",
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Epique",
     "baseStats": {
@@ -3638,7 +3638,7 @@
     "num": 461,
     "nom": "Dimoret",
     "type": [
-      "Ténèbres",
+      "Tenebre",
       "Glace"
     ],
     "rarete": "Epique",
@@ -3659,7 +3659,7 @@
       "Acier",
       "Dragon"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 100,
       "vit": 90,
@@ -3677,7 +3677,7 @@
       "Eau",
       "Dragon"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 90,
       "vit": 100,
@@ -3695,7 +3695,7 @@
       "Spectre",
       "Dragon"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 150,
       "vit": 90,
@@ -3710,9 +3710,9 @@
     "num": 491,
     "nom": "Darkrai",
     "type": [
-      "Ténèbres"
+      "Tenebre"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 70,
       "vit": 125,
@@ -3729,7 +3729,7 @@
     "type": [
       "Normal"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 120,
       "vit": 120,
@@ -3917,7 +3917,7 @@
     "num": 570,
     "nom": "Zorua",
     "type": [
-      "Ténèbres"
+      "Tenebre"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -3934,7 +3934,7 @@
     "num": 571,
     "nom": "Zoroark",
     "type": [
-      "Ténèbres"
+      "Tenebre"
     ],
     "rarete": "Epique",
     "baseStats": {
@@ -4002,7 +4002,7 @@
     "num": 633,
     "nom": "Solochi",
     "type": [
-      "Ténèbres",
+      "Tenebre",
       "Dragon"
     ],
     "rarete": "Commun",
@@ -4020,7 +4020,7 @@
     "num": 634,
     "nom": "Diamat",
     "type": [
-      "Ténèbres",
+      "Tenebre",
       "Dragon"
     ],
     "rarete": "Peu commun",
@@ -4038,7 +4038,7 @@
     "num": 635,
     "nom": "Trioxhydre",
     "type": [
-      "Ténèbres",
+      "Tenebre",
       "Dragon"
     ],
     "rarete": "Epique",
@@ -4077,7 +4077,7 @@
       "Acier",
       "Combat"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 91,
       "vit": 108,
@@ -4095,7 +4095,7 @@
       "Roche",
       "Combat"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 91,
       "vit": 108,
@@ -4113,7 +4113,7 @@
       "Plante",
       "Combat"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 91,
       "vit": 108,
@@ -4130,7 +4130,7 @@
     "type": [
       "Vol"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 79,
       "vit": 111,
@@ -4145,10 +4145,10 @@
     "num": 642,
     "nom": "Fulguris",
     "type": [
-      "Électrik",
+      "Electrik",
       "Vol"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 79,
       "vit": 111,
@@ -4166,7 +4166,7 @@
       "Dragon",
       "Feu"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 100,
       "vit": 90,
@@ -4182,9 +4182,9 @@
     "nom": "Zekrom",
     "type": [
       "Dragon",
-      "Électrik"
+      "Electrik"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 100,
       "vit": 90,
@@ -4202,7 +4202,7 @@
       "Dragon",
       "Glace"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 125,
       "vit": 95,
@@ -4374,7 +4374,7 @@
     "nom": "Amphinobi",
     "type": [
       "Eau",
-      "Ténèbres"
+      "Tenebre"
     ],
     "rarete": "Epique",
     "baseStats": {
@@ -4514,9 +4514,9 @@
     "num": 716,
     "nom": "Xerneas",
     "type": [
-      "Fée"
+      "Fee"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 126,
       "vit": 99,
@@ -4531,10 +4531,10 @@
     "num": 717,
     "nom": "Yveltal",
     "type": [
-      "Ténèbres",
+      "Tenebre",
       "Vol"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 126,
       "vit": 99,
@@ -4552,7 +4552,7 @@
       "Dragon",
       "Sol"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 108,
       "vit": 95,
@@ -4568,7 +4568,7 @@
     "nom": "Diancie",
     "type": [
       "Roche",
-      "Fée"
+      "Fee"
     ],
     "rarete": "Fabuleux",
     "baseStats": {
@@ -4606,7 +4606,7 @@
       "Feu",
       "Eau"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 80,
       "vit": 70,
@@ -4710,7 +4710,7 @@
     "nom": "Félinferno",
     "type": [
       "Feu",
-      "Ténèbres"
+      "Tenebre"
     ],
     "rarete": "Epique",
     "baseStats": {
@@ -4762,7 +4762,7 @@
     "nom": "Oratoria",
     "type": [
       "Eau",
-      "Fée"
+      "Fee"
     ],
     "rarete": "Epique",
     "baseStats": {
@@ -4850,7 +4850,7 @@
     "nom": "Mimiqui",
     "type": [
       "Spectre",
-      "Fée"
+      "Fee"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -4922,7 +4922,7 @@
     "type": [
       "Psy"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 43,
       "vit": 37,
@@ -4939,7 +4939,7 @@
     "type": [
       "Psy"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 43,
       "vit": 37,
@@ -4957,7 +4957,7 @@
       "Psy",
       "Acier"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 137,
       "vit": 97,
@@ -4975,7 +4975,7 @@
       "Psy",
       "Spectre"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 137,
       "vit": 97,
@@ -4992,7 +4992,7 @@
     "type": [
       "Psy"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 97,
       "vit": 79,
@@ -5007,7 +5007,7 @@
     "num": 807,
     "nom": "Zeraora",
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Fabuleux",
     "baseStats": {
@@ -5194,7 +5194,7 @@
     "num": 848,
     "nom": "Toxizap",
     "type": [
-      "Électrik",
+      "Electrik",
       "Poison"
     ],
     "rarete": "Commun",
@@ -5212,7 +5212,7 @@
     "num": 849,
     "nom": "Salarsen",
     "type": [
-      "Électrik",
+      "Electrik",
       "Poison"
     ],
     "rarete": "Rare",
@@ -5284,9 +5284,9 @@
     "num": 888,
     "nom": "Zacian",
     "type": [
-      "Fée"
+      "Fee"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 92,
       "vit": 138,
@@ -5303,7 +5303,7 @@
     "type": [
       "Combat"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 92,
       "vit": 138,
@@ -5321,7 +5321,7 @@
       "Poison",
       "Dragon"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 140,
       "vit": 130,
@@ -5338,7 +5338,7 @@
     "type": [
       "Combat"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 60,
       "vit": 72,
@@ -5354,9 +5354,9 @@
     "nom": "Shifours",
     "type": [
       "Combat",
-      "Ténèbres"
+      "Tenebre"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 100,
       "vit": 97,
@@ -5422,7 +5422,7 @@
   "Mélodelfe": {
     "num": 36,
     "type": [
-      "Fée"
+      "Fee"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -5457,7 +5457,7 @@
     "num": 40,
     "type": [
       "Normal",
-      "Fée"
+      "Fee"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -5736,7 +5736,7 @@
   "Magnéton": {
     "num": 82,
     "type": [
-      "Électrik",
+      "Electrik",
       "Acier"
     ],
     "rarete": "Peu commun",
@@ -5859,7 +5859,7 @@
   "Électrode": {
     "num": 101,
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -6017,7 +6017,7 @@
   "Pichu": {
     "num": 172,
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -6034,7 +6034,7 @@
   "Mélo": {
     "num": 173,
     "type": [
-      "Fée"
+      "Fee"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -6052,7 +6052,7 @@
     "num": 174,
     "type": [
       "Normal",
-      "Fée"
+      "Fee"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -6088,7 +6088,7 @@
     "num": 184,
     "type": [
       "Eau",
-      "Fée"
+      "Fee"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -6178,7 +6178,7 @@
     "num": 170,
     "type": [
       "Eau",
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -6196,7 +6196,7 @@
     "num": 171,
     "type": [
       "Eau",
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -6213,7 +6213,7 @@
   "Granbull": {
     "num": 210,
     "type": [
-      "Fée"
+      "Fee"
     ],
     "rarete": "Epique",
     "baseStats": {
@@ -6318,7 +6318,7 @@
   "Démolosse": {
     "num": 229,
     "type": [
-      "Ténèbres",
+      "Tenebre",
       "Feu"
     ],
     "rarete": "Rare",
@@ -6423,7 +6423,7 @@
   "Élekid": {
     "num": 239,
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -6457,7 +6457,7 @@
   "Pochiena": {
     "num": 261,
     "type": [
-      "Ténèbres"
+      "Tenebre"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -6474,7 +6474,7 @@
   "Grahyèna": {
     "num": 262,
     "type": [
-      "Ténèbres"
+      "Tenebre"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -6562,7 +6562,7 @@
     "num": 298,
     "type": [
       "Normal",
-      "Fée"
+      "Fee"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -6596,7 +6596,7 @@
   "Élecsprint": {
     "num": 310,
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -6753,7 +6753,7 @@
     "num": 439,
     "type": [
       "Psy",
-      "Fée"
+      "Fee"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -6840,7 +6840,7 @@
   "Élécable": {
     "num": 466,
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Epique",
     "baseStats": {
@@ -7174,7 +7174,7 @@
   "Corboss": {
     "num": 430,
     "type": [
-      "Ténèbres",
+      "Tenebre",
       "Vol"
     ],
     "rarete": "Epique",
@@ -7439,7 +7439,7 @@
   "Magnézone": {
     "num": 462,
     "type": [
-      "Électrik",
+      "Electrik",
       "Acier"
     ],
     "rarete": "Rare",
@@ -7637,7 +7637,7 @@
     "num": 175,
     "nom": "Togepi",
     "type": [
-      "Fée"
+      "Fee"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -7654,7 +7654,7 @@
     "num": 176,
     "nom": "Togetic",
     "type": [
-      "Fée",
+      "Fee",
       "Vol"
     ],
     "rarete": "Peu commun",
@@ -7672,7 +7672,7 @@
     "num": 179,
     "nom": "Wattouat",
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -7689,7 +7689,7 @@
     "num": 180,
     "nom": "Lainergie",
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Peu commun",
     "baseStats": {
@@ -7706,7 +7706,7 @@
     "num": 181,
     "nom": "Pharamp",
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -7987,7 +7987,7 @@
     "nom": "Pifeuil",
     "type": [
       "Plante",
-      "Ténèbres"
+      "Tenebre"
     ],
     "rarete": "Peu commun",
     "baseStats": {
@@ -8005,7 +8005,7 @@
     "nom": "Tengalice",
     "type": [
       "Plante",
-      "Ténèbres"
+      "Tenebre"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -8095,7 +8095,7 @@
     "nom": "Tarsal",
     "type": [
       "Psy",
-      "Fée"
+      "Fee"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -8113,7 +8113,7 @@
     "nom": "Kirlia",
     "type": [
       "Psy",
-      "Fée"
+      "Fee"
     ],
     "rarete": "Peu commun",
     "baseStats": {
@@ -8131,7 +8131,7 @@
     "nom": "Gardevoir",
     "type": [
       "Psy",
-      "Fée"
+      "Fee"
     ],
     "rarete": "Epique",
     "baseStats": {
@@ -8338,7 +8338,7 @@
     "num": 302,
     "nom": "Ténéfix",
     "type": [
-      "Ténèbres",
+      "Tenebre",
       "Spectre"
     ],
     "rarete": "Peu commun",
@@ -8357,7 +8357,7 @@
     "nom": "Mysdibule",
     "type": [
       "Acier",
-      "Fée"
+      "Fee"
     ],
     "rarete": "Peu commun",
     "baseStats": {
@@ -8374,7 +8374,7 @@
     "num": 311,
     "nom": "Posipi",
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Peu commun",
     "baseStats": {
@@ -8391,7 +8391,7 @@
     "num": 312,
     "nom": "Négapi",
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Peu commun",
     "baseStats": {
@@ -8495,7 +8495,7 @@
     "nom": "Carvanha",
     "type": [
       "Eau",
-      "Ténèbres"
+      "Tenebre"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -8513,7 +8513,7 @@
     "nom": "Sharpedo",
     "type": [
       "Eau",
-      "Ténèbres"
+      "Tenebre"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -8650,7 +8650,7 @@
     "nom": "Cacturne",
     "type": [
       "Plante",
-      "Ténèbres"
+      "Tenebre"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -8827,7 +8827,7 @@
     "nom": "Colhomard",
     "type": [
       "Eau",
-      "Ténèbres"
+      "Tenebre"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -9055,7 +9055,7 @@
     "num": 359,
     "nom": "Absol",
     "type": [
-      "Ténèbres"
+      "Tenebre"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -9127,7 +9127,7 @@
     "type": [
       "Psy"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 50,
       "vit": 150,
@@ -9353,7 +9353,7 @@
     "num": 417,
     "nom": "Pachirisu",
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -9612,7 +9612,7 @@
     "nom": "Moufouette",
     "type": [
       "Poison",
-      "Ténèbres"
+      "Tenebre"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -9630,7 +9630,7 @@
     "nom": "Moufflair",
     "type": [
       "Poison",
-      "Ténèbres"
+      "Tenebre"
     ],
     "rarete": "Epique",
     "baseStats": {
@@ -9719,7 +9719,7 @@
     "nom": "Spiritomb",
     "type": [
       "Spectre",
-      "Ténèbres"
+      "Tenebre"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -9789,7 +9789,7 @@
     "nom": "Drascore",
     "type": [
       "Poison",
-      "Ténèbres"
+      "Tenebre"
     ],
     "rarete": "Epique",
     "baseStats": {
@@ -9893,7 +9893,7 @@
     "num": 468,
     "nom": "Togekiss",
     "type": [
-      "Fée",
+      "Fee",
       "Vol"
     ],
     "rarete": "Epique",
@@ -9929,7 +9929,7 @@
     "num": 479,
     "nom": "Motisma",
     "type": [
-      "Électrik",
+      "Electrik",
       "Spectre"
     ],
     "rarete": "Rare",
@@ -9949,7 +9949,7 @@
     "type": [
       "Psy"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 75,
       "vit": 95,
@@ -9966,7 +9966,7 @@
     "type": [
       "Psy"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 80,
       "vit": 80,
@@ -9983,7 +9983,7 @@
     "type": [
       "Psy"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 75,
       "vit": 115,
@@ -10001,7 +10001,7 @@
       "Feu",
       "Acier"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 91,
       "vit": 77,
@@ -10018,7 +10018,7 @@
     "type": [
       "Normal"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 110,
       "vit": 100,
@@ -10035,7 +10035,7 @@
     "type": [
       "Psy"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 120,
       "vit": 85,
@@ -10186,7 +10186,7 @@
     "num": 509,
     "nom": "Chacripan",
     "type": [
-      "Ténèbres"
+      "Tenebre"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -10203,7 +10203,7 @@
     "num": 510,
     "nom": "Léopardus",
     "type": [
-      "Ténèbres"
+      "Tenebre"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -10410,7 +10410,7 @@
     "num": 522,
     "nom": "Zébibron",
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -10427,7 +10427,7 @@
     "num": 523,
     "nom": "Zéblitz",
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Epique",
     "baseStats": {
@@ -10830,7 +10830,7 @@
     "nom": "Doudouvet",
     "type": [
       "Plante",
-      "Fée"
+      "Fee"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -10848,7 +10848,7 @@
     "nom": "Farfaduvet",
     "type": [
       "Plante",
-      "Fée"
+      "Fee"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -10917,7 +10917,7 @@
     "nom": "Mascaïman",
     "type": [
       "Sol",
-      "Ténèbres"
+      "Tenebre"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -10935,7 +10935,7 @@
     "nom": "Escroco",
     "type": [
       "Sol",
-      "Ténèbres"
+      "Tenebre"
     ],
     "rarete": "Peu commun",
     "baseStats": {
@@ -10953,7 +10953,7 @@
     "nom": "Crocorible",
     "type": [
       "Sol",
-      "Ténèbres"
+      "Tenebre"
     ],
     "rarete": "Epique",
     "baseStats": {
@@ -11057,7 +11057,7 @@
     "num": 559,
     "nom": "Baggiguane",
     "type": [
-      "Ténèbres",
+      "Tenebre",
       "Combat"
     ],
     "rarete": "Commun",
@@ -11075,7 +11075,7 @@
     "num": 560,
     "nom": "Baggaïd",
     "type": [
-      "Ténèbres",
+      "Tenebre",
       "Combat"
     ],
     "rarete": "Rare",
@@ -11510,7 +11510,7 @@
     "num": 587,
     "nom": "Emolga",
     "type": [
-      "Électrik",
+      "Electrik",
       "Vol"
     ],
     "rarete": "Rare",
@@ -11653,7 +11653,7 @@
     "nom": "Statitik",
     "type": [
       "Insecte",
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -11671,7 +11671,7 @@
     "nom": "Mygavolt",
     "type": [
       "Insecte",
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -11775,7 +11775,7 @@
     "num": 602,
     "nom": "Anchwatt",
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -11792,7 +11792,7 @@
     "num": 603,
     "nom": "Lampéroie",
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Peu commun",
     "baseStats": {
@@ -11809,7 +11809,7 @@
     "num": 604,
     "nom": "Ohmassacre",
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -12000,7 +12000,7 @@
     "nom": "Limonde",
     "type": [
       "Sol",
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -12104,7 +12104,7 @@
     "num": 624,
     "nom": "Scalpion",
     "type": [
-      "Ténèbres",
+      "Tenebre",
       "Acier"
     ],
     "rarete": "Commun",
@@ -12122,7 +12122,7 @@
     "num": 625,
     "nom": "Scalproie",
     "type": [
-      "Ténèbres",
+      "Tenebre",
       "Acier"
     ],
     "rarete": "Rare",
@@ -12193,7 +12193,7 @@
     "num": 629,
     "nom": "Vostourno",
     "type": [
-      "Ténèbres",
+      "Tenebre",
       "Vol"
     ],
     "rarete": "Commun",
@@ -12211,7 +12211,7 @@
     "num": 630,
     "nom": "Vaututrice",
     "type": [
-      "Ténèbres",
+      "Tenebre",
       "Vol"
     ],
     "rarete": "Epique",
@@ -12267,7 +12267,7 @@
       "Sol",
       "Vol"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 89,
       "vit": 101,
@@ -12441,7 +12441,7 @@
     "num": 669,
     "nom": "Flabébé",
     "type": [
-      "Fée"
+      "Fee"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -12458,7 +12458,7 @@
     "num": 670,
     "nom": "Floette",
     "type": [
-      "Fée"
+      "Fee"
     ],
     "rarete": "Peu commun",
     "baseStats": {
@@ -12475,7 +12475,7 @@
     "num": 671,
     "nom": "Florges",
     "type": [
-      "Fée"
+      "Fee"
     ],
     "rarete": "Epique",
     "baseStats": {
@@ -12544,7 +12544,7 @@
     "nom": "Pandarbare",
     "type": [
       "Combat",
-      "Ténèbres"
+      "Tenebre"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -12612,7 +12612,7 @@
     "num": 682,
     "nom": "Fluvetin",
     "type": [
-      "Fée"
+      "Fee"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -12629,7 +12629,7 @@
     "num": 683,
     "nom": "Cocotine",
     "type": [
-      "Fée"
+      "Fee"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -12646,7 +12646,7 @@
     "num": 684,
     "nom": "Sucroquin",
     "type": [
-      "Fée"
+      "Fee"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -12663,7 +12663,7 @@
     "num": 685,
     "nom": "Cupcanaille",
     "type": [
-      "Fée"
+      "Fee"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -12680,7 +12680,7 @@
     "num": 686,
     "nom": "Sepiatop",
     "type": [
-      "Ténèbres",
+      "Tenebre",
       "Psy"
     ],
     "rarete": "Commun",
@@ -12698,7 +12698,7 @@
     "num": 687,
     "nom": "Sepiatroce",
     "type": [
-      "Ténèbres",
+      "Tenebre",
       "Psy"
     ],
     "rarete": "Rare",
@@ -12786,7 +12786,7 @@
     "num": 694,
     "nom": "Galvaran",
     "type": [
-      "Électrik",
+      "Electrik",
       "Normal"
     ],
     "rarete": "Commun",
@@ -12804,7 +12804,7 @@
     "num": 695,
     "nom": "Iguolta",
     "type": [
-      "Électrik",
+      "Electrik",
       "Normal"
     ],
     "rarete": "Rare",
@@ -12912,8 +12912,8 @@
     "num": 702,
     "nom": "Dedenne",
     "type": [
-      "Électrik",
-      "Fée"
+      "Electrik",
+      "Fee"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -12931,7 +12931,7 @@
     "nom": "Strassie",
     "type": [
       "Roche",
-      "Fée"
+      "Fee"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -12949,7 +12949,7 @@
     "nom": "Trousselin",
     "type": [
       "Acier",
-      "Fée"
+      "Fee"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -13178,7 +13178,7 @@
     "nom": "Chrysapile",
     "type": [
       "Insecte",
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Peu commun",
     "baseStats": {
@@ -13196,7 +13196,7 @@
     "nom": "Lucanon",
     "type": [
       "Insecte",
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -13267,7 +13267,7 @@
     "nom": "Bombydou",
     "type": [
       "Insecte",
-      "Fée"
+      "Fee"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -13285,7 +13285,7 @@
     "nom": "Rubombelle",
     "type": [
       "Insecte",
-      "Fée"
+      "Fee"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -13460,7 +13460,7 @@
     "nom": "Spododo",
     "type": [
       "Plante",
-      "Fée"
+      "Fee"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -13478,7 +13478,7 @@
     "nom": "Lampignon",
     "type": [
       "Plante",
-      "Fée"
+      "Fee"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -13582,7 +13582,7 @@
     "num": 764,
     "nom": "Guérilande",
     "type": [
-      "Fée"
+      "Fee"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -13725,7 +13725,7 @@
     "type": [
       "Normal"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 95,
       "vit": 59,
@@ -13742,7 +13742,7 @@
     "type": [
       "Normal"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 95,
       "vit": 95,
@@ -13810,7 +13810,7 @@
     "num": 777,
     "nom": "Togedemaru",
     "type": [
-      "Électrik",
+      "Electrik",
       "Acier"
     ],
     "rarete": "Rare",
@@ -13882,10 +13882,10 @@
     "num": 785,
     "nom": "Tokorico",
     "type": [
-      "Électrik",
-      "Fée"
+      "Electrik",
+      "Fee"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 70,
       "vit": 130,
@@ -13901,9 +13901,9 @@
     "nom": "Tokopiyon",
     "type": [
       "Psy",
-      "Fée"
+      "Fee"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 70,
       "vit": 95,
@@ -13919,9 +13919,9 @@
     "nom": "Tokotoro",
     "type": [
       "Plante",
-      "Fée"
+      "Fee"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 70,
       "vit": 75,
@@ -13937,9 +13937,9 @@
     "nom": "Tokopisco",
     "type": [
       "Eau",
-      "Fée"
+      "Fee"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 70,
       "vit": 85,
@@ -13957,7 +13957,7 @@
       "Roche",
       "Poison"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 109,
       "vit": 103,
@@ -13975,7 +13975,7 @@
       "Insecte",
       "Combat"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 107,
       "vit": 79,
@@ -13993,7 +13993,7 @@
       "Insecte",
       "Combat"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 71,
       "vit": 151,
@@ -14008,9 +14008,9 @@
     "num": 796,
     "nom": "Câblifère",
     "type": [
-      "Électrik"
+      "Electrik"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 83,
       "vit": 83,
@@ -14028,7 +14028,7 @@
       "Acier",
       "Vol"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 97,
       "vit": 61,
@@ -14046,7 +14046,7 @@
       "Plante",
       "Acier"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 59,
       "vit": 109,
@@ -14061,10 +14061,10 @@
     "num": 799,
     "nom": "Engloutyran",
     "type": [
-      "Ténèbres",
+      "Tenebre",
       "Dragon"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 223,
       "vit": 43,
@@ -14080,7 +14080,7 @@
     "nom": "Magearna",
     "type": [
       "Acier",
-      "Fée"
+      "Fee"
     ],
     "rarete": "Fabuleux",
     "baseStats": {
@@ -14117,7 +14117,7 @@
     "type": [
       "Poison"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 67,
       "vit": 73,
@@ -14135,7 +14135,7 @@
       "Poison",
       "Dragon"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 73,
       "vit": 121,
@@ -14171,7 +14171,7 @@
       "Feu",
       "Spectre"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 53,
       "vit": 107,
@@ -14359,7 +14359,7 @@
     "num": 827,
     "nom": "Goupilou",
     "type": [
-      "Ténèbres"
+      "Tenebre"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -14376,7 +14376,7 @@
     "num": 828,
     "nom": "Roublenard",
     "type": [
-      "Ténèbres"
+      "Tenebre"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -14462,7 +14462,7 @@
     "num": 835,
     "nom": "Voltoutou",
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -14479,7 +14479,7 @@
     "num": 836,
     "nom": "Fulgudog",
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Epique",
     "baseStats": {
@@ -14774,7 +14774,7 @@
     "nom": "Sorcilence",
     "type": [
       "Psy",
-      "Fée"
+      "Fee"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -14791,8 +14791,8 @@
     "num": 859,
     "nom": "Grimalin",
     "type": [
-      "Ténèbres",
-      "Fée"
+      "Tenebre",
+      "Fee"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -14809,8 +14809,8 @@
     "num": 860,
     "nom": "Fourbelin",
     "type": [
-      "Ténèbres",
-      "Fée"
+      "Tenebre",
+      "Fee"
     ],
     "rarete": "Peu commun",
     "baseStats": {
@@ -14827,8 +14827,8 @@
     "num": 861,
     "nom": "Angoliath",
     "type": [
-      "Ténèbres",
-      "Fée"
+      "Tenebre",
+      "Fee"
     ],
     "rarete": "Epique",
     "baseStats": {
@@ -14845,7 +14845,7 @@
     "num": 862,
     "nom": "Ixon",
     "type": [
-      "Ténèbres",
+      "Tenebre",
       "Normal"
     ],
     "rarete": "Epique",
@@ -14915,7 +14915,7 @@
     "num": 868,
     "nom": "Crèmy",
     "type": [
-      "Fée"
+      "Fee"
     ],
     "rarete": "Commun",
     "baseStats": {
@@ -14932,7 +14932,7 @@
     "num": 869,
     "nom": "Charmilly",
     "type": [
-      "Fée"
+      "Fee"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -14966,7 +14966,7 @@
     "num": 871,
     "nom": "Wattapik",
     "type": [
-      "Électrik"
+      "Electrik"
     ],
     "rarete": "Peu commun",
     "baseStats": {
@@ -15071,8 +15071,8 @@
     "num": 877,
     "nom": "Morpeko",
     "type": [
-      "Électrik",
-      "Ténèbres"
+      "Electrik",
+      "Tenebre"
     ],
     "rarete": "Rare",
     "baseStats": {
@@ -15123,7 +15123,7 @@
     "num": 880,
     "nom": "Galvagon",
     "type": [
-      "Électrik",
+      "Electrik",
       "Dragon"
     ],
     "rarete": "Epique",
@@ -15141,7 +15141,7 @@
     "num": 881,
     "nom": "Galvagla",
     "type": [
-      "Électrik",
+      "Electrik",
       "Glace"
     ],
     "rarete": "Rare",
@@ -15213,7 +15213,7 @@
     "num": 893,
     "nom": "Zarude",
     "type": [
-      "Ténèbres",
+      "Tenebre",
       "Plante"
     ],
     "rarete": "Fabuleux",
@@ -15231,9 +15231,9 @@
     "num": 894,
     "nom": "Regieleki",
     "type": [
-      "Électrik"
+      "Electrik"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 80,
       "vit": 200,
@@ -15250,7 +15250,7 @@
     "type": [
       "Dragon"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 200,
       "vit": 80,
@@ -15267,7 +15267,7 @@
     "type": [
       "Glace"
     ],
-    "rarete": "Légendaire",
+    "rarete": "Legendaire",
     "baseStats": {
       "hp": 100,
       "vit": 30,

@@ -44,51 +44,6 @@
             app:srcCompat="@drawable/back_gradient" />
 
         <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="167dp"
-            android:layout_height="51dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/title" />
-
-        <ImageView
-            android:id="@+id/settingsBtn2"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="16dp"
-            android:src="@drawable/settings"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView8"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView8" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout3"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/pokegold_back"
-            android:paddingStart="35dp"
-            android:paddingEnd="10dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView8"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView8">
-
-            <TextView
-                android:id="@+id/fieldPokegold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="monospace"
-                android:text="2676"
-                android:textColor="#D84315"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <ImageView
             android:id="@+id/imageView8"
             android:layout_width="167dp"
             android:layout_height="51dp"
@@ -110,9 +65,56 @@
             app:srcCompat="@drawable/jouer_btn" />
 
         <ImageView
-            android:layout_width="49dp"
-            android:layout_height="51dp"
-            android:layout_marginTop="16dp"
+            android:id="@+id/settingsBtn"
+            android:layout_width="92dp"
+            android:layout_height="62dp"
+            android:layout_marginTop="72dp"
+            android:layout_marginEnd="12dp"
+            android:src="@drawable/settings"
+            app:layout_constraintEnd_toStartOf="@+id/imageView8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="84dp"
+            android:layout_marginEnd="14dp"
+            android:background="@drawable/pokegold_back"
+            app:layout_constrainedHeight="false"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_min="40dp"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/imageView8"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.2">
+
+            <TextView
+                android:id="@+id/fieldPokegold"
+                android:layout_width="61dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:fontFamily="monospace"
+                android:text="2676"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="#D84315"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:layout_width="65dp"
+            android:layout_height="59dp"
+            android:layout_marginTop="72dp"
             android:layout_marginEnd="-30dp"
             app:layout_constraintEnd_toStartOf="@+id/constraintLayout3"
             app:layout_constraintTop_toTopOf="parent"
@@ -133,8 +135,9 @@
             android:id="@+id/pokemonDisplay"
             android:layout_width="242dp"
             android:layout_height="202dp"
-            android:layout_marginTop="104dp"
+            android:layout_marginTop="108dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.654"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView8"
             app:srcCompat="@drawable/pika_template" />
