@@ -46,10 +46,10 @@ class MainActivity : AppCompatActivity() {
         //Init player
         val player = Player
         player.clearEquipe()
-        player.addEquipe(modelJson.creerPokemon("Drakkarmin"))
-        player.addEquipe(modelJson.creerPokemon(673))
-        player.addEquipe(modelJson.creerPokemon(654))
-        player.addEquipe(modelJson.creerPokemon(123))
+        player.addEquipe(modelJson.creerPokemon("Pikachu"))
+        player.addEquipe(modelJson.creerPokemon(865))
+        player.addEquipe(modelJson.creerPokemon(345))
+        player.addEquipe(modelJson.creerPokemon(102))
 
         //mettre le frontSprite du premier pokemon de la liste du Player
         Glide.with(this).load(modelJson.getFrontSprite(player.getPremierPokemon().species.num )).into(pokemonDisplay)
