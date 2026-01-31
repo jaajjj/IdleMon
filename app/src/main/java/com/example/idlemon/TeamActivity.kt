@@ -79,6 +79,10 @@ class TeamActivity : AppCompatActivity() {
             dynamicContainer.removeViews(1, dynamicContainer.childCount - 1)
         }
 
+        while (dynamicContainer.childCount > 1) {
+            dynamicContainer.removeViewAt(1)
+        }
+
         for (i in 1 until equipe.size) {
             Log.i("Pokemon", equipe[i].species.nom)
             val pokemonView = creeViewPokemonTeam(equipe[i])

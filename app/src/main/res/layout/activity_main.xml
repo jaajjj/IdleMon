@@ -54,7 +54,7 @@
             app:srcCompat="@drawable/title" />
 
         <ImageView
-            android:id="@+id/settingsBtn2"
+            android:id="@+id/settingsBtn"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="16dp"

@@ -40,4 +40,8 @@ object Player {
     fun getPremierPokemon() : Pokemon{
         return tabEquipe[0]
     }
+
+    fun clearEquipe() {
+        tabEquipe.clear()
+    }
 }
