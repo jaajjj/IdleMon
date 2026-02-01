@@ -44,4 +44,12 @@ object Player {
     fun clearEquipe() {
         tabEquipe.clear()
     }
+
+    fun clearPokemon(){
+        tabPokemon.clear()
+    }
+
+    fun removePokemonBox(pokemon: Pokemon){
+        tabPokemon.remove(pokemon)
+    }
 }

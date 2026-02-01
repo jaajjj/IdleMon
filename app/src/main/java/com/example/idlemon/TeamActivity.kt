@@ -33,17 +33,32 @@ class TeamActivity : AppCompatActivity() {
         windowInsetsController.systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 
-        findViewById<TextView>(R.id.fieldPokegold).text = Player.getPieces().toString()
+        //var xml
+        val pokegold = findViewById<TextView>(R.id.fieldPokegold)
+        val changeTeamBtn = findViewById<ImageView>(R.id.changeTeamBtn)
+        val homeBtn = findViewById<ImageView>(R.id.homeBtn)
+        val gachadBtn = findViewById<ImageView>(R.id.gachaBtn)
+
+        pokegold.text = Player.getPieces().toString()
 
         //Log.i("TailleEquipe", Player.getEquipe().size.toString())
         afficherEquipe()
 
         // Navigation
-        findViewById<ImageView>(R.id.gachaBtn).setOnClickListener {
+        gachadBtn.setOnClickListener {
             startActivity(Intent(this, GachaActivity::class.java))
         }
-        findViewById<ImageView>(R.id.homeBtn).setOnClickListener {
+        homeBtn.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
+        }
+
+        changeTeamBtn.setOnClickListener {
+            // On crée le dialogue
+            val dialog = ChangeTeamDialog(this)
+            dialog.dialog.setOnDismissListener {
+                afficherEquipe() // On rafraîchit l'écran ici
+            }
+            dialog.show()
         }
     }
 
@@ -51,21 +66,21 @@ class TeamActivity : AppCompatActivity() {
         val equipe = Player.getEquipe()
         if (equipe.isEmpty()) return //Arrete de faire des bétises ;-;
 
+        //leader
         val leader = equipe[0]
-        Log.i("test1", leader.species.nom)
-        findViewById<TextView>(R.id.pokeName1).text = leader.species.nom
-        Log.i("test2", leader.species.nom)
+        val pokeSprite1 = findViewById<ImageView>(R.id.pokeSprite1)
+        val pokeName1 = findViewById<TextView>(R.id.pokeName1)
+
+        pokeName1.text = leader.species.nom
         Glide.with(this)
             .load(DataManager.model.getFrontSprite(leader.species.num))
-            .into(findViewById(R.id.pokeSprite1))
+            .into(pokeSprite1)
 
-        Log.i("test3", leader.species.nom)
         val type1Leader = findViewById<ImageView>(R.id.pokeType1)
         val type2Leader = findViewById<ImageView>(R.id.pokeType4)
 
-        Log.i("test41", leader.species.type[0].toString())
         type1Leader.setImageResource(getIconType(leader.species.type[0].nom))
-        Log.i("test4", leader.species.type[0].nom)
+
         if (leader.species.type.size > 1) {
             type2Leader.visibility = View.VISIBLE
             type2Leader.setImageResource(getIconType(leader.species.type[1].nom))
@@ -73,20 +88,16 @@ class TeamActivity : AppCompatActivity() {
             type2Leader.visibility = View.GONE
         }
 
-        val dynamicContainer = findViewById<LinearLayout>(R.id.teamList)
-
-        if (dynamicContainer.childCount > 1) {
-            dynamicContainer.removeViews(1, dynamicContainer.childCount - 1)
+        //teamList
+        val teamList = findViewById<LinearLayout>(R.id.teamList)
+        //on vide pour pas doubler
+        if (teamList.childCount > 1) {
+            teamList.removeViews(1, teamList.childCount - 1)
         }
-
-        while (dynamicContainer.childCount > 1) {
-            dynamicContainer.removeViewAt(1)
-        }
-
         for (i in 1 until equipe.size) {
             Log.i("Pokemon", equipe[i].species.nom)
             val pokemonView = creeViewPokemonTeam(equipe[i])
-            dynamicContainer.addView(pokemonView)
+            teamList.addView(pokemonView)
         }
     }
 
@@ -137,4 +148,5 @@ class TeamActivity : AppCompatActivity() {
             else -> R.drawable.normal
         }
     }
+
 }

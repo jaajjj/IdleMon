@@ -63,14 +63,4 @@
             app:srcCompat="@drawable/dragon" />
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/attackBtn1"
-        android:layout_width="97dp"
-        android:layout_height="51dp"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintBottom_toBottomOf="@id/backImage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/backImage"
-        app:srcCompat="@drawable/change_atk_btn" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

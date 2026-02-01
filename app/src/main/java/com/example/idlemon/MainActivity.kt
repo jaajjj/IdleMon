@@ -45,11 +45,25 @@ class MainActivity : AppCompatActivity() {
 
         //Init player
         val player = Player
-        player.clearEquipe()
-        player.addEquipe(modelJson.creerPokemon("Pikachu"))
-        player.addEquipe(modelJson.creerPokemon(865))
-        player.addEquipe(modelJson.creerPokemon(345))
-        player.addEquipe(modelJson.creerPokemon(102))
+        // REMPLACE TON ANCIEN BLOC D'INIT PAR CELUI-CI :
+        if (Player.getEquipe().isEmpty()) {
+            Player.addEquipe(modelJson.creerPokemon("Victini"))
+            Player.addEquipe(modelJson.creerPokemon(98))
+            Player.addEquipe(modelJson.creerPokemon(322))
+            Player.addEquipe(modelJson.creerPokemon(544))
+        }
+
+        if (Player.getNbPokemon() == 0) {
+            player.addPokemon(modelJson.creerPokemon(653))
+            player.addPokemon(modelJson.creerPokemon(94))
+            player.addPokemon(modelJson.creerPokemon(2))
+            player.addPokemon(modelJson.creerPokemon(4))
+            player.addPokemon(modelJson.creerPokemon(15))
+            player.addPokemon(modelJson.creerPokemon(87))
+            player.addPokemon(modelJson.creerPokemon(100))
+            player.addPokemon(modelJson.creerPokemon(101))
+        }
+
 
         //mettre le frontSprite du premier pokemon de la liste du Player
         Glide.with(this).load(modelJson.getFrontSprite(player.getPremierPokemon().species.num )).into(pokemonDisplay)
@@ -65,7 +79,15 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, GachaActivity::class.java)
             startActivity(intent)
         }
+    }
 
-
+    override fun onResume() {
+        super.onResume()
+        val pokemonDisplay = findViewById<ImageView>(R.id.pokemonDisplay)
+        if (Player.getEquipe().isNotEmpty()) {
+            Glide.with(this)
+                .load(DataManager.model.getFrontSprite(Player.getPremierPokemon().species.num))
+                .into(pokemonDisplay)
+        }
     }
 }
