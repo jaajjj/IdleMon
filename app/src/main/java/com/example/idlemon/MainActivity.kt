@@ -16,7 +16,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         //lecture JSON
-
         DataManager.setup(this)
         var modelJson = DataManager.model
 
@@ -45,7 +44,6 @@ class MainActivity : AppCompatActivity() {
 
         //Init player
         val player = Player
-        // REMPLACE TON ANCIEN BLOC D'INIT PAR CELUI-CI :
         if (Player.getEquipe().isEmpty()) {
             Player.addEquipe(modelJson.creerPokemon("Victini"))
             Player.addEquipe(modelJson.creerPokemon(98))

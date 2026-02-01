@@ -79,7 +79,7 @@
                 android:id="@+id/fieldPokegold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="monospace"
+                android:fontFamily="@font/roboto_medium"
                 android:text="2676"
                 android:textColor="#D84315"
                 android:textStyle="bold"

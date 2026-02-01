@@ -21,13 +21,12 @@ class TeamActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_team)
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.homePage)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
+        //enlever les barres du systeme
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
         windowInsetsController.systemBarsBehavior =
@@ -41,10 +40,9 @@ class TeamActivity : AppCompatActivity() {
 
         pokegold.text = Player.getPieces().toString()
 
-        //Log.i("TailleEquipe", Player.getEquipe().size.toString())
         afficherEquipe()
 
-        // Navigation
+        //footer
         gachadBtn.setOnClickListener {
             startActivity(Intent(this, GachaActivity::class.java))
         }
@@ -53,10 +51,9 @@ class TeamActivity : AppCompatActivity() {
         }
 
         changeTeamBtn.setOnClickListener {
-            // On crée le dialogue
             val dialog = ChangeTeamDialog(this)
             dialog.dialog.setOnDismissListener {
-                afficherEquipe() // On rafraîchit l'écran ici
+                afficherEquipe()
             }
             dialog.show()
         }
@@ -78,6 +75,10 @@ class TeamActivity : AppCompatActivity() {
 
         val type1Leader = findViewById<ImageView>(R.id.pokeType1)
         val type2Leader = findViewById<ImageView>(R.id.pokeType4)
+        val attackBtn1 = findViewById<ImageView>(R.id.attackBtn1)
+        attackBtn1.setOnClickListener {
+            ChangeAttackDialog(this, leader).show()
+        }
 
         type1Leader.setImageResource(getIconType(leader.species.type[0].nom))
 
@@ -114,7 +115,11 @@ class TeamActivity : AppCompatActivity() {
             .load(DataManager.model.getFrontSprite(pokemon.species.num))
             .into(pokeSprite)
 
-        // Gestion des types
+        val attackBtn = pokemonView.findViewById<ImageView>(R.id.attackBtn1)
+        attackBtn.setOnClickListener {
+            ChangeAttackDialog(this, pokemon).show()
+        }
+
         type1.setImageResource(getIconType(pokemon.species.type[0].nom))
         if (pokemon.species.type.size > 1) {
             type2.visibility = View.VISIBLE

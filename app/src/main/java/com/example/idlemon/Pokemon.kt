@@ -2,37 +2,39 @@ package com.example.idlemon
 
 class Pokemon(val species: PokemonSpecies, var level: Int = 1, var exp: Int = 0) {
     val attacks: MutableList<Attack> = mutableListOf()
-
+    val currentPP: MutableMap<Int, Int> = mutableMapOf()
     var currentHp: Int = species.baseStats.hp
     var currentAtk: Int = species.baseStats.atk
     var currentVit: Int = species.baseStats.vit
     var currentDef: Int = species.baseStats.def
-
     var isKO: Boolean = false
 
-    fun performAttack(attack: Attack){
-        //TODO
+    init {
+        //attack par defaut qui est : Attention, c'est la meilleur des attaques..... CHARGE !!
+        addAttack(DataManager.model.getAttackByNom("Charge"))
     }
 
-
-
+    fun addAttack(attack: Attack) {
+        if (attacks.size < 4) {
+            attacks.add(attack)
+            currentPP[attacks.size - 1] = attack.pp
+        }
+    }
 
     fun prendreDmg(dmg: Int) {
-        if (this.currentHp - dmg < 0) {
-            this.currentHp = 0
-            // KO
-            this.isKO = true
-            println("${this.species.nom} est KO")
-        } else {
+        if(this.currentHp - dmg > 0){
             this.currentHp -= dmg
+        }else{
+            this.currentHp = 0
+            this.isKO = true
         }
     }
 
     fun heal(heal: Int) {
-        if (this.currentHp + heal > this.species.baseStats.hp) {
-            this.currentHp = this.species.baseStats.hp
-        } else {
+        if(this.currentHp + heal < this.species.baseStats.hp){ //a changer
             this.currentHp += heal
+        }else{
+            this.currentHp = this.species.baseStats.hp
         }
     }
 
@@ -43,11 +45,4 @@ class Pokemon(val species: PokemonSpecies, var level: Int = 1, var exp: Int = 0)
         this.currentDef = ((2 * species.baseStats.def * level) / 100) + 5
         this.currentVit = ((2 * species.baseStats.vit * level) / 100) + 5
     }
-
-    fun chkKo():Boolean{
-        if(this.currentHp <= 0) return true
-        return false
-    }
-
-
 }
