@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.bumptech.glide.Glide
 
 class ChangeAttackDialog(
     private val context: Context,
@@ -23,6 +24,15 @@ class ChangeAttackDialog(
 
         refreshCurrentAttacks()
         refreshAvailableAttacks()
+
+        val nomPoke = dialog.findViewById<TextView>(R.id.nomPoke)
+        val imgPoke = dialog.findViewById<ImageView>(R.id.imgPoke)
+
+        nomPoke.text = pokemon.species.nom
+        Glide.with(context)
+            .asGif() // On garde le style animé
+            .load(DataManager.model.getFrontSprite(pokemon.species.num))
+            .into(imgPoke)
 
         dialog.show()
         val width = (context.resources.displayMetrics.widthPixels * 0.95).toInt()

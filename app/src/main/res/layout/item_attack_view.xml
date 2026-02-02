@@ -10,7 +10,7 @@
         android:layout_width="342dp"
         android:layout_height="71dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/attack_back"
+        android:background="@drawable/rounded_back_orange_small_border"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"

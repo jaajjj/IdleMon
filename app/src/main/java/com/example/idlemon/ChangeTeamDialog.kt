@@ -19,6 +19,8 @@ class ChangeTeamDialog(
     val dialog = Dialog(context)
     private var selectedIndex: Int = -1
 
+    private lateinit var imgPokemonChange: ImageView
+
     fun show() {
         dialog.setContentView(R.layout.dialog_change_team)
 
@@ -57,20 +59,36 @@ class ChangeTeamDialog(
             R.id.pokeTeam4, R.id.pokeTeam5, R.id.pokeTeam6
         )
 
+        imgPokemonChange = dialog.findViewById<ImageView>(R.id.imgPokemonChange)
+
         for (i in teamIds.indices) {
             val imgView = dialog.findViewById<ImageView>(teamIds[i])
+
             imgView.setOnClickListener {
-                //on annule la selec
                 if (selectedIndex == i) {
+                    // Désélection
                     selectedIndex = -1
                     resetSelectionEffects()
-                } else { //on selec
+                    imgPokemonChange.setImageDrawable(null)
+                } else {
+                    //Selec
                     selectedIndex = i
                     resetSelectionEffects()
                     imgView.alpha = 0.5f
+
+                    if (i < equipe.size) {
+                        Glide.with(context)
+                            .asGif()
+                            .load(DataManager.model.getFrontSprite(equipe[i].species.num))
+                            .into(imgPokemonChange)
+                    } else {
+                        //selec vide
+                        imgPokemonChange.setImageResource(R.drawable.pokeball)
+                    }
                 }
                 refreshBoxList()
             }
+
             if (i < equipe.size) {
                 Glide.with(context)
                     .asGif()
@@ -104,12 +122,10 @@ class ChangeTeamDialog(
 
             //remplissage
             pokeName.text = pokemon.species.nom
-
             Glide.with(context)
                 .asGif()
                 .load(DataManager.model.getFrontSprite(pokemon.species.num))
                 .into(pokeSprite)
-
             type1.setImageResource(getIconType(pokemon.species.type[0].nom))
             if (pokemon.species.type.size > 1) {
                 type2.visibility = View.VISIBLE
@@ -135,6 +151,7 @@ class ChangeTeamDialog(
                         Player.removePokemonBox(pokemon)
                     }
                     selectedIndex = -1
+                    dialog.findViewById<ImageView>(R.id.imgPokemonChange).setImageDrawable(null)
                     resetSelectionEffects()
                     refreshTeamList()
                     refreshBoxList()

@@ -108,7 +108,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/team_back" />
+                app:srcCompat="@drawable/rounded_back_orange" />
 
             <LinearLayout
                 android:id="@+id/teamList"
@@ -131,7 +131,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="fitXY"
-                        app:srcCompat="@drawable/back_1st_pokemon" />
+                        app:srcCompat="@drawable/rounded_rouge_black_border" />
 
                     <ImageView
                         android:id="@+id/pokeSprite1"

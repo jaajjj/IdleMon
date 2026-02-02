@@ -11,9 +11,12 @@
         android:id="@+id/backImage"
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:layout_marginTop="10dp"
         android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/back_pokemon_list" />
+        app:srcCompat="@drawable/rounded_back_orange_small_border2" />
 
     <ImageView
         android:id="@+id/pokeSprite"
