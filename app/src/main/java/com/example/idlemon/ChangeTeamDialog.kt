@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -86,6 +85,23 @@ class ChangeTeamDialog(
                 }
                 refreshBoxList()
             }
+            imgView.setOnLongClickListener {
+                val equipe = Player.getEquipe()
+                if (i < equipe.size) {
+                    val pokeSupprimer = equipe[i]
+                    if (equipe.size > 1) {
+                        Player.tabPokemon.add(pokeSupprimer)
+                        equipe.removeAt(i)
+                        selectedIndex = -1
+                        imgPokemonChange.setImageResource(R.drawable.pokeball)
+                        txtNomPokemon.text = ""
+                        resetSelectionEffects()
+                        refreshTeamList()
+                        refreshBoxList()
+                    }
+                }
+                true //arrete le listenenr
+            }
 
             if (i < equipe.size) {
                 Glide.with(context)
@@ -119,7 +135,7 @@ class ChangeTeamDialog(
             Glide.with(context)
                 .asGif()
                 .load(DataManager.model.getFrontSprite(pokemon.species.num))
-                .fitCenter() //banger de méthode pour centrer (trop pratique partout. Merci Gson)
+                .fitCenter() //banger de méthode pour centrer (trop pratique partout. Merci Glide)
                 .into(pokeSprite)
 
             type1.setImageResource(getIconType(pokemon.species.type[0].nom))

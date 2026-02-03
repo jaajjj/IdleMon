@@ -149,6 +149,7 @@
         android:layout_marginTop="15dp"
         android:background="#00FFFFFF"
         android:fillViewport="true"
+        android:scrollbars="none"
         android:overScrollMode="never"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

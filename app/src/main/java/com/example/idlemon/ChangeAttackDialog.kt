@@ -16,13 +16,11 @@ class ChangeAttackDialog(
 ) {
     val dialog = Dialog(context)
     private var selectedIndex: Int = -1
-
     private lateinit var imgPokemonChange: ImageView
 
     fun show() {
         dialog.setContentView(R.layout.dialog_change_attack)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
         val window = dialog.window
         if (window != null) {
             val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
@@ -33,92 +31,73 @@ class ChangeAttackDialog(
             window.addFlags(android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND)
             window.setDimAmount(0.7f)
         }
-
         val closeBtn = dialog.findViewById<ImageView>(R.id.closeBtn)
         val nomPoke = dialog.findViewById<TextView>(R.id.nomPoke)
         imgPokemonChange = dialog.findViewById<ImageView>(R.id.imgPoke)
-
         nomPoke.text = pokemon.species.nom
         Glide.with(context)
             .asGif()
             .load(DataManager.model.getFrontSprite(pokemon.species.num))
+            .fitCenter()
             .into(imgPokemonChange)
 
         refreshCurrentAttacks()
         refreshAvailableAttacks()
-        updateVisibility()
-
         closeBtn.setOnClickListener { dialog.dismiss() }
-
         dialog.show()
         val width = (context.resources.displayMetrics.widthPixels * 0.95).toInt()
         val height = (context.resources.displayMetrics.heightPixels * 0.85).toInt()
         dialog.window?.setLayout(width, height)
     }
 
-    /**
-     * Gère la visibilité de la partie basse du dialogue
-     */
-    private fun updateVisibility() {
-        val indication = dialog.findViewById<TextView>(R.id.indicationChoisirAttaques)
-        val scrollBox = dialog.findViewById<View>(R.id.attackDispoScrollView)
-
-        if (selectedIndex == -1) {
-            indication.visibility = View.GONE
-            scrollBox.visibility = View.GONE
-        } else {
-            indication.visibility = View.VISIBLE
-            scrollBox.visibility = View.VISIBLE
-        }
-    }
-
     private fun refreshCurrentAttacks() {
         val container = dialog.findViewById<LinearLayout>(R.id.attackContainer)
         container.removeAllViews()
         val inflater = LayoutInflater.from(context)
-
         for (i in 0 until 4) {
-            val isSlotOccupied = i < pokemon.attacks.size
-            val layoutId = if (isSlotOccupied) R.layout.item_attack_view else R.layout.item_attack_vide_view
+            val isSlotOccupee = i < pokemon.attacks.size
+            val layoutId = if (isSlotOccupee) R.layout.item_attack_view else R.layout.item_attack_vide_view
             val itemView = inflater.inflate(layoutId, container, false)
-
-            itemView.alpha = if (selectedIndex == i) 0.5f else 1.0f
-
-            if (isSlotOccupied) {
+            itemView.alpha = if (selectedIndex == i) 0.3f else 1.0f
+            if (isSlotOccupee) {
                 fillAttackInfo(itemView, pokemon.attacks[i])
             }
-
             itemView.setOnClickListener {
                 selectedIndex = if (selectedIndex == i) -1 else i
                 refreshCurrentAttacks()
                 refreshAvailableAttacks()
-                updateVisibility() // Mise à jour après clic
+            }
+            itemView.setOnLongClickListener {
+                if (i < pokemon.attacks.size) {
+                    if (pokemon.attacks.size > 1) { //on supp pas si 0 attaques
+                        pokemon.attacks.removeAt(i)
+                        selectedIndex = -1
+                        refreshCurrentAttacks()
+                        refreshAvailableAttacks()
+                    }
+                }
+                true //termine le listenenr
             }
             container.addView(itemView)
         }
     }
 
     private fun refreshAvailableAttacks() {
-        // On ne remplit la liste que si elle est visible pour économiser des ressources
-        if (selectedIndex == -1) return
-
         val list = dialog.findViewById<LinearLayout>(R.id.boxLinearLayout)
+        val scrollBox = dialog.findViewById<View>(R.id.attackDispoScrollView)
         list.removeAllViews()
-
+        scrollBox.alpha = if (selectedIndex == -1) 0.3f else 1.0f
         val inflater = LayoutInflater.from(context)
         val attacksDispo = DataManager.model.getAttackDispo(pokemon)
-
         for (atk in attacksDispo) {
             val itemView = inflater.inflate(R.layout.item_attack_view, list, false)
             fillAttackInfo(itemView, atk)
-
             itemView.setOnClickListener {
                 if (selectedIndex != -1) {
                     pokemon.replaceAttack(selectedIndex, atk)
                     selectedIndex = -1
                     refreshCurrentAttacks()
                     refreshAvailableAttacks()
-                    updateVisibility() // Masquer après le swap
                 }
             }
             list.addView(itemView)
@@ -133,6 +112,7 @@ class ChangeAttackDialog(
         view.findViewById<TextView>(R.id.ppMaxTextView).text = atk.pp.toString()
 
         val ids = listOf(R.id.nomAttack, R.id.descAttack, R.id.dmgTextView, R.id.accTextView, R.id.ppMaxTextView)
+        //correction où le texte noir ne voulait pas apparaitre
         ids.forEach { view.findViewById<TextView>(it).setTextColor(android.graphics.Color.BLACK) }
 
         view.findViewById<ImageView>(R.id.CtTypeImg).setImageResource(getIconType(atk.type))

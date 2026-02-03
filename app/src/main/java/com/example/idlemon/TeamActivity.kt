@@ -53,7 +53,7 @@ class TeamActivity : AppCompatActivity() {
         changeTeamBtn.setOnClickListener {
             val dialog = ChangeTeamDialog(this)
             dialog.dialog.setOnDismissListener {
-                afficherEquipe() //pour actualise l'équipe quand le dialog se ferme
+                afficherEquipe() //pour actualiser l'équipe quand le dialog se ferme
             }
             dialog.show()
         }
@@ -71,11 +71,19 @@ class TeamActivity : AppCompatActivity() {
         pokeName1.text = leader.species.nom
         Glide.with(this)
             .load(DataManager.model.getFrontSprite(leader.species.num))
+            .fitCenter()
             .into(pokeSprite1)
 
         val type1Leader = findViewById<ImageView>(R.id.pokeType1)
         val type2Leader = findViewById<ImageView>(R.id.pokeType4)
         val attackBtn1 = findViewById<ImageView>(R.id.attackBtn1)
+        pokeSprite1.setOnClickListener {
+            val dialog = ChangeTeamDialog(this)
+            dialog.dialog.setOnDismissListener {
+                afficherEquipe()
+            }
+            dialog.show()
+        }
         attackBtn1.setOnClickListener {
             ChangeAttackDialog(this, leader).show()
         }
@@ -113,7 +121,16 @@ class TeamActivity : AppCompatActivity() {
         pokeName.text = pokemon.species.nom
         Glide.with(this)
             .load(DataManager.model.getFrontSprite(pokemon.species.num))
+            .fitCenter()
             .into(pokeSprite)
+
+        pokeSprite.setOnClickListener {
+            val dialog = ChangeTeamDialog(this)
+            dialog.dialog.setOnDismissListener {
+                afficherEquipe()
+            }
+            dialog.show()
+        }
 
         val attackBtn = pokemonView.findViewById<ImageView>(R.id.attackBtn1)
         attackBtn.setOnClickListener {
