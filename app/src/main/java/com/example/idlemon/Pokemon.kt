@@ -21,6 +21,15 @@ class Pokemon(val species: PokemonSpecies, var level: Int = 1, var exp: Int = 0)
         }
     }
 
+    fun replaceAttack(index: Int, newAttack: Attack) {
+        if (index in 0 until attacks.size) {
+            attacks[index] = newAttack
+            currentPP[index] = newAttack.pp
+        } else if (index == attacks.size && attacks.size < 4) {
+            addAttack(newAttack)
+        }
+    }
+
     fun prendreDmg(dmg: Int) {
         if(this.currentHp - dmg > 0){
             this.currentHp -= dmg

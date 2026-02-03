@@ -53,7 +53,7 @@ class TeamActivity : AppCompatActivity() {
         changeTeamBtn.setOnClickListener {
             val dialog = ChangeTeamDialog(this)
             dialog.dialog.setOnDismissListener {
-                afficherEquipe()
+                afficherEquipe() //pour actualise l'équipe quand le dialog se ferme
             }
             dialog.show()
         }

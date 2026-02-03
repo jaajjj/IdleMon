@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.view.WindowCompat
 import com.bumptech.glide.Glide
 
 class ChangeAttackDialog(
@@ -14,30 +15,61 @@ class ChangeAttackDialog(
     private val pokemon: Pokemon
 ) {
     val dialog = Dialog(context)
+    private var selectedIndex: Int = -1
+
+    private lateinit var imgPokemonChange: ImageView
 
     fun show() {
         dialog.setContentView(R.layout.dialog_change_attack)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
+        val window = dialog.window
+        if (window != null) {
+            val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
+            windowInsetsController.hide(androidx.core.view.WindowInsetsCompat.Type.systemBars())
+            windowInsetsController.systemBarsBehavior =
+                androidx.core.view.WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+
+            window.addFlags(android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+            window.setDimAmount(0.7f)
+        }
+
         val closeBtn = dialog.findViewById<ImageView>(R.id.closeBtn)
-        closeBtn.setOnClickListener { dialog.dismiss() }
-
-        refreshCurrentAttacks()
-        refreshAvailableAttacks()
-
         val nomPoke = dialog.findViewById<TextView>(R.id.nomPoke)
-        val imgPoke = dialog.findViewById<ImageView>(R.id.imgPoke)
+        imgPokemonChange = dialog.findViewById<ImageView>(R.id.imgPoke)
 
         nomPoke.text = pokemon.species.nom
         Glide.with(context)
-            .asGif() // On garde le style animé
+            .asGif()
             .load(DataManager.model.getFrontSprite(pokemon.species.num))
-            .into(imgPoke)
+            .into(imgPokemonChange)
+
+        refreshCurrentAttacks()
+        refreshAvailableAttacks()
+        updateVisibility()
+
+        closeBtn.setOnClickListener { dialog.dismiss() }
 
         dialog.show()
         val width = (context.resources.displayMetrics.widthPixels * 0.95).toInt()
         val height = (context.resources.displayMetrics.heightPixels * 0.85).toInt()
         dialog.window?.setLayout(width, height)
+    }
+
+    /**
+     * Gère la visibilité de la partie basse du dialogue
+     */
+    private fun updateVisibility() {
+        val indication = dialog.findViewById<TextView>(R.id.indicationChoisirAttaques)
+        val scrollBox = dialog.findViewById<View>(R.id.attackDispoScrollView)
+
+        if (selectedIndex == -1) {
+            indication.visibility = View.GONE
+            scrollBox.visibility = View.GONE
+        } else {
+            indication.visibility = View.VISIBLE
+            scrollBox.visibility = View.VISIBLE
+        }
     }
 
     private fun refreshCurrentAttacks() {
@@ -46,50 +78,61 @@ class ChangeAttackDialog(
         val inflater = LayoutInflater.from(context)
 
         for (i in 0 until 4) {
-            val layoutId = if (i < pokemon.attacks.size) {
-                R.layout.item_attack_view
-            } else {
-                R.layout.item_attack_vide_view
-            }
+            val isSlotOccupied = i < pokemon.attacks.size
+            val layoutId = if (isSlotOccupied) R.layout.item_attack_view else R.layout.item_attack_vide_view
             val itemView = inflater.inflate(layoutId, container, false)
-            itemView.alpha = 1.0f
 
-            if (i < pokemon.attacks.size) {
+            itemView.alpha = if (selectedIndex == i) 0.5f else 1.0f
+
+            if (isSlotOccupied) {
                 fillAttackInfo(itemView, pokemon.attacks[i])
             }
-            itemView.setOnClickListener {
-                // Logique de sélection (à venir)
-            }
 
+            itemView.setOnClickListener {
+                selectedIndex = if (selectedIndex == i) -1 else i
+                refreshCurrentAttacks()
+                refreshAvailableAttacks()
+                updateVisibility() // Mise à jour après clic
+            }
             container.addView(itemView)
         }
     }
 
     private fun refreshAvailableAttacks() {
-        val boxLinearLayout = dialog.findViewById<LinearLayout>(R.id.boxLinearLayout)
-        boxLinearLayout.removeAllViews()
-        val inflater = LayoutInflater.from(context)
+        // On ne remplit la liste que si elle est visible pour économiser des ressources
+        if (selectedIndex == -1) return
 
+        val list = dialog.findViewById<LinearLayout>(R.id.boxLinearLayout)
+        list.removeAllViews()
+
+        val inflater = LayoutInflater.from(context)
         val attacksDispo = DataManager.model.getAttackDispo(pokemon)
 
         for (atk in attacksDispo) {
-            val itemView = inflater.inflate(R.layout.item_attack_view, boxLinearLayout, false)
-            itemView.alpha = 1.0f
+            val itemView = inflater.inflate(R.layout.item_attack_view, list, false)
             fillAttackInfo(itemView, atk)
-            boxLinearLayout.addView(itemView)
+
+            itemView.setOnClickListener {
+                if (selectedIndex != -1) {
+                    pokemon.replaceAttack(selectedIndex, atk)
+                    selectedIndex = -1
+                    refreshCurrentAttacks()
+                    refreshAvailableAttacks()
+                    updateVisibility() // Masquer après le swap
+                }
+            }
+            list.addView(itemView)
         }
     }
 
     private fun fillAttackInfo(view: View, atk: Attack) {
-        val ids = listOf(R.id.nomAttack, R.id.descAttack, R.id.dmgTextView, R.id.accTextView, R.id.ppMaxTextView)
-
         view.findViewById<TextView>(R.id.nomAttack).text = atk.name
         view.findViewById<TextView>(R.id.descAttack).text = atk.description
         view.findViewById<TextView>(R.id.dmgTextView).text = atk.basePower.toString()
         view.findViewById<TextView>(R.id.accTextView).text = (atk.accuracy * 100).toInt().toString()
         view.findViewById<TextView>(R.id.ppMaxTextView).text = atk.pp.toString()
 
-        //correction où le texte noir ne voulait pas apparaitre
+        val ids = listOf(R.id.nomAttack, R.id.descAttack, R.id.dmgTextView, R.id.accTextView, R.id.ppMaxTextView)
         ids.forEach { view.findViewById<TextView>(it).setTextColor(android.graphics.Color.BLACK) }
 
         view.findViewById<ImageView>(R.id.CtTypeImg).setImageResource(getIconType(atk.type))
