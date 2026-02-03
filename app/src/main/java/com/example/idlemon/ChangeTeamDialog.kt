@@ -40,13 +40,9 @@ class ChangeTeamDialog(
         imgPokemonChange = dialog.findViewById<ImageView>(R.id.imgPokemonChange)
         txtNomPokemon = dialog.findViewById<TextView>(R.id.NomPokemon)
         txtNomPokemon.text = ""
-
         val closeBtn = dialog.findViewById<ImageView>(R.id.closeBtn)
-
         refreshTeamList()
         refreshBoxList()
-        updateVisibility() // Appel initial pour masquer la box
-
         closeBtn.setOnClickListener {
             dialog.dismiss()
         }
@@ -55,20 +51,6 @@ class ChangeTeamDialog(
         val width = (context.resources.displayMetrics.widthPixels * 0.95).toInt()
         val height = (context.resources.displayMetrics.heightPixels * 0.90).toInt()
         dialog.window?.setLayout(width, height)
-    }
-
-    // Nouvelle méthode pour gérer la visibilité
-    private fun updateVisibility() {
-        val indication = dialog.findViewById<TextView>(R.id.indicationPokeBox)
-        val scrollBox = dialog.findViewById<View>(R.id.attackDispoScrollView)
-
-        if (selectedIndex == -1) {
-            indication.visibility = View.GONE
-            scrollBox.visibility = View.GONE
-        } else {
-            indication.visibility = View.VISIBLE
-            scrollBox.visibility = View.VISIBLE
-        }
     }
 
     private fun refreshTeamList() {
@@ -80,7 +62,6 @@ class ChangeTeamDialog(
 
         for (i in teamIds.indices) {
             val imgView = dialog.findViewById<ImageView>(teamIds[i])
-
             imgView.setOnClickListener {
                 if (selectedIndex == i) {
                     selectedIndex = -1
@@ -91,7 +72,6 @@ class ChangeTeamDialog(
                     selectedIndex = i
                     resetSelectionEffects()
                     imgView.alpha = 0.5f
-
                     if (i < equipe.size) {
                         val p = equipe[i]
                         txtNomPokemon.text = p.species.nom
@@ -105,13 +85,13 @@ class ChangeTeamDialog(
                     }
                 }
                 refreshBoxList()
-                updateVisibility() // Mise à jour après clic
             }
 
             if (i < equipe.size) {
                 Glide.with(context)
                     .asGif()
                     .load(DataManager.model.getFrontSprite(equipe[i].species.num))
+                    .fitCenter().fitCenter()
                     .into(imgView)
             } else {
                 imgView.setImageResource(R.drawable.pokeball)
@@ -122,15 +102,13 @@ class ChangeTeamDialog(
     private fun refreshBoxList() {
         val boxLinearLayout = dialog.findViewById<LinearLayout>(R.id.boxLinearLayout)
         boxLinearLayout.removeAllViews()
-
         val inflater = LayoutInflater.from(context)
         val boxPokemons = Player.tabPokemon
-
         for (pokemon in boxPokemons) {
             val itemView = inflater.inflate(R.layout.item_pokemon_box, boxLinearLayout, false)
 
-            // On garde ton système d'alpha même si la liste sera cachée
-            itemView.alpha = if(selectedIndex == -1) 0.5f else 1.0f
+            //petit opécité
+            itemView.alpha = if(selectedIndex == -1) 0.3f else 1.0f
 
             val pokeSprite = itemView.findViewById<ImageView>(R.id.pokeSprite)
             val pokeName = itemView.findViewById<TextView>(R.id.pokeName)
@@ -141,6 +119,7 @@ class ChangeTeamDialog(
             Glide.with(context)
                 .asGif()
                 .load(DataManager.model.getFrontSprite(pokemon.species.num))
+                .fitCenter() //banger de méthode pour centrer (trop pratique partout. Merci Gson)
                 .into(pokeSprite)
 
             type1.setImageResource(getIconType(pokemon.species.type[0].nom))
@@ -172,7 +151,6 @@ class ChangeTeamDialog(
                     resetSelectionEffects()
                     refreshTeamList()
                     refreshBoxList()
-                    updateVisibility() // Cacher après swap
                 }
             }
             boxLinearLayout.addView(itemView)

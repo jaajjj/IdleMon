@@ -144,22 +144,23 @@
 
     <ScrollView
         android:id="@+id/attackDispoScrollView"
-        android:layout_width="373dp"
-        android:layout_height="327dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="15dp"
         android:background="#00FFFFFF"
+        android:fillViewport="true"
+        android:overScrollMode="never"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/indicationPokeBox"
-        app:layout_constraintVertical_bias="0.25">
+        app:layout_constraintTop_toBottomOf="@+id/indicationPokeBox">
 
         <LinearLayout
             android:id="@+id/boxLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:orientation="vertical"
+            android:paddingBottom="10dp" />
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
