@@ -2,6 +2,7 @@ package com.example.idlemon
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -31,19 +32,22 @@ class GachaActivity : AppCompatActivity() {
         var modelJson = DataManager.model
 
         //var xml
-        val pokemonDisplay = findViewById<ImageView>(R.id.pokemonDisplay)
-        val playBtn = findViewById<ImageView>(R.id.playBtn)
         val homeBtn = findViewById<ImageView>(R.id.homeBtn)
         val teamBtn = findViewById<ImageView>(R.id.teamBtn)
-        val gachaBtn = findViewById<ImageView>(R.id.gachaBtn)
         val fieldPokegold = findViewById<TextView>(R.id.fieldPokegold)
         val settingsBtn = findViewById<ImageView>(R.id.settingsBtn)
+        val singlePullBtn = findViewById<Button>(R.id.singlePullBtn)
+        val tenPullBtn = findViewById<Button>(R.id.tenPullBtn)
+
+
+        //pokegold
+        fieldPokegold.text = Player.getPieces().toString()
+
+
 
 
         //Récup Player
         val player = Player
-        //mettre le frontSprite du premier pokemon de la liste du Player
-        Glide.with(this).load(modelJson.getFrontSprite(player.getPremierPokemon().species.num )).into(pokemonDisplay)
 
 
         // Redirection vers l'équipe
@@ -58,7 +62,28 @@ class GachaActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        singlePullBtn.setOnClickListener{
+            if (Player.getPieces() >= 100) {
+                Player.setPieces(Player.getPieces() - 100)
+                fieldPokegold.text = Player.getPieces().toString()
+                switchAnimGacha(1)
+            }
+
+        }
+
+
+
     }
+
+    fun switchAnimGacha(nb: Int){
+        if (nb == 1){
+            val intent = Intent(this, SinglePullActivity::class.java)
+            startActivity(intent)
+        }else{
+            val intent = Intent(this, TenPullActivity::class.java)
+            startActivity(intent)
+        }
+)
 
 
 }

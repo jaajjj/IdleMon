@@ -18,6 +18,44 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/footer"
+            android:layout_width="0dp"
+            android:layout_height="103dp"
+            android:background="#FFFFFF"
+            android:paddingBottom="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:id="@+id/homeBtn"
+                android:layout_width="151dp"
+                android:layout_height="67dp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/home_footer" />
+
+            <ImageView
+                android:id="@+id/teamBtn"
+                android:layout_width="126dp"
+                android:layout_height="63dp"
+                app:layout_constraintBottom_toBottomOf="@+id/homeBtn"
+                app:layout_constraintEnd_toStartOf="@+id/homeBtn"
+                app:srcCompat="@drawable/team_footer" />
+
+            <ImageView
+                android:id="@+id/gachaBtn"
+                android:layout_width="135dp"
+                android:layout_height="65dp"
+                app:layout_constraintBottom_toBottomOf="@+id/homeBtn"
+                app:layout_constraintStart_toEndOf="@+id/homeBtn"
+                app:srcCompat="@drawable/loupe" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <ImageView
             android:id="@+id/imageView9"
             android:layout_width="0dp"
@@ -32,16 +70,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="1.5"
             app:srcCompat="@drawable/back_gradient_white" />
-
-        <ImageView
-            android:id="@+id/imageView10"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:alpha="0.5"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/back_gradient" />
 
         <ImageView
             android:id="@+id/imageView3"
@@ -138,43 +166,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView8"
             app:srcCompat="@drawable/pika_template" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="413dp"
-            android:layout_height="80dp"
-            android:layout_marginBottom="12dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView10"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <ImageView
-                android:id="@+id/teamBtn"
-                android:layout_width="126dp"
-                android:layout_height="63dp"
-                android:layout_marginBottom="12dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/homeBtn"
-                app:srcCompat="@drawable/team_footer" />
-
-            <ImageView
-                android:id="@+id/gachaBtn"
-                android:layout_width="135dp"
-                android:layout_height="65dp"
-                android:layout_marginBottom="12dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/homeBtn"
-                app:srcCompat="@drawable/loupe" />
-
-            <ImageView
-                android:id="@+id/homeBtn"
-                android:layout_width="151dp"
-                android:layout_height="67dp"
-                android:layout_marginBottom="12dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/home_footer" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

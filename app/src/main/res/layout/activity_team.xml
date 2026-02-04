@@ -193,17 +193,19 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/footer"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginBottom="12dp"
+            android:layout_width="0dp"
+            android:layout_height="103dp"
+            android:background="#FFFFFF"
             android:paddingBottom="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
             <ImageView
                 android:id="@+id/homeBtn"
                 android:layout_width="151dp"
                 android:layout_height="67dp"
+                android:layout_marginBottom="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

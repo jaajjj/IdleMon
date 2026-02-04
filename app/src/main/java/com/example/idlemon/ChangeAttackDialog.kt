@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.WindowCompat
 import com.bumptech.glide.Glide
 
@@ -28,6 +29,7 @@ class ChangeAttackDialog(
             windowInsetsController.systemBarsBehavior =
                 androidx.core.view.WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 
+            //bach
             window.addFlags(android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND)
             window.setDimAmount(0.7f)
         }
@@ -74,6 +76,7 @@ class ChangeAttackDialog(
                         selectedIndex = -1
                         refreshCurrentAttacks()
                         refreshAvailableAttacks()
+                        Toast.makeText(context, "Attaque retirée", Toast.LENGTH_SHORT).show()
                     }
                 }
                 true //termine le listenenr
@@ -94,6 +97,7 @@ class ChangeAttackDialog(
             fillAttackInfo(itemView, atk)
             itemView.setOnClickListener {
                 if (selectedIndex != -1) {
+                    Toast.makeText(context, "Attaque Ajoutée", Toast.LENGTH_SHORT).show()
                     pokemon.replaceAttack(selectedIndex, atk)
                     selectedIndex = -1
                     refreshCurrentAttacks()
