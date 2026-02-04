@@ -93,14 +93,19 @@ class ChangeTeamDialog(
                     val pokeSupprimer = equipe[i]
                     if (equipe.size > 1) {
                         Toast.makeText(context, "Pokémon supprimé de l'équipe", Toast.LENGTH_SHORT).show()
-                        Player.tabPokemon.add(pokeSupprimer)
-                        equipe.removeAt(i)
+
+                        // Utilisation des méthodes Player
+                        Player.addPokemon(pokeSupprimer)
+                        Player.removeEquipe(pokeSupprimer)
+
                         selectedIndex = -1
                         imgPokemonChange.setImageDrawable(null)
                         txtNomPokemon.text = ""
                         resetSelectionEffects()
                         refreshTeamList()
                         refreshBoxList()
+                    }else{
+                        Toast.makeText(context, "Vous ne pouvez pas jouer sans pokémon dans l'équipe", Toast.LENGTH_SHORT).show()
                     }
                 }
                 true //arrete le listenenr

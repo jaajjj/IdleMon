@@ -1,7 +1,11 @@
 package com.example.idlemon
 
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -32,6 +36,14 @@ class MainActivity : AppCompatActivity() {
         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
         windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 
+        val layout = findViewById<View>(R.id.homePage)
+        val anim = layout.background as? android.graphics.drawable.AnimationDrawable
+        anim?.apply {
+            setEnterFadeDuration(2000)
+            setExitFadeDuration(2000)
+            start()
+        }
+
         //Init var xml
         val pokemonDisplay = findViewById<ImageView>(R.id.pokemonDisplay)
         val playBtn = findViewById<ImageView>(R.id.playBtn)
@@ -44,6 +56,7 @@ class MainActivity : AppCompatActivity() {
 
         //Init player
         val player = Player
+        fieldPokegold.text = player.getPieces().toString()
         if (Player.getEquipe().isEmpty()) {
             Player.addEquipe(modelJson.creerPokemon("Victini"))
             Player.addEquipe(modelJson.creerPokemon(98))

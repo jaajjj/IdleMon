@@ -7,8 +7,13 @@ object Player {
     val tabPokemon: MutableList<Pokemon> = mutableListOf()
     val tabEquipe: MutableList<Pokemon> = mutableListOf()
 
-    fun addPokemon(pokemon: Pokemon) {
+    fun addPokemon(pokemon: Pokemon): Boolean {
+        if(pokemon in this.tabPokemon || pokemon in (this.getEquipe())){
+            addPieces(100)
+            return false //pokemon déja eu
+        }
         tabPokemon.add(pokemon)
+        return true //nouveau pokemon
     }
 
     fun getPieces(): Int = nbPieces
@@ -51,5 +56,9 @@ object Player {
 
     fun removePokemonBox(pokemon: Pokemon){
         tabPokemon.remove(pokemon)
+    }
+
+    fun setPieces(nb: Int){
+        this.nbPieces = nb
     }
 }

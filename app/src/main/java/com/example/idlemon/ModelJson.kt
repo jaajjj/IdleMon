@@ -83,4 +83,32 @@ class ModelJson(context: Context) {
         }
         throw IllegalArgumentException("L'attaque $nom n'existe pas")
     }
+
+
+    fun getRandomPokemonByRarete(rarete: String): Pokemon {
+        val gson = Gson()
+        val typeObjet = object : TypeToken<Map<String, PokemonSpecies>>() {}.type
+        val tabPoke: Map<String, PokemonSpecies> = gson.fromJson(pokemons, typeObjet)
+        val tabFiltre = tabPoke.values.filter { it.rarete == rarete }
+
+        if (tabFiltre.isEmpty()) {
+            throw IllegalArgumentException("Aucune espèce de Pokémon avec la rareté $rarete trouvée")
+        }
+        val randomIndex = (tabFiltre.indices).random()
+        val randomSpecies = tabFiltre[randomIndex]
+        return Pokemon(randomSpecies)
+    }
+
+    fun getRandomPokemon() : Pokemon{
+        val randomNum = (1..1000).random()
+        when (randomNum) {
+            in 1..400 -> return getRandomPokemonByRarete("Commun")
+            in 400..700 -> return getRandomPokemonByRarete("Peu commun")
+            in 700..890 -> return getRandomPokemonByRarete("Rare")
+            in 890..980 -> return getRandomPokemonByRarete("Epique")
+            in 980..995 -> return getRandomPokemonByRarete("Fabuleux")
+            else -> return getRandomPokemonByRarete("Legendaire")
+        }
+
+    }
 }

@@ -26,7 +26,8 @@ class GachaActivity : AppCompatActivity() {
         //Cache la barre overlay du téléphone (haut et bas)
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
-        windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        windowInsetsController.systemBarsBehavior =
+            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 
         //Json
         var modelJson = DataManager.model
@@ -40,14 +41,9 @@ class GachaActivity : AppCompatActivity() {
         val tenPullBtn = findViewById<Button>(R.id.tenPullBtn)
 
 
-        //pokegold
-        fieldPokegold.text = Player.getPieces().toString()
-
-
-
-
         //Récup Player
         val player = Player
+        fieldPokegold.text = player.getPieces().toString()
 
 
         // Redirection vers l'équipe
@@ -62,28 +58,22 @@ class GachaActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        singlePullBtn.setOnClickListener{
+        singlePullBtn.setOnClickListener {
             if (Player.getPieces() >= 100) {
                 Player.setPieces(Player.getPieces() - 100)
                 fieldPokegold.text = Player.getPieces().toString()
                 switchAnimGacha(1)
             }
-
         }
-
-
-
     }
 
-    fun switchAnimGacha(nb: Int){
-        if (nb == 1){
+    fun switchAnimGacha(nb: Int) {
+        if (nb == 1) {
             val intent = Intent(this, SinglePullActivity::class.java)
             startActivity(intent)
-        }else{
+        } else {
             val intent = Intent(this, TenPullActivity::class.java)
             startActivity(intent)
         }
-)
-
-
+    }
 }

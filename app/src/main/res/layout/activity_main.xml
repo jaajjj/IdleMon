@@ -5,7 +5,7 @@
     android:id="@+id/homePage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF5E1"
+    android:background="@drawable/background_main"
     android:padding="0dp"
     app:layout_constraintWidth_percent="1.8">
 
@@ -43,6 +43,7 @@
                 android:layout_width="126dp"
                 android:layout_height="63dp"
                 app:layout_constraintBottom_toBottomOf="@+id/homeBtn"
+
                 app:layout_constraintEnd_toStartOf="@+id/homeBtn"
                 app:srcCompat="@drawable/team_footer" />
 
