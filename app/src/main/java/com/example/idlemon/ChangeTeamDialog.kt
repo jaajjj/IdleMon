@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -16,42 +17,44 @@ import com.bumptech.glide.Glide
 class ChangeTeamDialog(
     private val context: Context,
 ) {
+    //UI
     val dialog = Dialog(context)
     private var selectedIndex: Int = -1
-
     private lateinit var imgPokemonChange: ImageView
     private lateinit var txtNomPokemon: TextView
 
     fun show() {
         dialog.setContentView(R.layout.dialog_change_team)
-
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
         val window = dialog.window
         if (window != null) {
             val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
             windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
-            windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            windowInsetsController.systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 
-            //bg en noir
-            window.addFlags(android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+            window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
             window.setDimAmount(0.7f)
+
+            //taille du popup
+            val width = (context.resources.displayMetrics.widthPixels * 0.95).toInt()
+            val height = (context.resources.displayMetrics.heightPixels * 0.90).toInt()
+            window.setLayout(width, height)
         }
 
-        imgPokemonChange = dialog.findViewById<ImageView>(R.id.imgPokemonChange)
-        txtNomPokemon = dialog.findViewById<TextView>(R.id.NomPokemon)
-        txtNomPokemon.text = ""
+        imgPokemonChange = dialog.findViewById(R.id.imgPokemonChange)
+        txtNomPokemon = dialog.findViewById(R.id.NomPokemon)
         val closeBtn = dialog.findViewById<ImageView>(R.id.closeBtn)
+
+        //quit et data
+        txtNomPokemon.text = ""
+        closeBtn.setOnClickListener { dialog.dismiss() }
+
+        //affiche equipe
         refreshTeamList()
         refreshBoxList()
-        closeBtn.setOnClickListener {
-            dialog.dismiss()
-        }
-
         dialog.show()
-        val width = (context.resources.displayMetrics.widthPixels * 0.95).toInt()
-        val height = (context.resources.displayMetrics.heightPixels * 0.90).toInt()
-        dialog.window?.setLayout(width, height)
     }
 
     private fun refreshTeamList() {
@@ -63,6 +66,8 @@ class ChangeTeamDialog(
 
         for (i in teamIds.indices) {
             val imgView = dialog.findViewById<ImageView>(teamIds[i])
+
+            // Listeners
             imgView.setOnClickListener {
                 if (selectedIndex == i) {
                     selectedIndex = -1
@@ -87,14 +92,14 @@ class ChangeTeamDialog(
                 }
                 refreshBoxList()
             }
-            imgView.setOnLongClickListener {
-                val equipe = Player.getEquipe()
-                if (i < equipe.size) {
-                    val pokeSupprimer = equipe[i]
-                    if (equipe.size > 1) {
-                        Toast.makeText(context, "Pokémon supprimé de l'équipe", Toast.LENGTH_SHORT).show()
 
-                        // Utilisation des méthodes Player
+            //supp poke equipe
+            imgView.setOnLongClickListener {
+                val currentEquipe = Player.getEquipe()
+                if (i < currentEquipe.size) {
+                    if (currentEquipe.size > 1) {
+                        val pokeSupprimer = currentEquipe[i]
+                        Toast.makeText(context, "Pokémon supprimé de l'équipe", Toast.LENGTH_SHORT).show()
                         Player.addPokemon(pokeSupprimer)
                         Player.removeEquipe(pokeSupprimer)
 
@@ -104,18 +109,19 @@ class ChangeTeamDialog(
                         resetSelectionEffects()
                         refreshTeamList()
                         refreshBoxList()
-                    }else{
+                    } else {
                         Toast.makeText(context, "Vous ne pouvez pas jouer sans pokémon dans l'équipe", Toast.LENGTH_SHORT).show()
                     }
                 }
-                true //arrete le listenenr
+                true
             }
 
+            //gif du haut
             if (i < equipe.size) {
                 Glide.with(context)
                     .asGif()
                     .load(DataManager.model.getFrontSprite(equipe[i].species.num))
-                    .fitCenter().fitCenter()
+                    .fitCenter()
                     .into(imgView)
             } else {
                 imgView.setImageResource(R.drawable.pokeball)
@@ -125,38 +131,43 @@ class ChangeTeamDialog(
 
     private fun refreshBoxList() {
         val boxLinearLayout = dialog.findViewById<LinearLayout>(R.id.boxLinearLayout)
-        boxLinearLayout.removeAllViews()
         val inflater = LayoutInflater.from(context)
         val boxPokemons = Player.tabPokemon
+
+        boxLinearLayout.removeAllViews()
+
         for (pokemon in boxPokemons) {
             val itemView = inflater.inflate(R.layout.item_pokemon_box, boxLinearLayout, false)
-            //petit opécité
-            itemView.alpha = if(selectedIndex == -1) 0.3f else 1.0f
             val pokeSprite = itemView.findViewById<ImageView>(R.id.pokeSprite)
             val pokeName = itemView.findViewById<TextView>(R.id.pokeName)
             val type1 = itemView.findViewById<ImageView>(R.id.type1)
             val type2 = itemView.findViewById<ImageView>(R.id.type2)
 
+            itemView.alpha = if (selectedIndex == -1) 0.3f else 1.0f
             pokeName.text = pokemon.species.nom
+
             Glide.with(context)
                 .asGif()
                 .load(DataManager.model.getFrontSprite(pokemon.species.num))
-                .fitCenter() //banger de méthode pour centrer (trop pratique partout. Merci Glide)
+                .fitCenter()
                 .into(pokeSprite)
 
-            type1.setImageResource(getIconType(pokemon.species.type[0].nom))
+            //1er type
+            type1.setImageResource(DataManager.model.getIconType(pokemon.species.type[0].nom))
+            //2eme type si il y a
             if (pokemon.species.type.size > 1) {
                 type2.visibility = View.VISIBLE
-                type2.setImageResource(getIconType(pokemon.species.type[1].nom))
+                type2.setImageResource(DataManager.model.getIconType(pokemon.species.type[1].nom))
             } else {
                 type2.visibility = View.GONE
             }
 
+            //listner swap ou add equipe
             itemView.setOnClickListener {
                 if (selectedIndex != -1) {
                     val equipe = Player.getEquipe()
                     val box = Player.tabPokemon
-                    //swap
+
                     if (selectedIndex < equipe.size) {
                         Toast.makeText(context, "Pokémon échangé", Toast.LENGTH_SHORT).show()
                         val pokemonQuiSort = equipe[selectedIndex]
@@ -170,8 +181,9 @@ class ChangeTeamDialog(
                         Player.addEquipe(pokemon)
                         Player.removePokemonBox(pokemon)
                     }
+
                     selectedIndex = -1
-                    dialog.findViewById<ImageView>(R.id.imgPokemonChange).setImageDrawable(null)
+                    imgPokemonChange.setImageDrawable(null)
                     txtNomPokemon.text = ""
                     resetSelectionEffects()
                     refreshTeamList()
@@ -188,32 +200,7 @@ class ChangeTeamDialog(
             R.id.pokeTeam4, R.id.pokeTeam5, R.id.pokeTeam6
         )
         for (id in teamIds) {
-            val imgView = dialog.findViewById<ImageView>(id)
-            imgView.alpha = 1.0f
-        }
-    }
-
-    private fun getIconType(typeName: String): Int {
-        return when (typeName) {
-            "Acier" -> R.drawable.acier
-            "Combat" -> R.drawable.combat
-            "Dragon" -> R.drawable.dragon
-            "Eau" -> R.drawable.eau
-            "Feu" -> R.drawable.feu
-            "Fee" -> R.drawable.fee
-            "Glace" -> R.drawable.glace
-            "Insecte" -> R.drawable.insecte
-            "Normal" -> R.drawable.normal
-            "Plante" -> R.drawable.plante
-            "Poison" -> R.drawable.poison
-            "Psy" -> R.drawable.psy
-            "Roche" -> R.drawable.roche
-            "Sol" -> R.drawable.sol
-            "Spectre" -> R.drawable.spectre
-            "Tenebre" -> R.drawable.tenebre
-            "Vol" -> R.drawable.vol
-            "Electrik" -> R.drawable.electrik
-            else -> R.drawable.normal
+            dialog.findViewById<ImageView>(id).alpha = 1.0f
         }
     }
 }

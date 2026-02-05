@@ -17,94 +17,108 @@ import com.bumptech.glide.Glide
 
 class TeamActivity : AppCompatActivity() {
 
+    //UI
+    private lateinit var pokegold: TextView
+    private lateinit var changeTeamBtn: ImageView
+    private lateinit var homeBtn: ImageView
+    private lateinit var gachaBtn: ImageView
+    private lateinit var teamList: LinearLayout
+
+    //Leader
+    private lateinit var pokeSprite1: ImageView
+    private lateinit var pokeName1: TextView
+    private lateinit var type1Leader: ImageView
+    private lateinit var type2Leader: ImageView
+    private lateinit var attackBtn1: ImageView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_team)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.homePage)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        //enlever les barres du systeme
+
+        //Sans barre sys
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
         windowInsetsController.systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 
-        //var xml
-        val pokegold = findViewById<TextView>(R.id.fieldPokegold)
-        val changeTeamBtn = findViewById<ImageView>(R.id.changeTeamBtn)
-        val homeBtn = findViewById<ImageView>(R.id.homeBtn)
-        val gachadBtn = findViewById<ImageView>(R.id.gachaBtn)
+        pokegold = findViewById(R.id.fieldPokegold)
+        changeTeamBtn = findViewById(R.id.changeTeamBtn)
+        homeBtn = findViewById(R.id.homeBtn)
+        gachaBtn = findViewById(R.id.gachaBtn)
+        teamList = findViewById(R.id.teamList)
 
+        //Leader UI
+        pokeSprite1 = findViewById(R.id.pokeSprite1)
+        pokeName1 = findViewById(R.id.pokeName1)
+        type1Leader = findViewById(R.id.pokeType1)
+        type2Leader = findViewById(R.id.pokeType4)
+        attackBtn1 = findViewById(R.id.attackBtn1)
+
+        //Data et listener
         pokegold.text = Player.getPieces().toString()
 
-        afficherEquipe()
-
-        //footer
-        gachadBtn.setOnClickListener {
+        gachaBtn.setOnClickListener {
             startActivity(Intent(this, GachaActivity::class.java))
         }
+
         homeBtn.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
         }
 
         changeTeamBtn.setOnClickListener {
             val dialog = ChangeTeamDialog(this)
-            dialog.dialog.setOnDismissListener {
-                afficherEquipe() //pour actualiser l'équipe quand le dialog se ferme
-            }
+            dialog.dialog.setOnDismissListener { afficherEquipe() }
             dialog.show()
         }
+        afficherEquipe()
     }
 
     fun afficherEquipe() {
         val equipe = Player.getEquipe()
-        if (equipe.isEmpty()) return //Arrete de faire des bétises ;-;
+        if (equipe.isEmpty()) return
 
-        //leader
+        //Leader
         val leader = equipe[0]
-        val pokeSprite1 = findViewById<ImageView>(R.id.pokeSprite1)
-        val pokeName1 = findViewById<TextView>(R.id.pokeName1)
-
         pokeName1.text = leader.species.nom
+
         Glide.with(this)
             .load(DataManager.model.getFrontSprite(leader.species.num))
             .fitCenter()
             .into(pokeSprite1)
 
-        val type1Leader = findViewById<ImageView>(R.id.pokeType1)
-        val type2Leader = findViewById<ImageView>(R.id.pokeType4)
-        val attackBtn1 = findViewById<ImageView>(R.id.attackBtn1)
         pokeSprite1.setOnClickListener {
             val dialog = ChangeTeamDialog(this)
-            dialog.dialog.setOnDismissListener {
-                afficherEquipe()
-            }
+            dialog.dialog.setOnDismissListener { afficherEquipe() }
             dialog.show()
         }
+
         attackBtn1.setOnClickListener {
             ChangeAttackDialog(this, leader).show()
         }
 
-        type1Leader.setImageResource(getIconType(leader.species.type[0].nom))
-
+        //Type 1
+        type1Leader.setImageResource(DataManager.model.getIconType(leader.species.type[0].nom))
+        //Type 2 si il y a
         if (leader.species.type.size > 1) {
             type2Leader.visibility = View.VISIBLE
-            type2Leader.setImageResource(getIconType(leader.species.type[1].nom))
+            type2Leader.setImageResource(DataManager.model.getIconType(leader.species.type[1].nom))
         } else {
             type2Leader.visibility = View.GONE
         }
 
-        //teamList
-        val teamList = findViewById<LinearLayout>(R.id.teamList)
-        //on vide pour pas doubler
+        //Team list
         if (teamList.childCount > 1) {
             teamList.removeViews(1, teamList.childCount - 1)
         }
+        //affiche chaque poké de la team
         for (i in 1 until equipe.size) {
-            Log.i("Pokemon", equipe[i].species.nom)
             val pokemonView = creeViewPokemonTeam(equipe[i])
             teamList.addView(pokemonView)
         }
@@ -117,8 +131,10 @@ class TeamActivity : AppCompatActivity() {
         val pokeName = pokemonView.findViewById<TextView>(R.id.pokeName)
         val type1 = pokemonView.findViewById<ImageView>(R.id.type1)
         val type2 = pokemonView.findViewById<ImageView>(R.id.type2)
+        val attackBtn = pokemonView.findViewById<ImageView>(R.id.attackBtn1)
 
         pokeName.text = pokemon.species.nom
+
         Glide.with(this)
             .load(DataManager.model.getFrontSprite(pokemon.species.num))
             .fitCenter()
@@ -126,49 +142,23 @@ class TeamActivity : AppCompatActivity() {
 
         pokeSprite.setOnClickListener {
             val dialog = ChangeTeamDialog(this)
-            dialog.dialog.setOnDismissListener {
-                afficherEquipe()
-            }
+            dialog.dialog.setOnDismissListener { afficherEquipe() }
             dialog.show()
         }
 
-        val attackBtn = pokemonView.findViewById<ImageView>(R.id.attackBtn1)
         attackBtn.setOnClickListener {
             ChangeAttackDialog(this, pokemon).show()
         }
 
-        type1.setImageResource(getIconType(pokemon.species.type[0].nom))
+        //Type 1
+        type1.setImageResource(DataManager.model.getIconType(pokemon.species.type[0].nom))
+        //Type 2 si il y a
         if (pokemon.species.type.size > 1) {
             type2.visibility = View.VISIBLE
-            type2.setImageResource(getIconType(pokemon.species.type[1].nom))
+            type2.setImageResource(DataManager.model.getIconType(pokemon.species.type[1].nom))
         } else {
             type2.visibility = View.GONE
         }
         return pokemonView
     }
-
-    private fun getIconType(typeName: String): Int {
-        return when (typeName) {
-            "Acier" -> R.drawable.acier
-            "Combat" -> R.drawable.combat
-            "Dragon" -> R.drawable.dragon
-            "Eau" -> R.drawable.eau
-            "Feu" -> R.drawable.feu
-            "Fee" -> R.drawable.fee
-            "Glace" -> R.drawable.glace
-            "Insecte" -> R.drawable.insecte
-            "Normal" -> R.drawable.normal
-            "Plante" -> R.drawable.plante
-            "Poison" -> R.drawable.poison
-            "Psy" -> R.drawable.psy
-            "Roche" -> R.drawable.roche
-            "Sol" -> R.drawable.sol
-            "Spectre" -> R.drawable.spectre
-            "Tenebre" -> R.drawable.tenebre
-            "Vol" -> R.drawable.vol
-            "Electrik" -> R.drawable.electrik
-            else -> R.drawable.normal
-        }
-    }
-
 }

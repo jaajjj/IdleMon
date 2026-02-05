@@ -11,62 +11,74 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import com.bumptech.glide.Glide
 
 class GachaActivity : AppCompatActivity() {
+
+    //UI
+    private lateinit var homeBtn: ImageView
+    private lateinit var teamBtn: ImageView
+    private lateinit var settingsBtn: ImageView
+    private lateinit var singlePullBtn: Button
+    private lateinit var tenPullBtn: Button
+    private lateinit var fieldPokegold: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_gacha)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.homePage)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        //Cache la barre overlay du téléphone (haut et bas)
+
+        //barres sys
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
         windowInsetsController.systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 
-        //Json
-        var modelJson = DataManager.model
+        homeBtn = findViewById(R.id.homeBtn)
+        teamBtn = findViewById(R.id.teamBtn)
+        settingsBtn = findViewById(R.id.settingsBtn)
+        singlePullBtn = findViewById(R.id.singlePullBtn)
+        tenPullBtn = findViewById(R.id.tenPullBtn)
+        fieldPokegold = findViewById(R.id.fieldPokegold)
 
-        //var xml
-        val homeBtn = findViewById<ImageView>(R.id.homeBtn)
-        val teamBtn = findViewById<ImageView>(R.id.teamBtn)
-        val fieldPokegold = findViewById<TextView>(R.id.fieldPokegold)
-        val settingsBtn = findViewById<ImageView>(R.id.settingsBtn)
-        val singlePullBtn = findViewById<Button>(R.id.singlePullBtn)
-        val tenPullBtn = findViewById<Button>(R.id.tenPullBtn)
-
-
-        //Récup Player
+        //data + player
         val player = Player
         fieldPokegold.text = player.getPieces().toString()
 
-
-        // Redirection vers l'équipe
+        //Nav et pull
         teamBtn.setOnClickListener {
             val intent = Intent(this, TeamActivity::class.java)
             startActivity(intent)
         }
 
-        // Redirection vers le Home
         homeBtn.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 
         singlePullBtn.setOnClickListener {
-            if (Player.getPieces() >= 100) {
-                Player.setPieces(Player.getPieces() - 100)
-                fieldPokegold.text = Player.getPieces().toString()
+            if (player.getPieces() >= 100) {
+                player.setPieces(player.getPieces() - 100)
+                fieldPokegold.text = player.getPieces().toString()
                 switchAnimGacha(1)
+            }
+        }
+
+        tenPullBtn.setOnClickListener {
+            if (player.getPieces() >= 1000) {
+                player.setPieces(player.getPieces() - 1000)
+                fieldPokegold.text = player.getPieces().toString()
+                switchAnimGacha(10)
             }
         }
     }
 
+    //nav gacha pull
     fun switchAnimGacha(nb: Int) {
         if (nb == 1) {
             val intent = Intent(this, SinglePullActivity::class.java)
