@@ -11,12 +11,13 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="36dp"
         android:fontFamily="@font/roboto_bold"
         android:text="Félicitation !"
         android:textColor="#000000"
         android:textSize="60sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -58,7 +59,7 @@
         app:layout_constraintTop_toBottomOf="@+id/pokemonNomPull" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/attack1"
+        android:id="@+id/constraintLayout"
         android:layout_width="316dp"
         android:layout_height="198dp"
         android:layout_marginTop="20dp"
@@ -70,8 +71,8 @@
 
         <ImageView
             android:id="@+id/imgPokemonPull"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="118dp"
+            android:layout_height="119dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -83,10 +84,11 @@
         android:id="@+id/quitPullBtn"
         android:layout_width="139dp"
         android:layout_height="66dp"
+        android:layout_marginTop="40dp"
         android:text="Récupérer"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/attack1" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

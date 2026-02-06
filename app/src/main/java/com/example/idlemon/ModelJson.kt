@@ -31,7 +31,7 @@ class ModelJson(context: Context) {
         return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/back/$id.gif"
     }
 
-    // --- Gestion des icônes (Centralisée) ---
+    // --- Gestion des icônes
     fun getIconType(typeName: String): Int {
         return when (typeName.replaceFirstChar { it.uppercase() }) {
             "Acier" -> R.drawable.acier
