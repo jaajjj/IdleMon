@@ -14,161 +14,111 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import kotlinx.coroutines.Dispatchers // Important
+import kotlinx.coroutines.withContext // Important
 import kotlin.math.abs
 
 class CapteurManager(
     private val ui: PanoramaUI,
     private val eggCount: Int = 5,
-    private val isTenPull: Boolean = false // Si true, chaque oeuf contient 10 pokémons
+    private val isTenPull: Boolean = false
 ) : SensorEventListener {
 
-    // Sensor et panorama
     private val sensorManager = ui.context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
     private val compas = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION)
-
     private var panoramaShader: BitmapShader? = null
     private var shaderPaint: Paint? = null
     private val view360 = Matrix()
-
     private var imgWidth = 0f
     private var currentDegree = 0f
     private val valFluide = 0.4f
-
-    // Stock l'oeuf sélectionné
     var selectedEgg: View? = null
-
-    // Mode Tactile vs Capteur
     private var isSensorMode = true
     private var lastTouchX = 0f
-
-    // Variables pour l'effet roulette
     private var flingVelocity = 0f
     private val friction = 0.7f
     private val sensiScroll = 0.2f
 
-    // Runnable qui gère l'inertie
     private val flingRunnable = object : Runnable {
         override fun run() {
             if (abs(flingVelocity) < 0.5f) return
-
             currentDegree -= flingVelocity * sensiScroll
             flingVelocity *= friction
-
             renderPanorama()
-
             ui.backgroundImage.postDelayed(this, 16)
         }
     }
 
     init {
-        // Config de la vue en 360
+        // On initialise le fond (rapide)
         ui.backgroundImage.post {
             setupPanorama()
-            generateEggs()
         }
+        // NOTE : On ne génère plus les œufs ici, on attend l'appel de loadEggsAsync()
     }
 
-    // Bascule entre capteur ou fling
-    fun toggleMode() {
-        isSensorMode = !isSensorMode
+    /**
+     * Fonction suspendue : Calcule les Pokémon en arrière-plan (IO)
+     * puis affiche les oeufs sur le thread principal (Main).
+     */
+    suspend fun loadEggsAsync() {
+        // 1. PARTIE LOURDE : Génération des données sur le thread IO
+        val preparedEggs = withContext(Dispatchers.IO) {
+            val list = mutableListOf<Pair<List<Pokemon>, Int>>()
 
-        if (isSensorMode) {
-            ui.boussole.alpha = 1.0f
-            ui.backgroundImage.removeCallbacks(flingRunnable)
-            start()
-        } else {
-            ui.boussole.alpha = 0.5f
-            stop()
-        }
-    }
-
-    // Gestion du tactile (glissement)
-    fun handleTouch(event: MotionEvent) {
-        if (isSensorMode) return
-
-        when (event.action) {
-            MotionEvent.ACTION_DOWN -> {
-                ui.backgroundImage.removeCallbacks(flingRunnable)
-                lastTouchX = event.x
-                flingVelocity = 0f
-            }
-            MotionEvent.ACTION_MOVE -> {
-                val deltaX = event.x - lastTouchX
-                flingVelocity = deltaX
-                lastTouchX = event.x
-                currentDegree -= deltaX * sensiScroll
-                renderPanorama()
-            }
-            MotionEvent.ACTION_UP -> {
-                if (abs(flingVelocity) > 1f) {
-                    ui.backgroundImage.post(flingRunnable)
-                }
-            }
-        }
-    }
-
-    private fun setupPanorama() {
-        val bitmap = BitmapFactory.decodeResource(ui.context.resources, R.drawable.back_pull) ?: return
-        val scale = ui.backgroundImage.height.toFloat() / bitmap.height.toFloat()
-        val scaledWidth = (bitmap.width * scale).toInt()
-        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, scaledWidth, ui.backgroundImage.height, true)
-
-        imgWidth = scaledWidth.toFloat()
-        panoramaShader = BitmapShader(scaledBitmap, Shader.TileMode.REPEAT, Shader.TileMode.CLAMP)
-        shaderPaint = Paint().apply {
-            shader = panoramaShader
-            isAntiAlias = true
-        }
-
-        ui.backgroundImage.setImageDrawable(object : Drawable() {
-            override fun draw(canvas: Canvas) {
-                shaderPaint?.let { canvas.drawPaint(it) }
-            }
-            override fun setAlpha(alpha: Int) {}
-            override fun setColorFilter(cf: ColorFilter?) {}
-            override fun getOpacity() = PixelFormat.TRANSLUCENT
-        })
-    }
-
-    private fun generateEggs() {
-        ui.eggsContainer.removeAllViews()
-        val inflater = LayoutInflater.from(ui.context)
-
-        for (set in -1..1) {
-            val offsetSet = set * imgWidth
             for (i in 0 until eggCount) {
-                val eggLayout = inflater.inflate(R.layout.classic_egg, ui.eggsContainer, false)
-                val eggImage = eggLayout.findViewById<ImageView>(R.id.imageView5)
-
-                // 1. Génération du contenu (List<Pokemon>)
+                // Génération aléatoire (peut être lent)
                 val pokemonsInEgg = if (isTenPull) {
                     List(10) { DataManager.model.getRandomPokemon() }
                 } else {
                     listOf(DataManager.model.getRandomPokemon())
                 }
 
-                // 2. Détermination de la texture de l'oeuf selon le MEILLEUR pokémon du lot
+                // Calcul de la rareté max pour choisir l'image de l'oeuf
                 val bestPokemon = pokemonsInEgg.maxByOrNull { getRarityScore(it.species.rarete) }
                     ?: pokemonsInEgg.first()
 
-                val eggDrawable = when(bestPokemon.species.rarete) {
+                val drawableRes = when(bestPokemon.species.rarete) {
                     "Legendaire", "Légendaire" -> R.drawable.egg_leg
                     "Fabuleux" -> R.drawable.egg_fab
                     "Epique", "Épique" -> R.drawable.egg_epique
                     else -> R.drawable.egg
                 }
 
+                list.add(Pair(pokemonsInEgg, drawableRes))
+            }
+            list // On retourne la liste préparée
+        }
+
+        // 2. PARTIE UI : Création des vues sur le thread Main
+        withContext(Dispatchers.Main) {
+            displayEggs(preparedEggs)
+        }
+    }
+
+    private fun displayEggs(preparedEggs: List<Pair<List<Pokemon>, Int>>) {
+        if (imgWidth <= 0) return // Sécurité si le panorama n'est pas prêt
+
+        ui.eggsContainer.removeAllViews()
+        val inflater = LayoutInflater.from(ui.context)
+
+        for (set in -1..1) {
+            val offsetSet = set * imgWidth
+            for (i in 0 until preparedEggs.size) {
+                val (pokemonsInEgg, drawableRes) = preparedEggs[i]
+
+                val eggLayout = inflater.inflate(R.layout.classic_egg, ui.eggsContainer, false)
+                val eggImage = eggLayout.findViewById<ImageView>(R.id.imageView5)
+
                 Glide.with(ui.context)
                     .asGif()
-                    .load(eggDrawable)
+                    .load(drawableRes)
                     .override(500, 500)
                     .centerCrop()
                     .into(eggImage)
 
-                // 3. IMPORTANT : On stocke la LISTE dans le tag
                 eggLayout.tag = pokemonsInEgg
 
-                // Positionnement
                 val size = 600
                 eggLayout.layoutParams = FrameLayout.LayoutParams(size, size)
                 eggLayout.x = (i.toFloat() / eggCount.toFloat() * imgWidth) + offsetSet
@@ -179,14 +129,15 @@ class CapteurManager(
         }
     }
 
-    // Helper pour comparer les raretés
+    // ... (Le reste est inchangé : getRarityScore, onSensorChanged, renderPanorama, start, stop...)
+
     private fun getRarityScore(rarete: String): Int {
         return when (rarete) {
             "Legendaire", "Légendaire" -> 5
             "Fabuleux" -> 4
             "Epique", "Épique" -> 3
             "Rare" -> 2
-            else -> 1 // Commun
+            else -> 1
         }
     }
 
@@ -203,13 +154,11 @@ class CapteurManager(
 
     private fun renderPanorama() {
         if (imgWidth <= 0) return
-
         if (currentDegree >= 360) currentDegree %= 360
         if (currentDegree < 0) currentDegree = 360 + (currentDegree % 360)
 
         val fraction = currentDegree / 360f
         val scrollX = fraction * imgWidth
-
         view360.setTranslate(-scrollX, 0f)
         panoramaShader?.setLocalMatrix(view360)
         ui.backgroundImage.invalidate()
@@ -217,17 +166,14 @@ class CapteurManager(
         val screenWidth = ui.backgroundImage.width.toFloat()
         val screenCenter = screenWidth / 2f
         val containerTranslationX = -scrollX + screenCenter - 300f
-
         ui.eggsContainer.translationX = containerTranslationX
 
         var minDistance = Float.MAX_VALUE
         var winner: View? = null
 
-        // Recherche du gagnant (le plus proche du centre)
         for (i in 0 until ui.eggsContainer.childCount) {
             val v = ui.eggsContainer.getChildAt(i)
             val eggCenterOnScreen = v.x + containerTranslationX + 300f
-
             if (eggCenterOnScreen > -500f && eggCenterOnScreen < screenWidth + 500f) {
                 val dist = Math.abs(eggCenterOnScreen - screenCenter)
                 if (dist < minDistance) {
@@ -237,7 +183,6 @@ class CapteurManager(
             }
         }
 
-        // Animation et visibilité
         for (i in 0 until ui.eggsContainer.childCount) {
             val v = ui.eggsContainer.getChildAt(i)
             val eggCenterOnScreen = v.x + containerTranslationX + 300f
@@ -278,13 +223,70 @@ class CapteurManager(
         ui.eggsContainer.visibility = View.GONE
     }
 
+    private fun setupPanorama() {
+        val bitmap = BitmapFactory.decodeResource(ui.context.resources, R.drawable.back_pull) ?: return
+        val scale = ui.backgroundImage.height.toFloat() / bitmap.height.toFloat()
+        val scaledWidth = (bitmap.width * scale).toInt()
+        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, scaledWidth, ui.backgroundImage.height, true)
+
+        imgWidth = scaledWidth.toFloat()
+        panoramaShader = BitmapShader(scaledBitmap, Shader.TileMode.REPEAT, Shader.TileMode.CLAMP)
+        shaderPaint = Paint().apply {
+            shader = panoramaShader
+            isAntiAlias = true
+        }
+
+        ui.backgroundImage.setImageDrawable(object : Drawable() {
+            override fun draw(canvas: Canvas) {
+                shaderPaint?.let { canvas.drawPaint(it) }
+            }
+            override fun setAlpha(alpha: Int) {}
+            override fun setColorFilter(cf: ColorFilter?) {}
+            override fun getOpacity() = PixelFormat.TRANSLUCENT
+        })
+    }
+
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
+
+    fun toggleMode() {
+        isSensorMode = !isSensorMode
+        if (isSensorMode) {
+            ui.boussole.alpha = 1.0f
+            ui.backgroundImage.removeCallbacks(flingRunnable)
+            start()
+        } else {
+            ui.boussole.alpha = 0.5f
+            stop()
+        }
+    }
+
+    fun handleTouch(event: MotionEvent) {
+        if (isSensorMode) return
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                ui.backgroundImage.removeCallbacks(flingRunnable)
+                lastTouchX = event.x
+                flingVelocity = 0f
+            }
+            MotionEvent.ACTION_MOVE -> {
+                val deltaX = event.x - lastTouchX
+                flingVelocity = deltaX
+                lastTouchX = event.x
+                currentDegree -= deltaX * sensiScroll
+                renderPanorama()
+            }
+            MotionEvent.ACTION_UP -> {
+                if (abs(flingVelocity) > 1f) {
+                    ui.backgroundImage.post(flingRunnable)
+                }
+            }
+        }
+    }
 
     fun start() {
         if (isSensorMode) {
             sensorManager.registerListener(this, compas, SensorManager.SENSOR_DELAY_UI)
         }
     }
-
     fun stop() = sensorManager.unregisterListener(this)
 }

@@ -84,7 +84,8 @@ class GachaActivity : AppCompatActivity() {
         // 1. Afficher le container vidéo (fond noir)
         videoContainer.visibility = View.VISIBLE
 
-        // 2. Préparer le chemin de la vidéo (res/raw/summon_anim.mp4)
+        // 2. Préparer le chemin de la vidéo (res/raw/anim_gacha.mp4)
+        // Assure-toi que la vidéo s'appelle bien "anim_gacha" dans res/raw
         val videoPath = "android.resource://" + packageName + "/" + R.raw.anim_gacha
         val uri = Uri.parse(videoPath)
         summonVideoView.setVideoURI(uri)
@@ -113,8 +114,9 @@ class GachaActivity : AppCompatActivity() {
         }
         startActivity(intent)
 
-        // Petite transition fade
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        // --- CORRECTION ICI ---
+        // On utilise R.anim (tes fichiers) au lieu de android.R.anim (système)
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
     }
 
     override fun onResume() {
