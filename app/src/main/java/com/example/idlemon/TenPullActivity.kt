@@ -46,10 +46,9 @@ class TenPullActivity : AppCompatActivity(), PanoramaUI {
         val catchBtn = findViewById<Button>(R.id.catchBtn)
 
         // Init Manager
-        capteurManager = CapteurManager(this, eggCount = 10, isTenPull = true)
+        capteurManager = CapteurManager(this, eggCount = 7, isTenPull = true)
 
         // --- CHARGEMENT ASYNCHRONE ---
-        // Permet une transition fluide pendant que les calculs se font en arrière-plan
         lifecycleScope.launch {
             // On attend que la vue soit prête (optionnel, mais sécurisant)
             backgroundImage.post {
