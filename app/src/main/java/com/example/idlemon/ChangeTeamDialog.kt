@@ -132,7 +132,7 @@ class ChangeTeamDialog(
     private fun refreshBoxList() {
         val boxLinearLayout = dialog.findViewById<LinearLayout>(R.id.boxLinearLayout)
         val inflater = LayoutInflater.from(context)
-        val boxPokemons = Player.tabPokemon
+        val boxPokemons = Player.getBoxPokemon()
 
         boxLinearLayout.removeAllViews()
 
@@ -166,7 +166,7 @@ class ChangeTeamDialog(
             itemView.setOnClickListener {
                 if (selectedIndex != -1) {
                     val equipe = Player.getEquipe()
-                    val box = Player.tabPokemon
+                    val box = Player.getBoxPokemon()
 
                     if (selectedIndex < equipe.size) {
                         Toast.makeText(context, "Pokémon échangé", Toast.LENGTH_SHORT).show()

@@ -16,14 +16,14 @@ import androidx.core.view.WindowInsetsControllerCompat
 
 class GachaActivity : AppCompatActivity() {
 
-    // UI
+    //UI
     private lateinit var homeBtn: ImageView
     private lateinit var teamBtn: ImageView
     private lateinit var singlePullBtn: Button
     private lateinit var tenPullBtn: Button
     private lateinit var fieldPokegold: TextView
 
-    // UI Vidéo
+    //UI Vidéo
     private lateinit var videoContainer: FrameLayout
     private lateinit var summonVideoView: VideoView
     private lateinit var skipBtn: TextView
@@ -32,20 +32,20 @@ class GachaActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gacha)
 
-        // Gestion plein écran (Barres système)
+        //pleine écran
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
         windowInsetsController.systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 
-        // Init vues classiques
+        //init vues
         homeBtn = findViewById(R.id.homeBtn)
         teamBtn = findViewById(R.id.teamBtn)
         singlePullBtn = findViewById(R.id.singlePullBtn)
         tenPullBtn = findViewById(R.id.tenPullBtn)
         fieldPokegold = findViewById(R.id.fieldPokegold)
 
-        // Init vues Vidéo
+        //init vue vidéo
         videoContainer = findViewById(R.id.videoContainer)
         summonVideoView = findViewById(R.id.summonVideoView)
         skipBtn = findViewById(R.id.skipBtn)
@@ -53,75 +53,63 @@ class GachaActivity : AppCompatActivity() {
         val player = Player
         fieldPokegold.text = player.getPieces().toString()
 
-        // Navigation Footer
+        //nav footer
         teamBtn.setOnClickListener { startActivity(Intent(this, TeamActivity::class.java)) }
         homeBtn.setOnClickListener { startActivity(Intent(this, MainActivity::class.java)) }
 
-        // --- Clic sur 1 Voeu ---
         singlePullBtn.setOnClickListener {
             if (player.getPieces() >= 100) {
                 player.setPieces(player.getPieces() - 100)
                 fieldPokegold.text = player.getPieces().toString()
 
-                // Lancer la vidéo pour 1 tirage
+                //vid 1 pull
                 playSummonAnimation(1)
             }
         }
 
-        // --- Clic sur 10 Voeux ---
         tenPullBtn.setOnClickListener {
             if (player.getPieces() >= 1000) {
                 player.setPieces(player.getPieces() - 1000)
                 fieldPokegold.text = player.getPieces().toString()
 
-                // Lancer la vidéo pour 10 tirages
+                //vid 10 pull
                 playSummonAnimation(10)
             }
         }
     }
 
     private fun playSummonAnimation(nbVoeux: Int) {
-        // 1. Afficher le container vidéo (fond noir)
         videoContainer.visibility = View.VISIBLE
-
-        // 2. Préparer le chemin de la vidéo (res/raw/anim_gacha.mp4)
-        // Assure-toi que la vidéo s'appelle bien "anim_gacha" dans res/raw
         val videoPath = "android.resource://" + packageName + "/" + R.raw.anim_gacha
         val uri = Uri.parse(videoPath)
         summonVideoView.setVideoURI(uri)
-
-        // 3. Définir ce qui se passe quand la vidéo est finie
         summonVideoView.setOnCompletionListener {
             goToResultActivity(nbVoeux)
         }
-
-        // 4. Bouton Passer (arrête la vidéo et va direct au résultat)
         skipBtn.setOnClickListener {
             summonVideoView.stopPlayback()
             goToResultActivity(nbVoeux)
         }
 
-        // 5. Action !
+        //lance la vid
         summonVideoView.start()
     }
 
     private fun goToResultActivity(nb: Int) {
-        // On lance l'activité suivante
+        //lance l'activitée suivante
         val intent = if (nb == 1) {
             Intent(this, SinglePullActivity::class.java)
         } else {
             Intent(this, TenPullActivity::class.java)
         }
         startActivity(intent)
-
-        // --- CORRECTION ICI ---
-        // On utilise R.anim (tes fichiers) au lieu de android.R.anim (système)
+        //ajout du fadeIn et out
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
     }
 
     override fun onResume() {
         super.onResume()
-        // IMPORTANT : Quand on revient sur cette page (bouton retour), on cache la vidéo
+        //on cache la vidéo quand on reviens sur la page
         videoContainer.visibility = View.GONE
     }
 }

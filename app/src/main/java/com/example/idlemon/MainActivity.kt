@@ -41,19 +41,10 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        //ache les barres sys
+        //cache les barres sys
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
         windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-
-        //animBG
-        val layout = findViewById<View>(R.id.homePage)
-        val anim = layout.background as? android.graphics.drawable.AnimationDrawable
-        anim?.apply {
-            setEnterFadeDuration(2000)
-            setExitFadeDuration(2000)
-            start()
-        }
 
         pokemonDisplay = findViewById(R.id.pokemonDisplay)
         playBtn = findViewById(R.id.playBtn)
@@ -83,7 +74,7 @@ class MainActivity : AppCompatActivity() {
             player.addPokemon(modelJson.creerPokemon(191))
         }
 
-        //setups et listner
+        //setups et listener
         fieldPokegold.text = player.getPieces().toString()
         Glide.with(this)
             .load(modelJson.getFrontSprite(player.getPremierPokemon().species.num))
@@ -96,6 +87,10 @@ class MainActivity : AppCompatActivity() {
 
         gachaBtn.setOnClickListener {
             val intent = Intent(this, GachaActivity::class.java)
+            startActivity(intent)
+        }
+        playBtn.setOnClickListener {
+            val intent = Intent(this, PlayActivity::class.java)
             startActivity(intent)
         }
     }
