@@ -62,7 +62,7 @@ class CapteurManager(
      * puis affiche les oeufs sur le thread principal (Main).
      */
     suspend fun loadEggsAsync() {
-        // 1. PARTIE LOURDE : Génération des données sur le thread IO
+        //Charge les oeufs dans le thread IO
         val preparedEggs = withContext(Dispatchers.IO) {
             val list = mutableListOf<Pair<List<Pokemon>, Int>>()
 
@@ -74,30 +74,30 @@ class CapteurManager(
                     listOf(DataManager.model.getRandomPokemon())
                 }
 
-                // Calcul de la rareté max pour choisir l'image de l'oeuf
+                //rareté max pour les oeufs
                 val bestPokemon = pokemonsInEgg.maxByOrNull { getRarityScore(it.species.rarete) }
                     ?: pokemonsInEgg.first()
 
                 val drawableRes = when(bestPokemon.species.rarete) {
-                    "Legendaire", "Légendaire" -> R.drawable.egg_leg
+                    "Legendaire" -> R.drawable.egg_leg
                     "Fabuleux" -> R.drawable.egg_fab
-                    "Epique", "Épique" -> R.drawable.egg_epique
+                    "Epique" -> R.drawable.egg_epique
                     else -> R.drawable.egg
                 }
 
                 list.add(Pair(pokemonsInEgg, drawableRes))
             }
-            list // On retourne la liste préparée
+            list //retourne la liste préparée
         }
 
-        // 2. PARTIE UI : Création des vues sur le thread Main
+        //création des vues sur le thread Main
         withContext(Dispatchers.Main) {
             displayEggs(preparedEggs)
         }
     }
 
     private fun displayEggs(preparedEggs: List<Pair<List<Pokemon>, Int>>) {
-        if (imgWidth <= 0) return // Sécurité si le panorama n'est pas prêt
+        if (imgWidth <= 0) return //le panorama n'est pas pret
 
         ui.eggsContainer.removeAllViews()
         val inflater = LayoutInflater.from(ui.context)
@@ -106,7 +106,7 @@ class CapteurManager(
             val offsetSet = set * imgWidth
             for (i in 0 until preparedEggs.size) {
                 val (pokemonsInEgg, drawableRes) = preparedEggs[i]
-
+                //on gonfle en copiant classic_egg xml
                 val eggLayout = inflater.inflate(R.layout.classic_egg, ui.eggsContainer, false)
                 val eggImage = eggLayout.findViewById<ImageView>(R.id.imageView5)
 
@@ -118,33 +118,31 @@ class CapteurManager(
                     .into(eggImage)
 
                 eggLayout.tag = pokemonsInEgg
-
                 val size = 600
                 eggLayout.layoutParams = FrameLayout.LayoutParams(size, size)
                 eggLayout.x = (i.toFloat() / eggCount.toFloat() * imgWidth) + offsetSet
                 eggLayout.y = (ui.backgroundImage.height / 2f) - (size / 2f)
-
                 ui.eggsContainer.addView(eggLayout)
             }
         }
     }
 
-    // ... (Le reste est inchangé : getRarityScore, onSensorChanged, renderPanorama, start, stop...)
-
     private fun getRarityScore(rarete: String): Int {
         return when (rarete) {
-            "Legendaire", "Légendaire" -> 5
+            "Legendaire" -> 5
             "Fabuleux" -> 4
-            "Epique", "Épique" -> 3
+            "Epique" -> 3
             "Rare" -> 2
             else -> 1
         }
     }
 
+    //sensor compas
     override fun onSensorChanged(event: SensorEvent?) {
         if (event?.sensor?.type == Sensor.TYPE_ORIENTATION && isSensorMode) {
             val targetDegree = event.values[0]
             var diff = targetDegree - currentDegree
+            //modulo 360°
             if (diff > 180) diff -= 360
             if (diff < -180) diff += 360
             currentDegree += diff * valFluide
@@ -153,14 +151,14 @@ class CapteurManager(
     }
 
     private fun renderPanorama() {
-        if (imgWidth <= 0) return
+        if (imgWidth <= 0) return //panorama pas prêt, on attend
         if (currentDegree >= 360) currentDegree %= 360
         if (currentDegree < 0) currentDegree = 360 + (currentDegree % 360)
 
-        val fraction = currentDegree / 360f
+        val fraction = currentDegree / 360f //On prends une val entre 0 et 1
         val scrollX = fraction * imgWidth
         view360.setTranslate(-scrollX, 0f)
-        panoramaShader?.setLocalMatrix(view360)
+        panoramaShader?.setLocalMatrix(view360) //utilise matrix pour le rendu panorama 360
         ui.backgroundImage.invalidate()
 
         val screenWidth = ui.backgroundImage.width.toFloat()
@@ -171,6 +169,7 @@ class CapteurManager(
         var minDistance = Float.MAX_VALUE
         var winner: View? = null
 
+        //calcul du plus proche oeuf (kppv prime)
         for (i in 0 until ui.eggsContainer.childCount) {
             val v = ui.eggsContainer.getChildAt(i)
             val eggCenterOnScreen = v.x + containerTranslationX + 300f
@@ -189,12 +188,14 @@ class CapteurManager(
             val eggImage = v.findViewById<ImageView>(R.id.imageView5)
             val animatable = eggImage.drawable as? Animatable
 
+            //on montre l'oeuf si il est à l'écran
             if (eggCenterOnScreen < -600f || eggCenterOnScreen > screenWidth + 600f) {
                 v.visibility = View.GONE
                 continue
             }
             v.visibility = View.VISIBLE
 
+            //modif image oeuf le plus proche (taille et opacité)
             if (v == winner && minDistance < 450f) {
                 if (v.scaleX != 1.3f) {
                     v.scaleX = 1.3f
@@ -214,6 +215,7 @@ class CapteurManager(
         selectedEgg = if (minDistance < 450f) winner else null
     }
 
+    //Pour + opti, on clean les oeufs avec leur gifs
     fun cleanUpResources() {
         for (i in 0 until ui.eggsContainer.childCount) {
             val v = ui.eggsContainer.getChildAt(i)
@@ -223,6 +225,7 @@ class CapteurManager(
         ui.eggsContainer.visibility = View.GONE
     }
 
+    //applique la 'tapisserie' du panorama
     private fun setupPanorama() {
         val bitmap = BitmapFactory.decodeResource(ui.context.resources, R.drawable.back_pull) ?: return
         val scale = ui.backgroundImage.height.toFloat() / bitmap.height.toFloat()
@@ -248,18 +251,22 @@ class CapteurManager(
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
 
+    //gestion du fling ou boussole
     fun toggleMode() {
         isSensorMode = !isSensorMode
+        //mode boussole
         if (isSensorMode) {
             ui.boussole.alpha = 1.0f
             ui.backgroundImage.removeCallbacks(flingRunnable)
             start()
         } else {
+            //mode fling
             ui.boussole.alpha = 0.5f
             stop()
         }
     }
 
+    //gestion fling
     fun handleTouch(event: MotionEvent) {
         if (isSensorMode) return
         when (event.action) {

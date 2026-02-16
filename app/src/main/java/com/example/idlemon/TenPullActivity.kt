@@ -45,12 +45,12 @@ class TenPullActivity : AppCompatActivity(), PanoramaUI {
         boussole = findViewById(R.id.boussole)
         val catchBtn = findViewById<Button>(R.id.catchBtn)
 
-        // Init Manager
+        // Init Manager ici, 7 oaufs, a voir si plus ou non
         capteurManager = CapteurManager(this, eggCount = 7, isTenPull = true)
 
-        // --- CHARGEMENT ASYNCHRONE ---
+        //chargement asyncrone
         lifecycleScope.launch {
-            // On attend que la vue soit prête (optionnel, mais sécurisant)
+            //attend que la vue soit prête
             backgroundImage.post {
                 lifecycleScope.launch {
                     capteurManager.loadEggsAsync()
@@ -58,16 +58,35 @@ class TenPullActivity : AppCompatActivity(), PanoramaUI {
             }
         }
 
+        //toggle du mode boussole
         boussole.setOnClickListener {
             capteurManager.toggleMode()
         }
 
+        //gestion du catch
         catchBtn.setOnClickListener {
             val selected = capteurManager.selectedEgg
             if (selected != null) {
                 val pokemonsList = selected.tag as? List<Pokemon>
                 if (pokemonsList != null && pokemonsList.isNotEmpty()) {
-                    pokemonsList.forEach { p -> Player.addPokemon(p) }
+                    for(pokemon in pokemonsList) {
+                        if(Player.getEquipe().contains(pokemon) || Player.getBoxPokemon().contains(pokemon)){
+                            when{
+                                pokemon.species.rarete == "Legendaire" -> {
+                                    Player.addPieces(500)
+                                }
+                                pokemon.species.rarete == "Fabuleux" -> {
+                                    Player.addPieces(200)
+                                }
+                                pokemon.species.rarete == "Epique" -> {
+                                    Player.addPieces(100)
+                                }
+                                else -> Player.addPieces(50)
+                            }
+                        }else {
+                            Player.addPokemon(pokemon)
+                        }
+                    }
                     capteurManager.stop()
                     capteurManager.cleanUpResources()
                     showResultDialog(pokemonsList)
@@ -76,7 +95,6 @@ class TenPullActivity : AppCompatActivity(), PanoramaUI {
         }
     }
 
-    // ... Le reste (onTouchEvent, showResultDialog, onResume, onPause) reste identique ...
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (event != null) capteurManager.handleTouch(event)
         return super.onTouchEvent(event)
@@ -90,6 +108,7 @@ class TenPullActivity : AppCompatActivity(), PanoramaUI {
         val btnQuit = dialog.findViewById<Button>(R.id.quitTenPullBtn)
         val inflater = LayoutInflater.from(this)
 
+        //on inflate la vue item_ten_pull pour chaque pokémon
         for (pokemon in pokemons) {
             val itemView = inflater.inflate(R.layout.item_ten_pull, container, false)
             val txtNom = itemView.findViewById<TextView>(R.id.nomPok)

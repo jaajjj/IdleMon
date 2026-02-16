@@ -4,8 +4,8 @@ object Player {
     //init Player
     var nom: String = "Sacha"
     private var nbPieces: Int = 10000
-    val tabPokemon: MutableList<Pokemon> = mutableListOf()
-    val tabEquipe: MutableList<Pokemon> = mutableListOf()
+    private val tabPokemon: MutableList<Pokemon> = mutableListOf()
+    private val tabEquipe: MutableList<Pokemon> = mutableListOf()
 
     //pièce
     fun getPieces(): Int = nbPieces
@@ -57,6 +57,8 @@ object Player {
         tabPokemon.add(pokemon)
         return true //nouveau poké
     }
+
+    fun getBoxPokemon(): MutableList<Pokemon> = tabPokemon
 
     fun removePokemonBox(pokemon: Pokemon) {
         tabPokemon.remove(pokemon)

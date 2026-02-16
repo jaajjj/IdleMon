@@ -44,9 +44,9 @@ class SinglePullActivity : AppCompatActivity(), PanoramaUI {
 
         capteurManager = CapteurManager(this, eggCount = 5) // isTenPull = false
 
-        // --- CHARGEMENT ASYNCHRONE ---
+        //Charge asyncrone
         lifecycleScope.launch {
-            // On attend que la vue soit prête
+            //attend que le panorama soit prêt
             backgroundImage.post {
                 lifecycleScope.launch {
                     capteurManager.loadEggsAsync()
@@ -54,17 +54,33 @@ class SinglePullActivity : AppCompatActivity(), PanoramaUI {
             }
         }
 
+        //toggle du mode boussole
         boussole.setOnClickListener { capteurManager.toggleMode() }
 
+        //gestion du catch
         catchBtn.setOnClickListener {
             val selected = capteurManager.selectedEgg
             if (selected != null) {
-                // Toujours récupérer une liste
+                //Récup la liste des poké (normalement 1 seul poké)
                 val pokemonList = selected.tag as? List<Pokemon>
                 val pokemon = pokemonList?.firstOrNull()
-
                 if (pokemon != null) {
-                    Player.addPokemon(pokemon)
+                    if(Player.getEquipe().contains(pokemon) || Player.getBoxPokemon().contains(pokemon)){
+                        when{
+                            pokemon.species.rarete == "Legendaire" -> {
+                                Player.addPieces(500)
+                            }
+                            pokemon.species.rarete == "Fabuleux" -> {
+                                Player.addPieces(200)
+                            }
+                            pokemon.species.rarete == "Epique" -> {
+                                Player.addPieces(100)
+                            }
+                            else -> Player.addPieces(50)
+                        }
+                    }else {
+                        Player.addPokemon(pokemon)
+                    }
                     capteurManager.stop()
                     capteurManager.cleanUpResources()
                     showResultDialog(pokemon)
@@ -73,7 +89,6 @@ class SinglePullActivity : AppCompatActivity(), PanoramaUI {
         }
     }
 
-    // ... Le reste est inchangé ...
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (event != null) capteurManager.handleTouch(event)
         return super.onTouchEvent(event)
@@ -88,10 +103,11 @@ class SinglePullActivity : AppCompatActivity(), PanoramaUI {
         val imgPoke = dialog.findViewById<ImageView>(R.id.imgPokemonPull)
         val btnQuit = dialog.findViewById<Button>(R.id.quitPullBtn)
 
+        //couleur selon la rareté
         val rareteColor = when (pokemon.species.rarete) {
-            "Legendaire", "Légendaire" -> Color.parseColor("#2196F3")
+            "Legendaire" -> Color.parseColor("#2196F3")
             "Fabuleux" -> Color.parseColor("#4CAF50")
-            "Epique", "Épique" -> Color.parseColor("#9C27B0")
+            "Epique" -> Color.parseColor("#9C27B0")
             "Rare" -> Color.parseColor("#FF9800")
             else -> Color.parseColor("#000000")
         }
