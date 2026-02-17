@@ -15,8 +15,6 @@ open class Attack(
     var bonus: List<Map<String, Int>>? = null
     var malus: List<Map<String, Int>>? = null
 
-    open fun execute(launcher: Pokemon, target: Pokemon) {
-    }
 }
 
 class DamageAttack(

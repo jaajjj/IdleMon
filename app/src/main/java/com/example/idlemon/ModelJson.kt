@@ -72,7 +72,7 @@ class ModelJson(context: Context) {
         }
     }
 
-    fun creerPokemon(nom: String): Pokemon {
+    fun creerPokemon(nom: String?): Pokemon {
         val gson = Gson()
         val typeObjet = object : TypeToken<Map<String, PokemonSpecies>>() {}.type
         val allSpecies: Map<String, PokemonSpecies> = gson.fromJson(pokemons, typeObjet)

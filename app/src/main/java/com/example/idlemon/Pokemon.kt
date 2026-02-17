@@ -3,7 +3,7 @@ package com.example.idlemon
 import kotlin.math.pow
 
 class Pokemon(
-    val species: PokemonSpecies,
+    var species: PokemonSpecies,
     var level: Int = 1,
     var exp: Int = 0
 ) {
@@ -28,7 +28,7 @@ class Pokemon(
         //full HP au début
         currentHp = getMaxHp()
 
-        // Attaque par défaut : "Attention, c'est la meilleure... CHARGE !!"
+        //attaque par défaut : "Attention, c'est la meilleure... CHARGE !!"
         addAttack(DataManager.model.getAttackByNom("Charge"))
     }
 
@@ -46,7 +46,7 @@ class Pokemon(
         return aLevelUp
     }
 
-    // Level
+    //level
     fun monterLevel() {
         this.level++
         recalculerStats()

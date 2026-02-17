@@ -18,23 +18,22 @@ class BattleAttackDialog(
     private val dialog = Dialog(context)
 
     fun show() {
-        // ScrollView pour faire défiler si besoin
+        //scrollView pour faire défiler si besoin
         val scrollView = ScrollView(context)
         val container = LinearLayout(context)
         container.orientation = LinearLayout.VERTICAL
         container.setPadding(16, 16, 16, 16)
 
-        // Fond blanc pour la liste des attaques
         container.setBackgroundResource(android.R.color.white)
 
         scrollView.addView(container)
 
-        // On remplit la liste avec les attaques du Pokémon
+        //on remplit la liste avec les attaques du Pokémon
         for (attack in pokemon.attacks) {
             // On utilise ton layout item_attack_view.xml
             val attackView = LayoutInflater.from(context).inflate(R.layout.item_attack_view, container, false)
 
-            // Récupération des vues
+            //récupération des vues
             val txtNom = attackView.findViewById<TextView>(R.id.nomAttack)
             val txtDesc = attackView.findViewById<TextView>(R.id.descAttack)
             val txtDmg = attackView.findViewById<TextView>(R.id.dmgTextView)
@@ -42,39 +41,34 @@ class BattleAttackDialog(
             val txtAcc = attackView.findViewById<TextView>(R.id.accTextView)
             val imgType = attackView.findViewById<ImageView>(R.id.CtTypeImg)
 
-            // Remplissage des données
+            //remplissage des données
             txtNom.text = attack.name
             txtDesc.text = attack.description
             txtDmg.text = attack.basePower.toString()
 
-            // Gestion PP
+            //gestion PP
             val currentPP = pokemon.currentPP[pokemon.attacks.indexOf(attack)] ?: attack.pp
             txtPp.text = "$currentPP/${attack.pp}"
 
             txtAcc.text = (attack.accuracy * 100).toInt().toString()
 
-            // Image du type
-            try {
-                imgType.setImageResource(DataManager.model.getIconType(attack.type))
-            } catch (e: Exception) {
-                // Fallback si erreur
-            }
+            //image du type
+            imgType.setImageResource(DataManager.model.getIconType(attack.type))
 
-            // Clic sur l'attaque
+            //clic sur l'attaque
             attackView.setOnClickListener {
                 onAttackSelected(attack)
                 dialog.dismiss()
             }
-
             container.addView(attackView)
         }
 
         dialog.setContentView(scrollView)
 
-        // Fond transparent pour le Dialog (pour voir le combat derrière sur les bords)
+        //fond transparent pour le Dialog (pour voir le combat derrière sur les bords)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        // Taille du dialog (90% largeur, 60% hauteur)
+        //taille du dialog (90% largeur, 60% hauteur)
         val width = (context.resources.displayMetrics.widthPixels * 0.90).toInt()
         val height = (context.resources.displayMetrics.heightPixels * 0.60).toInt()
         dialog.window?.setLayout(width, height)
