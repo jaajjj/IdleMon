@@ -14,7 +14,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 
-class GachaActivity : AppCompatActivity() {
+class GachaActivity : BaseActivity() {
 
     //UI
     private lateinit var homeBtn: ImageView

@@ -111,10 +111,12 @@ class CapteurManager(
                 val eggImage = eggLayout.findViewById<ImageView>(R.id.imageView5)
 
                 Glide.with(ui.context)
-                    .asGif()
                     .load(drawableRes)
                     .override(500, 500)
                     .centerCrop()
+                    .skipMemoryCache(true) // Ignore le cache mémoire
+                    .diskCacheStrategy(com.bumptech.glide.load.engine.DiskCacheStrategy.NONE) // Ignore le cache disque
+                    .error(android.R.drawable.ic_delete) // Affiche une croix rouge si l'image plante
                     .into(eggImage)
 
                 eggLayout.tag = pokemonsInEgg

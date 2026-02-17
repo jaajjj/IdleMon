@@ -1,22 +1,19 @@
 package com.example.idlemon
 
-import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.bumptech.glide.Glide
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     //UI
     private lateinit var pokemonDisplay: ImageView
@@ -27,8 +24,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var gachaBtn: ImageView
     private lateinit var settingsBtn: ImageView
 
+    private lateinit var videoContainer: FrameLayout
+    private lateinit var summonGifView: ImageView
+    private var isOnAnim = false
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         DataManager.setup(this)
+        MusicManager.setup(this)
+
         val modelJson = DataManager.model
 
         super.onCreate(savedInstanceState)
@@ -53,6 +57,9 @@ class MainActivity : AppCompatActivity() {
         gachaBtn = findViewById(R.id.gachaBtn)
         fieldPokegold = findViewById(R.id.fieldPokegold)
         settingsBtn = findViewById(R.id.settingsBtn)
+
+        videoContainer = findViewById(R.id.videoContainer)
+        summonGifView = findViewById(R.id.summonGifView)
 
         val player = Player
 
@@ -81,26 +88,56 @@ class MainActivity : AppCompatActivity() {
             .into(pokemonDisplay)
 
         teamBtn.setOnClickListener {
-            val intent = Intent(this, TeamActivity::class.java)
-            startActivity(intent)
+            if (!isOnAnim) {
+                val intent = Intent(this, TeamActivity::class.java)
+                startActivity(intent)
+            }
         }
 
         gachaBtn.setOnClickListener {
-            val intent = Intent(this, GachaActivity::class.java)
-            startActivity(intent)
+            if (!isOnAnim) {
+                val intent = Intent(this, GachaActivity::class.java)
+                startActivity(intent)
+            }
         }
+
         playBtn.setOnClickListener {
-            val intent = Intent(this, PlayActivity::class.java)
-            startActivity(intent)
+            if (!isOnAnim) {
+                animPlayBtn()
+            }
         }
     }
 
     override fun onResume() {
         super.onResume()
+        // On réactive les boutons quand on revient sur l'activité
+        isOnAnim = false
+        videoContainer.visibility = View.GONE
+
         if (Player.getEquipe().isNotEmpty()) {
             Glide.with(this)
                 .load(DataManager.model.getFrontSprite(Player.getPremierPokemon().species.num))
                 .into(pokemonDisplay)
         }
+    }
+
+    private fun animPlayBtn() {
+        // On verrouille les clics
+        isOnAnim = true
+
+        MusicManager.lancerSequenceCombat(this)
+
+        videoContainer.visibility = View.VISIBLE
+
+        Glide.with(this)
+            .load(R.drawable.transition_battle)
+            .into(summonGifView)
+
+        val gifDurationInMillis: Long = 3080
+
+        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+            val intent = Intent(this@MainActivity, PlayActivity::class.java)
+            startActivity(intent)
+        }, gifDurationInMillis)
     }
 }

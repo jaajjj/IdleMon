@@ -15,7 +15,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.bumptech.glide.Glide
 
-class TeamActivity : AppCompatActivity() {
+class TeamActivity : BaseActivity() {
 
     //UI
     private lateinit var pokegold: TextView

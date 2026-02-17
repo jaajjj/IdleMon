@@ -18,7 +18,7 @@ import androidx.lifecycle.lifecycleScope // Import
 import kotlinx.coroutines.launch       // Import
 import com.bumptech.glide.Glide
 
-class SinglePullActivity : AppCompatActivity(), PanoramaUI {
+class SinglePullActivity : BaseActivity(), PanoramaUI {
 
     private lateinit var capteurManager: CapteurManager
     override lateinit var backgroundImage: ImageView

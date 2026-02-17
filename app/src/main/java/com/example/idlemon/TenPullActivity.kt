@@ -20,7 +20,7 @@ import androidx.lifecycle.lifecycleScope // Import Coroutine Scope
 import kotlinx.coroutines.launch       // Import Launch
 import com.bumptech.glide.Glide
 
-class TenPullActivity : AppCompatActivity(), PanoramaUI {
+class TenPullActivity : BaseActivity(), PanoramaUI {
 
     private lateinit var capteurManager: CapteurManager
 
