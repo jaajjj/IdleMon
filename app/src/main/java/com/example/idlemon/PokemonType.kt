@@ -3,7 +3,6 @@ package com.example.idlemon
 import com.google.gson.annotations.SerializedName
 
 enum class PokemonType(val nom: String) {
-    //SerializedName permet de checker le Json sans faire attention à la Casse
     @SerializedName("Acier") ACIER("Acier"),
     @SerializedName("Combat") COMBAT("Combat"),
     @SerializedName("Dragon") DRAGON("Dragon"),
@@ -22,6 +21,7 @@ enum class PokemonType(val nom: String) {
     @SerializedName("Tenebre") TENEBRES("Tenebre"),
     @SerializedName("Vol") VOL("Vol"),
     @SerializedName("Electrik") ELECTRIK("Electrik");
+
     var faiblesses: List<PokemonType> = emptyList()
     var resistances: List<PokemonType> = emptyList()
     var immunites: List<PokemonType> = emptyList()
@@ -82,29 +82,31 @@ enum class PokemonType(val nom: String) {
 
             ACIER.faiblesses = listOf(FEU, COMBAT, SOL)
             ACIER.resistances =
-                    listOf(NORMAL, PLANTE, GLACE, VOL, PSY, INSECTE, ROCHE, DRAGON, ACIER, FEE)
+                listOf(NORMAL, PLANTE, GLACE, VOL, PSY, INSECTE, ROCHE, DRAGON, ACIER, FEE)
             ACIER.immunites = listOf(POISON)
 
             FEE.faiblesses = listOf(POISON, ACIER)
             FEE.resistances = listOf(COMBAT, INSECTE, TENEBRES)
             FEE.immunites = listOf(DRAGON)
         }
-    }
 
-    fun calculerEfficaciteContre(typeAttaque: PokemonType, pokemonDefenseur: Pokemon): Double {
-        var multiplicateur = 1.0
-        val typeDef = pokemonDefenseur.species.type
-        for (type in typeDef) {
-            if (type.faiblesses.contains(typeAttaque)) {
-                multiplicateur *= 2.0
+        fun calculerEfficaciteContre(typeAttaque: PokemonType, pokemonDefenseur: Pokemon): Double {
+            var multiplicateur = 1.0
+            val typeDef = pokemonDefenseur.species.type
+
+            for (type in typeDef) {
+                // On vérifie les listes définies dans l'Enum
+                if (type.faiblesses.contains(typeAttaque)) {
+                    multiplicateur *= 2.0
+                }
+                if (type.resistances.contains(typeAttaque)) {
+                    multiplicateur *= 0.5
+                }
+                if (type.immunites.contains(typeAttaque)) {
+                    multiplicateur *= 0.0
+                }
             }
-            if (type.resistances.contains(typeAttaque)) {
-                multiplicateur *= 0.5
-            }
-            if (type.immunites.contains(typeAttaque)) {
-                multiplicateur *= 0.0
-            }
+            return multiplicateur
         }
-        return multiplicateur
     }
 }

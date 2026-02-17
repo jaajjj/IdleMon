@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/txt_dialogue_battle"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -44,6 +44,26 @@
         app:layout_constraintTop_toTopOf="@+id/enemy_platform"
         app:layout_constraintWidth_percent="0.35"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/numVague"
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        android:layout_margin="8dp"
+        android:fontFamily="@font/roboto_bold"
+        android:gravity="center"
+        android:maxLines="1"
+        android:padding="4dp"
+        android:shadowColor="#333333"
+        android:shadowDx="5"
+        android:shadowDy="5"
+        android:shadowRadius="0.1"
+        android:text="Vague n°1"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/enemy_info_container"
@@ -146,6 +166,13 @@
         app:layout_constraintWidth_percent="0.4"
         tools:srcCompat="@tools:sample/avatars" />
 
+    <ImageView
+        android:id="@+id/return_btn"
+        android:layout_width="64dp"
+        android:layout_height="53dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/return_btn" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/player_info_container"
@@ -195,7 +222,6 @@
             app:autoSizeTextType="uniform"
             app:layout_constraintBottom_toTopOf="@+id/player_hp_bar_container"
             app:layout_constraintEnd_toStartOf="@+id/txt_player_lvl"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed" />
@@ -249,7 +275,7 @@
             android:layout_height="0dp"
             android:layout_margin="12dp"
             android:scaleType="fitXY"
-            app:layout_constraintBottom_toTopOf="@+id/btn_attack_container"
+            app:layout_constraintBottom_toTopOf="@+id/layout_menu_principal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -257,11 +283,12 @@
             app:srcCompat="@drawable/dialog_box_battle" />
 
         <TextView
-            android:id="@+id/textView10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/txt_dialogue_battle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="16dp"
             android:fontFamily="@font/roboto_bold"
-            android:text="C'est Super efficace"
+            android:text="Que doit faire le Pokémon ?"
             android:textColor="#000000"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/dialog_box"
@@ -270,99 +297,143 @@
             app:layout_constraintTop_toTopOf="@+id/dialog_box" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/btn_attack_container"
-            android:layout_width="0dp"
+            android:id="@+id/layout_menu_principal"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btn_team_container"
-            app:layout_constraintHorizontal_weight="2"
-            app:layout_constraintStart_toStartOf="@+id/dialog_box"
             app:layout_constraintTop_toBottomOf="@+id/dialog_box"
             app:layout_constraintVertical_weight="1">
 
-            <ImageView
-                android:id="@+id/imageView13"
-                android:layout_width="match_parent"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/btn_attack_container"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/attack_btn_battle" />
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btn_team_container"
+                app:layout_constraintHorizontal_weight="2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/txt_attack"
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/attack_btn_battle" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/pixel"
+                    android:gravity="center"
+                    android:padding="10sp"
+                    android:shadowColor="#333333"
+                    android:shadowDx="5"
+                    android:shadowDy="5"
+                    android:shadowRadius="0.1"
+                    android:text="ATTAQUER"
+                    android:textColor="#FFFFFF"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
+                    app:autoSizeMaxTextSize="100sp"
+                    app:autoSizeMinTextSize="10sp"
+                    app:autoSizeTextType="uniform" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/btn_team_container"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_margin="8dp"
-                android:fontFamily="@font/pixel"
-                android:gravity="center"
-                android:maxLines="1"
-                android:padding="4dp"
-                android:shadowColor="#333333"
-                android:shadowDx="5"
-                android:shadowDy="5"
-                android:shadowRadius="0.1"
-                android:text="ATTAQUER"
-                android:textColor="#FFFFFF"
-                android:textSize="32sp"
-                android:textStyle="bold"
-                app:autoSizeMaxTextSize="100sp"
-                app:autoSizeMinTextSize="10sp"
-                app:autoSizeTextType="uniform"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/rounded_back_orange_small_border2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintHorizontal_weight="0.8"
+                app:layout_constraintStart_toEndOf="@+id/btn_attack_container"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/icon_pokeball"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_margin="8dp"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintBottom_toTopOf="@+id/txt_team"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/pokeball" />
+
+                <TextView
+                    android:id="@+id/txt_team"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:fontFamily="@font/pixel"
+                    android:gravity="center"
+                    android:text="Équipe"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:shadowColor="#FFFFFF"
+                    android:shadowDx="4"
+                    android:shadowDy="4"
+                    android:shadowRadius="0.1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/btn_team_container"
-            android:layout_width="0dp"
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_menu_equipe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#D9000000"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/title_team"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/pixel"
+            android:text="Mon Équipe"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/btn_close_team"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="16dp"
+            android:src="@drawable/return_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ScrollView
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/rounded_back_orange_small_border2"
+            android:layout_margin="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/dialog_box"
-            app:layout_constraintHorizontal_weight="0.8"
-            app:layout_constraintStart_toEndOf="@+id/btn_attack_container"
-            app:layout_constraintTop_toBottomOf="@+id/dialog_box">
+            app:layout_constraintTop_toBottomOf="@+id/title_team">
 
-            <ImageView
-                android:id="@+id/icon_pokeball"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_margin="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/txt_team"
-                app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/pokeball" />
-
-            <TextView
-                android:id="@+id/txt_team"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/team_list_container"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:fontFamily="@font/pixel"
-                android:gravity="center"
-                android:maxLines="1"
-                android:shadowColor="#FFFFFF"
-                android:shadowDx="4"
-                android:shadowDy="4"
-                android:shadowRadius="0.1"
-                android:text="Équipe"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:autoSizeMaxTextSize="30sp"
-                app:autoSizeMinTextSize="8sp"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:orientation="vertical" />
+        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
