@@ -419,7 +419,13 @@ class PlayActivity : BaseActivity() {
         if (puissance == 0) degats = 0.0
 
         val isCrit = Random.nextDouble() < attaque.critRatio
+        val isMiss = Random.nextDouble() >= attaque.accuracy
         if (isCrit && degats > 0) degats *= 1.5
+        if(isMiss){
+            messageRetour = "${defenseur.species.nom} évite l'attaque"
+            return messageRetour
+        }
+
 
         val typeAtkEnum = try {
             PokemonType.valueOf(attaque.type.uppercase())
@@ -431,18 +437,19 @@ class PlayActivity : BaseActivity() {
 
         if (isCrit && degatsFinal > 0) messageRetour += "Coup critique !\n"
 
-        if (multiplicateur == 0.0) {
-            messageRetour += "Ça n'affecte pas ${defenseur.species.nom}..."
-        } else if (multiplicateur > 2.0) {
-            messageRetour += "C'est extrêmement efficace !"
-        } else if (multiplicateur >= 2.0) {
-            messageRetour += "C'est super efficace !"
-        } else if (multiplicateur == 0.5) {
-            messageRetour += "Ce n'est pas très efficace !"
-        } else if (multiplicateur == 0.25) {
-            messageRetour += "C'est extrêmement inefficace !"
+        if(attaque.basePower != 0){
+            if (multiplicateur == 0.0) {
+                messageRetour += "Ça n'affecte pas ${defenseur.species.nom}..."
+            } else if (multiplicateur > 2.0) {
+                messageRetour += "C'est extrêmement efficace !"
+            } else if (multiplicateur >= 2.0) {
+                messageRetour += "C'est super efficace !"
+            } else if (multiplicateur == 0.5) {
+                messageRetour += "Ce n'est pas très efficace !"
+            } else if (multiplicateur == 0.25) {
+                messageRetour += "C'est extrêmement inefficace !"
+            }
         }
-
         defenseur.prendreDmg(degatsFinal)
 
         if (attaque.drain && degatsFinal > 0) {
@@ -451,11 +458,8 @@ class PlayActivity : BaseActivity() {
                 attaquant.heal(drainAmount)
             }
         }
-
         appliquerEffetsStats(attaquant, defenseur, attaque)
-
         updateUI(animate = true)
-
         return messageRetour
     }
 
