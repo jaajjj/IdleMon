@@ -122,7 +122,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun animPlayBtn() {
-        // On verrouille les clics
+        //on verrouille les clics
         isOnAnim = true
 
         MusicManager.lancerSequenceCombat(this)
@@ -133,7 +133,7 @@ class MainActivity : BaseActivity() {
             .load(R.drawable.transition_battle)
             .into(summonGifView)
 
-        val gifDurationInMillis: Long = 3080
+        val gifDurationInMillis: Long = 2900
 
         android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
             val intent = Intent(this@MainActivity, PlayActivity::class.java)

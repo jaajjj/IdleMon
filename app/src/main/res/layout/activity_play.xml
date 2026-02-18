@@ -318,6 +318,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
+                    android:id="@+id/imageView10"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitXY"
@@ -328,18 +329,22 @@
                     android:layout_height="match_parent"
                     android:fontFamily="@font/pixel"
                     android:gravity="center"
-                    android:padding="10sp"
+                    android:padding="30sp"
                     android:shadowColor="#333333"
                     android:shadowDx="5"
                     android:shadowDy="5"
                     android:shadowRadius="0.1"
                     android:text="ATTAQUER"
                     android:textColor="#FFFFFF"
-                    android:textSize="32sp"
+                    android:textSize="30sp"
                     android:textStyle="bold"
                     app:autoSizeMaxTextSize="100sp"
                     app:autoSizeMinTextSize="10sp"
-                    app:autoSizeTextType="uniform" />
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout

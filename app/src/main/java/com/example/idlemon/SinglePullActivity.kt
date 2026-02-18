@@ -116,7 +116,11 @@ class SinglePullActivity : BaseActivity(), PanoramaUI {
         txtRarete.text = pokemon.species.rarete
         txtRarete.setTextColor(rareteColor)
         Glide.with(this).asGif().load(DataManager.model.getFrontSprite(pokemon.species.num)).into(imgPoke)
-        btnQuit.setOnClickListener { dialog.dismiss(); finish() }
+        btnQuit.setOnClickListener {
+            MusicManager.jouerPlaylistHome(this)
+            dialog.dismiss()
+            finish()
+        }
         dialog.show()
         dialog.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)

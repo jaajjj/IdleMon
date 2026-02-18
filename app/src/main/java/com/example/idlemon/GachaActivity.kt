@@ -79,19 +79,27 @@ class GachaActivity : BaseActivity() {
     }
 
     private fun playSummonAnimation(nbVoeux: Int) {
+        var isFinished = false
+        MusicManager.stop()
         videoContainer.visibility = View.VISIBLE
         val videoPath = "android.resource://" + packageName + "/" + R.raw.anim_gacha
         val uri = Uri.parse(videoPath)
         summonVideoView.setVideoURI(uri)
+
         summonVideoView.setOnCompletionListener {
-            goToResultActivity(nbVoeux)
+            if (!isFinished) {
+                isFinished = true
+                goToResultActivity(nbVoeux)
+            }
         }
         skipBtn.setOnClickListener {
-            summonVideoView.stopPlayback()
-            goToResultActivity(nbVoeux)
+            if (!isFinished) {
+                isFinished = true
+                summonVideoView.stopPlayback()
+                goToResultActivity(nbVoeux)
+            }
         }
 
-        //lance la vid
         summonVideoView.start()
     }
 
@@ -102,6 +110,7 @@ class GachaActivity : BaseActivity() {
         } else {
             Intent(this, TenPullActivity::class.java)
         }
+        MusicManager.lancerVoeux(this)
         startActivity(intent)
         //ajout du fadeIn et out
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out)

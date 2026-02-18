@@ -1,8 +1,12 @@
 package com.example.idlemon
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ValueAnimator
 import android.content.Context
 import android.media.MediaPlayer
 import android.media.SoundPool
+import android.view.animation.LinearInterpolator
 
 object MusicManager {
 
@@ -11,9 +15,39 @@ object MusicManager {
     private val mapDeSon: HashMap<String, Int> = HashMap()
     private var compteurActivites = 0
 
-    // Ajoute ici tes autres musiques pour la boucle après l'intro
-    private val playlist = listOf(
-        R.raw.battle1
+    private const val FADE_DURATION = 800L
+
+    private val playlistRoute = listOf(
+        R.raw.route,
+        R.raw.route1,
+        R.raw.route2,
+        R.raw.route3,
+        R.raw.route4,
+        R.raw.route5,
+        R.raw.route6,
+        R.raw.route7,
+        R.raw.route8
+    )
+    private val playlistBoss = listOf(
+        R.raw.boss,
+        R.raw.boss1,
+        R.raw.boss2,
+        R.raw.boss3,
+        R.raw.boss4,
+        R.raw.boss5,
+        R.raw.boss6,
+        R.raw.boss7,
+        R.raw.boss8,
+        R.raw.boss9,
+        R.raw.boss10
+    )
+    private val playlistHome = listOf(
+        R.raw.home,
+        R.raw.home2,
+        R.raw.home3
+    )
+    private val playlistVoeux = listOf(
+        R.raw.voeux
     )
 
     fun setup(context: Context) {
@@ -23,57 +57,156 @@ object MusicManager {
             mapDeSon["son3"] = soundPool.load(context, R.raw.son3, 1)
             mapDeSon["faa"] = soundPool.load(context, R.raw.faa, 1)*/
 
-            // Par défaut on lance battle1 en boucle (pour le menu)
-            mediaPlayer = MediaPlayer.create(context.applicationContext, R.raw.battle1)
-            mediaPlayer?.setVolume(1f, 1f)
-            mediaPlayer?.isLooping = true
-            mediaPlayer?.start()
+            jouerPlaylistHome(context)
         }
     }
 
     fun lancerSequenceCombat(context: Context) {
-        //on coupe la musique
-        mediaPlayer?.stop()
-        mediaPlayer?.release()
+        //pas de fadeOut
+        try {
+            mediaPlayer?.stop()
+            mediaPlayer?.release()
+            mediaPlayer = null
+        } catch (e: Exception) { e.printStackTrace() }
 
-        mediaPlayer = MediaPlayer.create(context.applicationContext, R.raw.battle1)
-        mediaPlayer?.isLooping = false
-        mediaPlayer?.start()
+        try {
+            mediaPlayer = MediaPlayer.create(context.applicationContext, R.raw.battle1)
+            mediaPlayer?.apply {
+                isLooping = false
+                setVolume(1.0f, 1.0f)
+                start()
 
-        //playlist
-        mediaPlayer?.setOnCompletionListener {
-            jouerPlaylist(context)
+                setOnCompletionListener {
+                    lancerBoucleCombatImmediate(context)
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
-    private fun jouerPlaylist(context: Context) {
-        // Si ta playlist est vide, on ne fait rien (ou on remet battle1)
-        if (playlist.isEmpty()) return
-
+    private fun lancerBoucleCombatImmediate(context: Context) {
         mediaPlayer?.release()
+        val musiqueSuivante = playlistRoute.random()
 
-        // Prend une musique au hasard (ou la première [0])
-        val musiqueSuivante = playlist.random()
+        try {
+            mediaPlayer = MediaPlayer.create(context.applicationContext, musiqueSuivante)
+            mediaPlayer?.apply {
+                isLooping = true
+                setVolume(1.0f, 1.0f)
+                start()
+            }
+        } catch (e: Exception) { e.printStackTrace() }
+    }
 
-        mediaPlayer = MediaPlayer.create(context.applicationContext, musiqueSuivante)
-        mediaPlayer?.isLooping = true // Celle-ci boucle à l'infini
-        mediaPlayer?.start()
+    fun jouerPlaylistHome(context: Context) {
+        val musiqueSuivante = playlistHome.random()
+        transitionVersMusique(context, musiqueSuivante, loop = true)
+    }
+
+    fun lancerVoeux(context: Context) {
+        val musiqueSuivante = playlistVoeux.random()
+        transitionVersMusique(context, musiqueSuivante, loop = true)
+    }
+
+    fun jouerPlaylistBoss(context: Context) {
+        val musiqueSuivante = playlistBoss.random()
+        transitionVersMusique(context, musiqueSuivante, loop = true)
+    }
+    fun jouerPlaylistBattle(context: Context) {
+        val musiqueSuivante = playlistRoute.random()
+        transitionVersMusique(context, musiqueSuivante, loop = true)
+    }
+
+    private fun transitionVersMusique(context: Context, resId: Int, loop: Boolean, onMusicStarted: (() -> Unit)? = null) {
+        val currentPlayer = mediaPlayer
+
+        if (currentPlayer != null && currentPlayer.isPlaying) {
+            //fade Out
+            val fadeOut = ValueAnimator.ofFloat(1.0f, 0.0f)
+            fadeOut.duration = FADE_DURATION
+            fadeOut.interpolator = LinearInterpolator()
+
+            fadeOut.addUpdateListener { animation ->
+                try {
+                    val volume = animation.animatedValue as Float
+                    currentPlayer.setVolume(volume, volume)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+
+            fadeOut.addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    try {
+                        currentPlayer.stop()
+                        currentPlayer.release()
+                    } catch (e: Exception) { e.printStackTrace() }
+
+                    lancerNouvelleMusiqueAvecFadeIn(context, resId, loop, onMusicStarted)
+                }
+            })
+            fadeOut.start()
+        } else {
+            lancerNouvelleMusiqueAvecFadeIn(context, resId, loop, onMusicStarted)
+        }
+    }
+
+    private fun lancerNouvelleMusiqueAvecFadeIn(context: Context, resId: Int, loop: Boolean, onMusicStarted: (() -> Unit)?) {
+        try {
+            mediaPlayer = MediaPlayer.create(context.applicationContext, resId)
+            mediaPlayer?.apply {
+                isLooping = loop
+                setVolume(0.0f, 0.0f) //on commence silencieux
+                start()
+            }
+
+            onMusicStarted?.invoke()
+
+            //fade In
+            val fadeIn = ValueAnimator.ofFloat(0.0f, 1.0f)
+            fadeIn.duration = FADE_DURATION
+            fadeIn.interpolator = LinearInterpolator()
+
+            fadeIn.addUpdateListener { animation ->
+                try {
+                    val volume = animation.animatedValue as Float
+                    mediaPlayer?.setVolume(volume, volume)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            fadeIn.start()
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     fun play() {
         if (mediaPlayer?.isPlaying == false) {
+            mediaPlayer?.setVolume(0.1f, 0.1f)
             mediaPlayer?.start()
+            val resumeFade = ValueAnimator.ofFloat(0.1f, 1.0f)
+            resumeFade.duration = 300
+            resumeFade.addUpdateListener { anim ->
+                val v = anim.animatedValue as Float
+                mediaPlayer?.setVolume(v, v)
+            }
+            resumeFade.start()
         }
     }
 
     fun pause() {
-        mediaPlayer?.pause()
+        if (mediaPlayer?.isPlaying == true) {
+            mediaPlayer?.pause()
+        }
     }
 
     fun stop() {
         mediaPlayer?.stop()
-        mediaPlayer?.prepare()
-        mediaPlayer?.seekTo(0)
+        mediaPlayer?.release()
+        mediaPlayer = null
     }
 
     fun resume() {
@@ -88,7 +221,7 @@ object MusicManager {
 
     fun onStartActivity() {
         if (compteurActivites == 0) {
-            play() // On relance si on revient dans l'appli
+            play()
         }
         compteurActivites++
     }
@@ -96,7 +229,7 @@ object MusicManager {
     fun onStopActivity() {
         compteurActivites--
         if (compteurActivites == 0) {
-            pause() // On coupe si on quitte l'appli
+            pause()
         }
     }
 }

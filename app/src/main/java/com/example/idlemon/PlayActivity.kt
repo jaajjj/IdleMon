@@ -21,7 +21,6 @@ import com.bumptech.glide.Glide
 import kotlin.random.Random
 
 class PlayActivity : BaseActivity() {
-
     //ui global
     private lateinit var txtDialogueBattle: TextView
     private lateinit var return_btn: ImageView
@@ -29,7 +28,7 @@ class PlayActivity : BaseActivity() {
 
     //menu
     private lateinit var layoutMenuPrincipal: View
-    private lateinit var layoutMenuEquipe: View //dialog équipe cachée par défaut
+    private lateinit var layoutMenuEquipe: View
 
     //menue équipe
     private lateinit var teamListContainer: LinearLayout
@@ -57,44 +56,46 @@ class PlayActivity : BaseActivity() {
     private lateinit var enemyPokemon: Pokemon
 
     private var isTurnInProgress = false
+    private var isTextWriting = false
     private var nbPieceGagnee = 0
     private var currentTurn = 1
     private var vagueActuelle = 1
     val modelJson = DataManager.model
+    private val VIT_TEXTE_NORMAL = 13L
+    private val VIT_TEXTE_XP = 10L
+    private val PAUSE_LECTURE = 500L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_play)
         setupFullscreen()
 
+        PokemonType.initialiserTable()
+
         initViews()
         setupBattle()
 
-        //attaquer btn
         btnAttack.setOnClickListener {
-            if (!isTurnInProgress) {
+            if (!isTurnInProgress && !isTextWriting) {
                 val dialog = BattleAttackDialog(this, playerPokemon) { attack ->
-                    //quand on clique sur uen attaque
                     executerTourDeJeu(attack)
                 }
                 dialog.show()
             }
         }
 
-        //Team btn
         btnTeam.setOnClickListener {
-            if (!isTurnInProgress) {
+            if (!isTurnInProgress && !isTextWriting) {
                 afficherMenuEquipe(false)
             }
         }
 
-        //fermer equipe btn
         btnCloseTeam.setOnClickListener {
             layoutMenuEquipe.visibility = View.GONE
         }
 
-        //quitter btn
         return_btn.setOnClickListener {
+            MusicManager.jouerPlaylistHome(this)
             resetPartieDonnees()
             finish()
         }
@@ -126,14 +127,12 @@ class PlayActivity : BaseActivity() {
         btnTeam = findViewById(R.id.btn_team_container)
     }
 
-    //équipe avec etaitKo qui permet de savoir si on switch ou on est forcé car un pokémon vient d'être KO
     private fun afficherMenuEquipe(etaitKo: Boolean) {
         layoutMenuEquipe.visibility = View.VISIBLE
         teamListContainer.removeAllViews()
 
         for (pokemon in Player.getEquipe()) {
             val itemView = layoutInflater.inflate(R.layout.item_team_battle, teamListContainer, false)
-            //init vue
             val name = itemView.findViewById<TextView>(R.id.item_poke_name)
             val lvl = itemView.findViewById<TextView>(R.id.item_poke_lvl)
             val hpBar = itemView.findViewById<ProgressBar>(R.id.item_poke_hp_bar)
@@ -147,20 +146,16 @@ class PlayActivity : BaseActivity() {
             hpBar.progress = pokemon.currentHp
             hpText.text = "${pokemon.currentHp}/$maxHp"
             updateHpColor(hpBar, pokemon.currentHp, maxHp)
-            //gif poké
             Glide.with(this).load(DataManager.model.getFrontSprite(pokemon.species.num)).into(icon)
-            //actif ou ko
             if (pokemon.isKO) itemView.alpha = 0.5f
             if (pokemon == playerPokemon) name.text = "${pokemon.species.nom} (Actif)"
 
-            //switch gestion
             itemView.setOnClickListener {
                 if (pokemon == playerPokemon) {
                     Toast.makeText(this, "Déjà au combat !", Toast.LENGTH_SHORT).show()
                 } else if (pokemon.isKO) {
                     Toast.makeText(this, "Ce Pokémon est K.O.", Toast.LENGTH_SHORT).show()
                 } else {
-                    //etaitKO est à false car on vient de changer de pokémon
                     changerPokemon(pokemon, etaitKo)
                     layoutMenuEquipe.visibility = View.GONE
                 }
@@ -169,10 +164,7 @@ class PlayActivity : BaseActivity() {
         }
     }
 
-    //Combat
-
     private fun setupBattle() {
-        //on quitte si l'équipe est vide à enlever + tard
         if (Player.getEquipe().isEmpty()) {
             finish()
             return
@@ -185,33 +177,36 @@ class PlayActivity : BaseActivity() {
             playerPokemon = Player.getPremierPokemon()
         }
 
-        //genere l'ennemi random et actualise l'UI
-        genererEnnemi()
+        if (vagueActuelle % 10 == 0) {
+            MusicManager.jouerPlaylistBoss(this)
+            genererEnnemi()
+        }else{
+            genererEnnemi()
+        }
+        if (vagueActuelle > 1 && (vagueActuelle - 1) % 10 == 0) {
+            MusicManager.jouerPlaylistBattle(this)
+        }
         updateUI(animate = false)
-        //annime arrivée
         animateEntry(imgPokePlayer, isPlayer = true)
         animateEntry(imgPokeEnemy, isPlayer = false)
-        //tour et init texte tour
         currentTurn = 1
         numVague.text = "Vague $vagueActuelle | Tour $currentTurn"
-        txtDialogueBattle.text = "Un ${enemyPokemon.species.nom} sauvage apparaît !"
+
+        animateText("Un ${enemyPokemon.species.nom} sauvage apparaît !")
     }
 
     private fun genererEnnemi() {
         enemyPokemon = modelJson.getRandomPokemon()
-        //level proche du joueur à changer
         val baseLvl = playerPokemon.level
         val randomLvl = (baseLvl - 2..baseLvl + 2).random().coerceAtLeast(1)
         enemyPokemon.level = 1
         for (i in 1 until randomLvl) enemyPokemon.monterLevel()
         enemyPokemon.currentHp = enemyPokemon.getMaxHp()
 
-        //on donne 4 attaques random
         val attaquesDispo = modelJson.getAttackDispo(enemyPokemon)
         enemyPokemon.attacks.clear()
         val selectedAttacks = attaquesDispo.shuffled().take(4)
         for (atk in selectedAttacks) enemyPokemon.addAttack(atk)
-        //init pour animation
         imgPokeEnemy.alpha = 1f
         imgPokeEnemy.scaleX = 1f
         imgPokeEnemy.scaleY = 1f
@@ -223,17 +218,17 @@ class PlayActivity : BaseActivity() {
         animateSwitchOut(imgPokePlayer) {
             playerPokemon = newPokemon
             updateUI(animate = false)
-            txtDialogueBattle.text = "Go ! ${playerPokemon.species.nom} !"
-            animateEntry(imgPokePlayer, true)
-
-            Handler(Looper.getMainLooper()).postDelayed({
-                if(etaitKo) {
-                    isTurnInProgress = false
-                    txtDialogueBattle.text = "Que doit faire ${playerPokemon.species.nom} ?"
-                } else {
-                    tourEnnemiSeul()
-                }
-            }, 1000)
+            animateText("Go ! ${playerPokemon.species.nom} !") {
+                animateEntry(imgPokePlayer, true)
+                Handler(Looper.getMainLooper()).postDelayed({
+                    if(etaitKo) {
+                        isTurnInProgress = false
+                        animateText("Que doit faire ${playerPokemon.species.nom} ?")
+                    } else {
+                        tourEnnemiSeul()
+                    }
+                }, 1000)
+            }
         }
     }
 
@@ -244,44 +239,82 @@ class PlayActivity : BaseActivity() {
         val enemyAttack = enemyPokemon.attacks.random()
         val pSpeed = playerPokemon.currentVit
         val eSpeed = enemyPokemon.currentVit
-        //si vitesse égale, on choisit random
         val playerFirst = if (pSpeed == eSpeed) Random.nextBoolean() else pSpeed > eSpeed
 
-        //faire attaque
         if (playerFirst) {
             sequenceAttaque(playerPokemon, imgPokePlayer, enemyPokemon, imgPokeEnemy, playerAttack, enemyAttack, true)
         } else {
             sequenceAttaque(enemyPokemon, imgPokeEnemy, playerPokemon, imgPokePlayer, enemyAttack, playerAttack, false)
         }
     }
-
-    //fonction qui gère l'attaque
     private fun sequenceAttaque(first: Pokemon, viewFirst: ImageView, second: Pokemon, viewSecond: ImageView, move1: Attack, move2: Attack, isPlayerFirst: Boolean) {
-        txtDialogueBattle.text = "${first.species.nom} utilise ${move1.name} !"
-        animateAttackMove(viewFirst, isPlayerFirst) {
-            applicationDegats(first, second, move1)
-            animateHit(viewSecond)
-            if (second.isKO) {
-                animateKO(viewSecond) {
-                    finDuCombat(second)
-                }
-            } else {
-                Handler(Looper.getMainLooper()).postDelayed({
-                    txtDialogueBattle.text = "${second.species.nom} utilise ${move2.name} !"
-                    animateAttackMove(viewSecond, !isPlayerFirst) {
-                        applicationDegats(second, first, move2)
-                        animateHit(viewFirst)
-                        if (first.isKO) {
-                            animateKO(viewFirst) { finDuCombat(first) }
+
+        //écrit le texte d'attaque
+        animateText("${first.species.nom} utilise ${move1.name} !") {
+
+            //quand le texte fini, on attend un tout petit peu et on lance l'anim
+            Handler(Looper.getMainLooper()).postDelayed({
+
+                animateAttackMove(viewFirst, isPlayerFirst) {
+                    //impact -->calcule les dégats et récupère le texte d'efficacité
+                    val efficaciteMsg = applicationDegats(first, second, move1)
+                    animateHit(viewSecond)
+
+                    fun suiteApresAttaque() {
+                        if (second.isKO) {
+                            animateKO(viewSecond) {
+                                finDuCombat(second)
+                            }
                         } else {
+                            //tour du deuxième
                             Handler(Looper.getMainLooper()).postDelayed({
-                                isTurnInProgress = false
-                                txtDialogueBattle.text = "Que doit faire ${playerPokemon.species.nom} ?"
-                            }, 1000)
+
+                                //deuxième pokémon, Texte d'abord
+                                animateText("${second.species.nom} utilise ${move2.name} !") {
+
+                                    Handler(Looper.getMainLooper()).postDelayed({
+                                        animateAttackMove(viewSecond, !isPlayerFirst) {
+                                            val effMsg2 = applicationDegats(second, first, move2)
+                                            animateHit(viewFirst)
+
+                                            fun finDuTour() {
+                                                if (first.isKO) {
+                                                    animateKO(viewFirst) { finDuCombat(first) }
+                                                } else {
+                                                    Handler(Looper.getMainLooper()).postDelayed({
+                                                        isTurnInProgress = false
+                                                        animateText("Que doit faire ${playerPokemon.species.nom} ?")
+                                                    }, 500)
+                                                }
+                                            }
+
+                                            //efficacité 2ème attaque
+                                            if (effMsg2.isNotEmpty()) {
+                                                animateText(effMsg2) {
+                                                    Handler(Looper.getMainLooper()).postDelayed({ finDuTour() }, PAUSE_LECTURE)
+                                                }
+                                            } else {
+                                                finDuTour()
+                                            }
+                                        }
+                                    }, 200)
+                                }
+                            }, 500)
                         }
                     }
-                }, 1000)
-            }
+
+                    //efficacité 1ère attaque
+                    if (efficaciteMsg.isNotEmpty()) {
+                        animateText(efficaciteMsg) {
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                suiteApresAttaque()
+                            }, PAUSE_LECTURE)
+                        }
+                    } else {
+                        suiteApresAttaque()
+                    }
+                }
+            }, 200)
         }
     }
 
@@ -293,54 +326,63 @@ class PlayActivity : BaseActivity() {
         }
 
         val enemyAttack = enemyPokemon.attacks.random()
-        txtDialogueBattle.text = "${enemyPokemon.species.nom} utilise ${enemyAttack.name} !"
 
-        animateAttackMove(imgPokeEnemy, false) {
-            applicationDegats(enemyPokemon, playerPokemon, enemyAttack)
-            animateHit(imgPokePlayer)
+        animateText("${enemyPokemon.species.nom} utilise ${enemyAttack.name} !") {
 
-            if (playerPokemon.isKO) {
-                animateKO(imgPokePlayer) { finDuCombat(playerPokemon) }
-            } else {
-                Handler(Looper.getMainLooper()).postDelayed({
-                    isTurnInProgress = false
-                    txtDialogueBattle.text = "Que doit faire ${playerPokemon.species.nom} ?"
-                }, 1000)
-            }
+            //attente puis Anim
+            Handler(Looper.getMainLooper()).postDelayed({
+                animateAttackMove(imgPokeEnemy, false) {
+                    val effMsg = applicationDegats(enemyPokemon, playerPokemon, enemyAttack)
+                    animateHit(imgPokePlayer)
+
+                    fun checkFinTour() {
+                        if (playerPokemon.isKO) {
+                            animateKO(imgPokePlayer) { finDuCombat(playerPokemon) }
+                        } else {
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                isTurnInProgress = false
+                                animateText("Que doit faire ${playerPokemon.species.nom} ?")
+                            }, 500)
+                        }
+                    }
+
+                    if (effMsg.isNotEmpty()) {
+                        animateText(effMsg) {
+                            Handler(Looper.getMainLooper()).postDelayed({ checkFinTour() }, PAUSE_LECTURE)
+                        }
+                    } else {
+                        checkFinTour()
+                    }
+                }
+            }, 200)
         }
     }
 
-    private fun applicationDegats(attaquant: Pokemon, defenseur: Pokemon, attaque: Attack) {
-        //gestion PP
+    private fun applicationDegats(attaquant: Pokemon, defenseur: Pokemon, attaque: Attack): String {
+        var messageRetour = ""
+
         val atkIndex = attaquant.attacks.indexOf(attaque)
         if (atkIndex != -1) {
             val currentPP = attaquant.currentPP[atkIndex] ?: attaque.pp
             if (currentPP > 0) attaquant.currentPP[atkIndex] = currentPP - 1
         }
 
-        //gestion Heal
         if (attaque.heal > 0) {
             val healAmount = (attaquant.getMaxHp() * attaque.heal) / 100
             attaquant.heal(healAmount)
-            Handler(Looper.getMainLooper()).postDelayed({
-                if (!isDestroyed) Toast.makeText(this, "${attaquant.species.nom} récupère de la vie !", Toast.LENGTH_SHORT).show()
-            }, 500)
             updateUI(animate = true)
             appliquerEffetsStats(attaquant, defenseur, attaque)
-            return
+            return messageRetour
         }
 
-        //init puissance et def
         val puissance = if (attaque.basePower > 0) attaque.basePower else 0
         val levelFactor = (2 * attaquant.level / 5) + 2
         val statRatio = attaquant.currentAtk.toDouble() / defenseur.currentDef.toDouble()
         var degats = (((levelFactor * puissance * statRatio) / 50) + 2).toDouble()
 
-        //on met à 1 dmg minimum si c'est une attaque tres tres faible
         if (degats < 1 && puissance > 0) degats = 1.0
         if (puissance == 0) degats = 0.0
 
-        //gestion critique
         val isCrit = Random.nextDouble() < attaque.critRatio
         if (isCrit && degats > 0) degats *= 1.5
 
@@ -352,48 +394,34 @@ class PlayActivity : BaseActivity() {
         val multiplicateur = PokemonType.calculerEfficaciteContre(typeAtkEnum, defenseur)
         var degatsFinal = (degats * multiplicateur).toInt()
 
-        //gestion dialog efficacité
-        if (degatsFinal > 0) {
-            Handler(Looper.getMainLooper()).postDelayed({
-                if (!isDestroyed) {
-                    var msg = ""
-                    if (isCrit) msg = "Coup critique !\n"
+        if (isCrit && degatsFinal > 0) messageRetour += "Coup critique !\n"
 
-                    if (multiplicateur > 2.0) {
-                        msg += "C'est extrêmement efficace !"
-                        txtDialogueBattle.text = "C'est extrêmement efficace !"
-                    }else if (multiplicateur.toInt() == 2 ){
-                        msg += "C'est super efficace !"
-                        txtDialogueBattle.text = "C'est super efficace !"
-                    }else if (multiplicateur == 0.5){
-                        msg += "Ce n'est pas très efficace !"
-                        txtDialogueBattle.text = "Ce n'est pas très efficace !"
-                    }else if(multiplicateur == 0.25){
-                        msg += "C'est extrêmement inefficace !"
-                        txtDialogueBattle.text = "C'est extrêmement inefficace !"
-                    }
-                    if(msg.isNotEmpty()) Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
-                }
-            }, 500)
+        if (multiplicateur == 0.0) {
+            messageRetour += "Ça n'affecte pas ${defenseur.species.nom}..."
+        } else if (multiplicateur > 2.0) {
+            messageRetour += "C'est extrêmement efficace !"
+        } else if (multiplicateur >= 2.0) {
+            messageRetour += "C'est super efficace !"
+        } else if (multiplicateur == 0.5) {
+            messageRetour += "Ce n'est pas très efficace !"
+        } else if (multiplicateur == 0.25) {
+            messageRetour += "C'est extrêmement inefficace !"
         }
 
         defenseur.prendreDmg(degatsFinal)
 
-        //gestion drain
         if (attaque.drain && degatsFinal > 0) {
             val drainAmount = degatsFinal / 2
             if (drainAmount > 0) {
                 attaquant.heal(drainAmount)
-                Handler(Looper.getMainLooper()).postDelayed({
-                    if(!isDestroyed) Toast.makeText(this, "Vie drainée !", Toast.LENGTH_SHORT).show()
-                }, 600)
             }
         }
 
-        //gestion bonus/malus
         appliquerEffetsStats(attaquant, defenseur, attaque)
 
         updateUI(animate = true)
+
+        return messageRetour
     }
 
     private fun appliquerEffetsStats(attaquant: Pokemon, defenseur: Pokemon, attaque: Attack) {
@@ -423,58 +451,117 @@ class PlayActivity : BaseActivity() {
             }
         }
         if (msg.isNotEmpty()) {
-            Handler(Looper.getMainLooper()).postDelayed({
-                if (!isDestroyed) Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
-            }, 800)
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun finDuCombat(loser: Pokemon) {
         if (loser == enemyPokemon) {
-            txtDialogueBattle.text = "Ennemi K.O. ! Victoire !"
+            val listeDialogues = ArrayList<String>()
+
+            listeDialogues.add("Ennemi K.O. ! Victoire !")
+
             nbPieceGagnee += 100
+            listeDialogues.add("Vous remportez 100 PokéOr.")
 
-            //20 + moyenne des stats du poké + (level/7)
-            val xpGain = 20 + (enemyPokemon.currentAtk + enemyPokemon.currentDef + enemyPokemon.currentVit + enemyPokemon.getMaxHp())/5 + (enemyPokemon.level/7)
-            val aLevelUp = playerPokemon.gagnerExperience(xpGain)
-            var msg = "Vous gagnez $xpGain XP."
-            if (aLevelUp){
-                msg += "\n${playerPokemon.species.nom} monte au niveau ${playerPokemon.level} !"
-                //MusicManager.playNotifLvlUp()
+            val xpGain = 20 + (enemyPokemon.currentAtk + enemyPokemon.currentDef + enemyPokemon.currentVit + enemyPokemon.getMaxHp())/5 + (enemyPokemon.level)
+
+            for(poke in Player.getEquipe()){
+                if(!poke.isKO){
+                    val gainReel = if (poke == playerPokemon) xpGain else xpGain/3
+                    val aLevelUp = poke.gagnerExperience(gainReel)
+
+                    var msgXP = "${poke.species.nom} gagne $gainReel XP"
+                    if (aLevelUp) {
+                        msgXP += ", il passe au niveau ${poke.level}."
+                    } else {
+                        msgXP += "."
+                    }
+                    listeDialogues.add(msgXP)
+
+                    if (aLevelUp){
+                        if(poke.species.evo != null && poke.species.evoLevel != null && poke.species.evoLevel!! <= poke.level){
+                            listeDialogues.add("Hein ? ${poke.species.nom} évolue !")
+
+                            val oldName = poke.species.nom
+                            val oldLevel = poke.level
+                            poke.species = modelJson.creerPokemon(poke.species.evo).species
+                            poke.level = 1
+                            for (i in 1 until oldLevel) poke.monterLevel()
+                            poke.currentHp = poke.getMaxHp()
+
+                            listeDialogues.add("$oldName a évolué en ${poke.species.nom} !")
+                        }
+                    }
+                }
             }
-            //cas d'évolution peut etre à revoir
-            if(playerPokemon.species.evo != null && playerPokemon.species.evoLevel!! <= playerPokemon.level){
-                msg += "\n${playerPokemon.species.nom} à évolué en ${playerPokemon.species.evo} !"
-                var oldLevel = playerPokemon.level
-                playerPokemon.species = modelJson.creerPokemon(playerPokemon.species.evo).species
-                playerPokemon.level = 1
-                for (i in 1 until oldLevel) playerPokemon.monterLevel() //pour augementer les stats
-                playerPokemon.currentHp = playerPokemon.getMaxHp()
-                updateUI(animate = false)
 
-            }
-            Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
-
-            Handler(Looper.getMainLooper()).postDelayed({
+            afficherDialoguesSuccessifs(listeDialogues) {
                 if (!isDestroyed && !isFinishing) {
                     vagueActuelle++
                     currentTurn = 1
                     numVague.text = "Vague $vagueActuelle | Tour $currentTurn"
+                    updateUI(animate = false)
                     setupBattle()
                     isTurnInProgress = false
                 }
-            }, 4000)
+            }
+
         } else {
-            txtDialogueBattle.text = "${playerPokemon.species.nom} est K.O..."
+            animateText("${playerPokemon.species.nom} est K.O...")
+
             isTurnInProgress = false
             if (Player.getEquipe().all { it.isKO }) {
                 Toast.makeText(this, "GAME OVER", Toast.LENGTH_LONG).show()
-                resetPartieComplet()
-                finish()
+                resetPartieDonnees()
+                MusicManager.jouerPlaylistHome(this)
+                Handler(Looper.getMainLooper()).postDelayed({
+                    finish()
+                }, 800)
             } else {
                 afficherMenuEquipe(true)
             }
         }
+    }
+
+    private fun afficherDialoguesSuccessifs(messages: List<String>, onFinished: () -> Unit) {
+        if (messages.isEmpty()) {
+            onFinished()
+            return
+        }
+
+        val messageActuel = messages[0]
+        val isXpMsg = messageActuel.contains("XP") || messageActuel.contains("niveau") || messageActuel.contains("gagne")
+        val vitesse = if (isXpMsg) VIT_TEXTE_XP else VIT_TEXTE_NORMAL
+
+        animateText(messageActuel, vitesse) {
+            Handler(Looper.getMainLooper()).postDelayed({
+                afficherDialoguesSuccessifs(messages.drop(1), onFinished)
+            }, PAUSE_LECTURE)
+        }
+    }
+
+    private fun animateText(text: String, speed: Long = VIT_TEXTE_NORMAL, onCompleted: (() -> Unit)? = null) {
+        isTextWriting = true
+        txtDialogueBattle.text = ""
+        var charIndex = 0
+        val handler = Handler(Looper.getMainLooper())
+
+        val runnable = object : Runnable {
+            override fun run() {
+                if(isDestroyed || isFinishing) return
+
+                if (charIndex < text.length) {
+                    txtDialogueBattle.append(text[charIndex].toString())
+                    charIndex++
+                    handler.postDelayed(this, speed)
+                } else {
+                    isTextWriting = false
+                    onCompleted?.invoke()
+                }
+            }
+        }
+        handler.post(runnable)
     }
 
     fun resetPartieComplet(){
@@ -482,11 +569,9 @@ class PlayActivity : BaseActivity() {
         vagueActuelle = 1
         currentTurn = 1
         numVague.text = "Vague $vagueActuelle | Tour $currentTurn"
-        setupBattle()
         isTurnInProgress = false
-        txtDialogueBattle.text = "Un ${enemyPokemon.species.nom} sauvage apparaît !"
+        animateText("Un ${enemyPokemon.species.nom} sauvage apparaît !")
         updateUI(animate = false)
-        //plus tard, afficher dialogue de récompense de fin de partie
     }
 
     private fun resetPartieDonnees() {
@@ -498,7 +583,6 @@ class PlayActivity : BaseActivity() {
             pokemon.currentHp = pokemon.getMaxHp()
             pokemon.level = 1
             pokemon.exp = 0
-            //reset stats combat (manuellement si pas de fonction dédiée)
             pokemon.currentAtk = ((2 * pokemon.species.baseStats.atk * pokemon.level) / 100) + 5
             pokemon.currentDef = ((2 * pokemon.species.baseStats.def * pokemon.level) / 100) + 5
             pokemon.currentVit = ((2 * pokemon.species.baseStats.vit * pokemon.level) / 100) + 5
@@ -532,7 +616,6 @@ class PlayActivity : BaseActivity() {
     private fun updateUI(animate: Boolean) {
         if(isDestroyed || isFinishing) return
 
-        //player
         txtPlayerName.text = playerPokemon.species.nom
         txtPlayerLvl.text = "Lv${playerPokemon.level}"
         val maxHpP = playerPokemon.getMaxHp()
@@ -547,7 +630,6 @@ class PlayActivity : BaseActivity() {
         }
         Glide.with(this).load(DataManager.model.getBackSprite(playerPokemon.species.num)).into(imgPokePlayer)
 
-        //enemie
         txtEnemyName.text = enemyPokemon.species.nom
         txtEnemyLvl.text = "Lv${enemyPokemon.level}"
         val maxHpE = enemyPokemon.getMaxHp()

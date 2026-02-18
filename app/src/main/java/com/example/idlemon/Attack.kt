@@ -1,6 +1,6 @@
 package com.example.idlemon
 
-open class Attack(
+class Attack(
     val num: Int,
     val name: String,
     val type: String,
@@ -16,18 +16,3 @@ open class Attack(
     var malus: List<Map<String, Int>>? = null
 
 }
-
-class DamageAttack(
-    num: Int, name: String, type: String, description: String,
-    accuracy: Double, pp: Int, basePower: Int, critRatio: Double
-) : Attack(num, name, type, description, accuracy, pp, basePower, critRatio)
-
-class DrainAttack(
-    num: Int, name: String, type: String, description: String,
-    accuracy: Double, pp: Int, basePower: Int, critRatio: Double
-) : Attack(num, name, type, description, accuracy, pp, basePower, critRatio)
-
-class StatusAttack(
-    num: Int, name: String, type: String, description: String,
-    accuracy: Double, pp: Int
-) : Attack(num, name, type, description, accuracy, pp, 0)
