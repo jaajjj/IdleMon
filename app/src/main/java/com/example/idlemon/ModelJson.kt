@@ -90,12 +90,21 @@ class ModelJson(context: Context) {
     // --- Logique métier (Attaques & Gacha) ---
     fun getAttackDispo(pokemon: Pokemon): List<Attack> {
         val dispo = mutableListOf<Attack>()
-        val pokeTypes = pokemon.species.type.map { it.nom.lowercase() }
+        val pokeTypes = pokemon.species.type.map { it.nom.lowercase() } // Ex: ["feu", "vol"]
         val atackActu = pokemon.attacks.map { it.name }
 
+        // 1. On récupère les types "étendus" compatibles
+        val typesCompatibles = getTypesCompatibles(pokeTypes)
+
         for (attack in allAttacks.values) {
+
+            // 2. Vérification des attaques Signatures (si tu as mis en place la logique précédente)
+            if (attack.exclusive && !isSignatureMoveForPokemon(attack, pokemon)) {
+                continue
+            }
+
             val attackType = attack.type.lowercase()
-            val isCompatible = pokeTypes.contains(attackType) || attackType == "normal"
+            val isCompatible = typesCompatibles.contains(attackType)
             val dejaConnu = atackActu.contains(attack.name)
 
             if (isCompatible && !dejaConnu) {
@@ -103,6 +112,70 @@ class ModelJson(context: Context) {
             }
         }
         return dispo
+    }
+
+    // À la fin de ModelJson.kt
+
+    private fun isSignatureMoveForPokemon(attack: Attack, pokemon: Pokemon): Boolean {
+        return when (attack.name) {
+            "Feu Sacré" -> pokemon.species.nom == "Ho-Oh" || pokemon.species.nom == "Entei"
+            "Aéroblast" -> pokemon.species.nom == "Lugia"
+            "Frappe Psy" -> pokemon.species.nom == "Mewtwo"
+            "Lame Pangéenne" -> pokemon.species.nom == "Groudon"
+            "Onde Originelle" -> pokemon.species.nom == "Kyogre"
+            "Draco-Ascension" -> pokemon.species.nom == "Rayquaza"
+            "Hurle-Temps" -> pokemon.species.nom == "Dialga"
+            "Spatio-Rift" -> pokemon.species.nom == "Palkia"
+            "Revenant" -> pokemon.species.nom == "Giratina"
+            "Coup Victoire" -> pokemon.species.nom == "Victini"
+            "Mort-Ailes" -> pokemon.species.nom == "Yveltal"
+            "Géo-Contrôle" -> pokemon.species.nom == "Xerneas"
+            "Choc Météore" -> pokemon.species.nom == "Solgaleo"
+            "Rayon Spectral" -> pokemon.species.nom == "Lunala"
+            "Vitesse Extrême" -> pokemon.species.nom in listOf("Arceus", "Lucario", "Arcanin", "Rayquaza")
+            else -> false
+        }
+    }
+
+    private fun getTypesCompatibles(pokeTypes: List<String>): List<String> {
+        val autorisee = mutableSetOf<String>() // Set pour éviter les doublons
+        autorisee.add("normal")
+
+        //Ajoute les attaque de ses types
+        autorisee.addAll(pokeTypes)
+
+        //ajout des possibilité d'apprentissage selon le type
+        for (type in pokeTypes) {
+            when (type) {
+                "eau" -> autorisee.add("glace")
+                "glace" -> autorisee.add("eau")
+                "sol" -> autorisee.add("roche")
+                "roche" -> autorisee.add("sol")
+                "vol" -> autorisee.add("acier")
+                "psy" -> {
+                    autorisee.add("fee")
+                    autorisee.add("spectre")
+                }
+                "spectre" -> autorisee.add("tenebre")
+                "tenebre" -> autorisee.add("spectre")
+                "combat" -> autorisee.add("roche")
+                "insecte" -> {
+                    autorisee.add("poison")
+                    autorisee.add("plante")
+                }
+                "plante" -> autorisee.add("poison")
+                "dragon" -> {
+                    autorisee.add("feu")
+                    autorisee.add("electrik")
+                    autorisee.add("glace")
+                    autorisee.add("vol")
+                }
+                "feu" -> autorisee.add("sol")
+                "electrik" -> autorisee.add("acier")
+                "fee" -> autorisee.add("psy")
+            }
+        }
+        return autorisee.toList()
     }
 
     fun getAttackByNom(nom: String): Attack {

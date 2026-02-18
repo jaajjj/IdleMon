@@ -147,7 +147,7 @@ class ChangeTeamDialog(
             pokeName.text = pokemon.species.nom
 
             Glide.with(context)
-                .asGif()
+                .asBitmap()
                 .load(DataManager.model.getFrontSprite(pokemon.species.num))
                 .fitCenter()
                 .into(pokeSprite)

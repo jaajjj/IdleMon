@@ -501,8 +501,7 @@ class PlayActivity : BaseActivity() {
     private fun finDuCombat(loser: Pokemon) {
         if (loser == enemyPokemon) {
             val listeDialogues = ArrayList<String>()
-
-            listeDialogues.add("Ennemi K.O. ! Victoire !")
+            listeDialogues.add("{${enemyPokemon.species.nom} est K.O.")
 
             val xpGain = 20 + (enemyPokemon.currentAtk + enemyPokemon.currentDef + enemyPokemon.currentVit + enemyPokemon.getMaxHp())/5 + (enemyPokemon.level)
 
@@ -518,7 +517,6 @@ class PlayActivity : BaseActivity() {
                         msgXP += "."
                     }
                     listeDialogues.add(msgXP)
-
                     if (aLevelUp){
                         if(poke.species.evo != null && poke.species.evoLevel != null && poke.species.evoLevel!! <= poke.level){
                             listeDialogues.add("Hein ? ${poke.species.nom} évolue !")
