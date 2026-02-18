@@ -17,6 +17,18 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
 
+    <ImageView
+        android:id="@+id/imgSoldOutSmall"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/sold_out"
+        android:visibility="gone"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgPokeSmall"
+        app:layout_constraintEnd_toEndOf="@+id/imgPokeSmall"
+        app:layout_constraintStart_toStartOf="@+id/imgPokeSmall"
+        app:layout_constraintTop_toTopOf="@+id/imgPokeSmall" />
+
     <TextView
         android:id="@+id/nomPok"
         android:layout_width="wrap_content"

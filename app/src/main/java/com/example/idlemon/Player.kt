@@ -48,14 +48,19 @@ object Player {
 
     fun getPokemon(index: Int): Pokemon = tabPokemon[index]
 
+    fun aDejaLePokemon(numPokedex: Int): Boolean {
+        val dansEquipe = tabEquipe.any { it.species.num == numPokedex }
+        val dansBoite = tabPokemon.any { it.species.num == numPokedex }
+        return dansEquipe || dansBoite
+    }
+
     fun addPokemon(pokemon: Pokemon): Boolean {
-        //compensation
-        if (pokemon in this.tabPokemon || pokemon in this.tabEquipe) {
+        if (aDejaLePokemon(pokemon.species.num)) {
             addPieces(100)
-            return false //déja possédée
+            return false
         }
         tabPokemon.add(pokemon)
-        return true //nouveau poké
+        return true
     }
 
     fun getBoxPokemon(): MutableList<Pokemon> = tabPokemon

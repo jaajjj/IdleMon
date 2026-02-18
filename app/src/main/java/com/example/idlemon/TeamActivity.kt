@@ -2,13 +2,11 @@ package com.example.idlemon
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowCompat
@@ -127,7 +125,7 @@ class TeamActivity : BaseActivity() {
     private fun creeViewPokemonTeam(pokemon: Pokemon): View {
         val pokemonView = layoutInflater.inflate(R.layout.item_pokemon_team, null)
 
-        val pokeSprite = pokemonView.findViewById<ImageView>(R.id.pokeSprite)
+        val pokeSprite = pokemonView.findViewById<ImageView>(R.id.obj1)
         val pokeName = pokemonView.findViewById<TextView>(R.id.pokeName)
         val type1 = pokemonView.findViewById<ImageView>(R.id.type1)
         val type2 = pokemonView.findViewById<ImageView>(R.id.type2)

@@ -95,6 +95,10 @@ class PlayActivity : BaseActivity() {
         }
 
         return_btn.setOnClickListener {
+            val butinTotal = nbPieceGagnee
+            Player.addPieces(butinTotal)
+            Toast.makeText(this, "Vous emportez $butinTotal PokéOr !", Toast.LENGTH_SHORT).show()
+
             MusicManager.jouerPlaylistHome(this)
             resetPartieDonnees()
             finish()
@@ -185,6 +189,7 @@ class PlayActivity : BaseActivity() {
         }
         if (vagueActuelle > 1 && (vagueActuelle - 1) % 10 == 0) {
             MusicManager.jouerPlaylistBattle(this)
+            soignerTout()
         }
         updateUI(animate = false)
         animateEntry(imgPokePlayer, isPlayer = true)
@@ -193,6 +198,16 @@ class PlayActivity : BaseActivity() {
         numVague.text = "Vague $vagueActuelle | Tour $currentTurn"
 
         animateText("Un ${enemyPokemon.species.nom} sauvage apparaît !")
+    }
+
+    private fun soignerTout() {
+        for (pokemon in Player.getEquipe()) {
+            pokemon.heal(pokemon.getMaxHp())
+            for (attack in pokemon.attacks) {
+                attack.pp = attack.basePP
+            }
+        }
+
     }
 
     private fun genererEnnemi() {
@@ -281,10 +296,12 @@ class PlayActivity : BaseActivity() {
                                                 if (first.isKO) {
                                                     animateKO(viewFirst) { finDuCombat(first) }
                                                 } else {
-                                                    Handler(Looper.getMainLooper()).postDelayed({
-                                                        isTurnInProgress = false
-                                                        animateText("Que doit faire ${playerPokemon.species.nom} ?")
-                                                    }, 500)
+                                                    appliquerEffetsFinDeTour(first) {
+                                                        appliquerEffetsFinDeTour(second) {
+                                                            isTurnInProgress = false
+                                                            animateText("Que doit faire ${playerPokemon.species.nom} ?")
+                                                        }
+                                                    }
                                                 }
                                             }
 
@@ -339,10 +356,12 @@ class PlayActivity : BaseActivity() {
                         if (playerPokemon.isKO) {
                             animateKO(imgPokePlayer) { finDuCombat(playerPokemon) }
                         } else {
-                            Handler(Looper.getMainLooper()).postDelayed({
-                                isTurnInProgress = false
-                                animateText("Que doit faire ${playerPokemon.species.nom} ?")
-                            }, 500)
+                            appliquerEffetsFinDeTour(enemyPokemon) {
+                                appliquerEffetsFinDeTour(playerPokemon) {
+                                    isTurnInProgress = false
+                                    animateText("Que doit faire ${playerPokemon.species.nom} ?")
+                                }
+                            }
                         }
                     }
 
@@ -355,6 +374,22 @@ class PlayActivity : BaseActivity() {
                     }
                 }
             }, 200)
+        }
+    }
+
+    //application des objets (restes...)
+    private fun appliquerEffetsFinDeTour(pokemon: Pokemon, onTermine: () -> Unit) {
+        if (pokemon.possedeObjet("item_restes") && !pokemon.isKO && pokemon.currentHp < pokemon.getMaxHp()) {
+            val soinRestes = (pokemon.getMaxHp() / 16).coerceAtLeast(1)
+            pokemon.heal(soinRestes)
+            updateUI(true)
+            animateText("${pokemon.species.nom} récupère des PV grâce aux Restes !") {
+                Handler(Looper.getMainLooper()).postDelayed({
+                    onTermine()
+                }, 1000)
+            }
+        } else {
+            onTermine()
         }
     }
 
@@ -455,14 +490,15 @@ class PlayActivity : BaseActivity() {
         }
     }
 
+    fun ajouterOr(montant: Int) {
+        nbPieceGagnee += montant
+    }
+
     private fun finDuCombat(loser: Pokemon) {
         if (loser == enemyPokemon) {
             val listeDialogues = ArrayList<String>()
 
             listeDialogues.add("Ennemi K.O. ! Victoire !")
-
-            nbPieceGagnee += 100
-            listeDialogues.add("Vous remportez 100 PokéOr.")
 
             val xpGain = 20 + (enemyPokemon.currentAtk + enemyPokemon.currentDef + enemyPokemon.currentVit + enemyPokemon.getMaxHp())/5 + (enemyPokemon.level)
 
@@ -498,12 +534,15 @@ class PlayActivity : BaseActivity() {
 
             afficherDialoguesSuccessifs(listeDialogues) {
                 if (!isDestroyed && !isFinishing) {
-                    vagueActuelle++
-                    currentTurn = 1
-                    numVague.text = "Vague $vagueActuelle | Tour $currentTurn"
-                    updateUI(animate = false)
-                    setupBattle()
-                    isTurnInProgress = false
+                    val rewardDialog = RewardBattleVague(this, playerPokemon) {
+                        vagueActuelle++
+                        currentTurn = 1
+                        numVague.text = "Vague $vagueActuelle | Tour $currentTurn"
+                        updateUI(animate = false)
+                        setupBattle()
+                        isTurnInProgress = false
+                    }
+                    rewardDialog.show()
                 }
             }
 
@@ -512,7 +551,8 @@ class PlayActivity : BaseActivity() {
 
             isTurnInProgress = false
             if (Player.getEquipe().all { it.isKO }) {
-                Toast.makeText(this, "GAME OVER", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "GAME OVER - Butin : $nbPieceGagnee Or", Toast.LENGTH_LONG).show()
+                Player.addPieces(nbPieceGagnee)
                 resetPartieDonnees()
                 MusicManager.jouerPlaylistHome(this)
                 Handler(Looper.getMainLooper()).postDelayed({

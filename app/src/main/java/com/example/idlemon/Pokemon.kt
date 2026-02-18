@@ -14,11 +14,15 @@ class Pokemon(
     var currentVit: Int = 0
     var isKO: Boolean = false
 
+    //INVENTAIRE
+    //Key: ID de l'objet (ex: "pv_plus", "restes"), Value: Quantité
+    val objets: MutableMap<String, Int> = mutableMapOf()
+
     //Attaques
     val attacks: MutableList<Attack> = mutableListOf()
     val currentPP: MutableMap<Int, Int> = mutableMapOf()
 
-    // XP : (Level^3)
+    //formule XP : (Level^3)
     val xpToNextLevel: Int
         get() = (level + 1).toDouble().pow(3).toInt()
 
@@ -29,7 +33,21 @@ class Pokemon(
         currentHp = getMaxHp()
 
         //attaque par défaut : "Attention, c'est la meilleure... CHARGE !!"
-        addAttack(DataManager.model.getAttackByNom("Charge"))
+        try {
+            addAttack(DataManager.model.getAttackByNom("Charge"))
+        } catch (e: Exception) { e.printStackTrace() }
+    }
+
+    fun ajouterObjet(idObjet: String, quantite: Int = 1) {
+        val qteActuelle = objets[idObjet] ?: 0
+        objets[idObjet] = qteActuelle + quantite
+
+        //On recalcule les stats au cas où l'objet donne des stats
+        recalculerStats()
+    }
+
+    fun possedeObjet(idObjet: String): Boolean {
+        return (objets[idObjet] ?: 0) > 0
     }
 
     //retourne true si le Pokémon a monté de niveau
@@ -48,24 +66,49 @@ class Pokemon(
 
     //level
     fun monterLevel() {
+        val oldMax = getMaxHp()
+
         this.level++
         recalculerStats()
-        val oldMax = currentHp
-        val newMax = getMaxHp()
 
-        this.currentHp += (newMax - getMaxHp(level - 1))
+        val newMax = getMaxHp()
+        this.currentHp += (newMax - oldMax)
     }
 
     private fun recalculerStats() {
-        // Stats : ((2 * Base * Lvl) / 100) + 5
-        this.currentAtk = ((2 * species.baseStats.atk * level) / 100) + 5
-        this.currentDef = ((2 * species.baseStats.def * level) / 100) + 5
-        this.currentVit = ((2 * species.baseStats.vit * level) / 100) + 5
+        var baseAtk = ((2 * species.baseStats.atk * level) / 100) + 5
+        var baseDef = ((2 * species.baseStats.def * level) / 100) + 5
+        var baseVit = ((2 * species.baseStats.vit * level) / 100) + 5
+
+        //Application des bonus d'objets
+        objets.forEach { (id, qte) ->
+            when(id) {
+                "atk_plus" -> baseAtk += (5 * qte)
+                "def_plus" -> baseDef += (5 * qte)
+                "vit_plus" -> baseVit += (5 * qte)
+                "atk_plus_plus" -> baseAtk += (10 * qte)
+                "def_plus_plus" -> baseDef += (10 * qte)
+                "vit_plus_plus" -> baseVit += (10 * qte)
+                "item_bague_force" -> baseAtk += (25 * qte) //gros boost d'attaque
+            }
+        }
+
+        this.currentAtk = baseAtk
+        this.currentDef = baseDef
+        this.currentVit = baseVit
     }
 
-    //maxHP = ((2 * Base * Lvl) / 100) + Lvl + 10
+    //maxHP = ((2 * Base * Lvl) / 100) + Lvl + 10 + BONUS PV
     fun getMaxHp(): Int {
-        return ((2 * species.baseStats.hp * level) / 100) + level + 10
+        var maxHp = ((2 * species.baseStats.hp * level) / 100) + level + 10
+        objets.forEach { (id, qte) ->
+            when(id) {
+                "pv_plus" -> maxHp += (10 * qte)
+                "pv_plus_plus" -> maxHp += (20 * qte)
+            }
+        }
+
+        return maxHp
     }
 
     fun getMaxHp(lvl: Int): Int {
@@ -106,7 +149,6 @@ class Pokemon(
         } else {
             this.currentHp = maxHp
         }
-        // Si on soigne, on n'est plus KO
         if (this.currentHp > 0) {
             this.isKO = false
         }

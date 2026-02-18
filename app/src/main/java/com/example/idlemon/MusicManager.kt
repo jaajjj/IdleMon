@@ -16,6 +16,8 @@ object MusicManager {
     private var compteurActivites = 0
 
     private const val FADE_DURATION = 800L
+    private var currentResId: Int? = null
+
 
     private val playlistRoute = listOf(
         R.raw.route,
@@ -42,9 +44,7 @@ object MusicManager {
         R.raw.boss10
     )
     private val playlistHome = listOf(
-        R.raw.home,
-        R.raw.home2,
-        R.raw.home3
+        R.raw.home
     )
     private val playlistVoeux = listOf(
         R.raw.voeux
@@ -88,18 +88,19 @@ object MusicManager {
     private fun lancerBoucleCombatImmediate(context: Context) {
         mediaPlayer?.release()
         val musiqueSuivante = playlistRoute.random()
-
-        try {
-            mediaPlayer = MediaPlayer.create(context.applicationContext, musiqueSuivante)
-            mediaPlayer?.apply {
-                isLooping = true
-                setVolume(1.0f, 1.0f)
-                start()
-            }
-        } catch (e: Exception) { e.printStackTrace() }
+        mediaPlayer = MediaPlayer.create(context.applicationContext, musiqueSuivante)
+        mediaPlayer?.apply {
+            isLooping = true
+            setVolume(1.0f, 1.0f)
+            start()
+        }
     }
 
     fun jouerPlaylistHome(context: Context) {
+        if (currentResId != null && playlistHome.contains(currentResId) && mediaPlayer?.isPlaying == true) {
+            return
+        }
+
         val musiqueSuivante = playlistHome.random()
         transitionVersMusique(context, musiqueSuivante, loop = true)
     }

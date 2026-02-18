@@ -15,7 +15,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import com.bumptech.glide.Glide
 
 class ChangeTeamDialog(
-    private val context: Context,
+    private val context: Context
 ) {
     //UI
     val dialog = Dialog(context)
@@ -138,7 +138,7 @@ class ChangeTeamDialog(
 
         for (pokemon in boxPokemons) {
             val itemView = inflater.inflate(R.layout.item_pokemon_box, boxLinearLayout, false)
-            val pokeSprite = itemView.findViewById<ImageView>(R.id.pokeSprite)
+            val pokeSprite = itemView.findViewById<ImageView>(R.id.obj1)
             val pokeName = itemView.findViewById<TextView>(R.id.pokeName)
             val type1 = itemView.findViewById<ImageView>(R.id.type1)
             val type2 = itemView.findViewById<ImageView>(R.id.type2)

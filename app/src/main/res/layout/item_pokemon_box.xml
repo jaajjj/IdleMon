@@ -16,7 +16,7 @@
         app:srcCompat="@drawable/rounded_back_orange_small_border" />
 
     <ImageView
-        android:id="@+id/pokeSprite"
+        android:id="@+id/obj1"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:layout_marginStart="16dp"
@@ -35,7 +35,7 @@
         android:textColor="#000000"
         android:textSize="17sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/pokeSprite"
+        app:layout_constraintStart_toEndOf="@+id/obj1"
         app:layout_constraintTop_toTopOf="@id/backImage" />
 
     <LinearLayout
