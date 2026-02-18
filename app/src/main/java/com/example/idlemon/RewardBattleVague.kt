@@ -128,7 +128,16 @@ class RewardBattleVague(
         Reward("item_bague_force", "Bague Force", "+25 Attaque (Perm.)", R.drawable.bague_force, Rarity.LEGENDARY, 5) { poke ->
             poke.ajouterObjet("item_bague_force")
             Toast.makeText(context, "Attaque augmentée drastiquement !", Toast.LENGTH_SHORT).show()
+        },
+        Reward("item_veste_combat", "Veste de Combat", "+25 defense (Perm.)", R.drawable.veste_combat, Rarity.LEGENDARY, 5) { poke ->
+            poke.ajouterObjet("item_veste_combat")
+            Toast.makeText(context, "Défense augmentée drastiquement !", Toast.LENGTH_SHORT).show()
+        },
+        Reward("item_cape_vitesse", "Cape Vitesse", "+25 vitesse (Perm.)", R.drawable.cape_vitesse, Rarity.LEGENDARY, 5) { poke ->
+            poke.ajouterObjet("item_cape_vitesse")
+            Toast.makeText(context, "Vitesse augmentée drastiquement !", Toast.LENGTH_SHORT).show()
         }
+
     )
 
     fun show() {

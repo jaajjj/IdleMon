@@ -90,6 +90,8 @@ class Pokemon(
                 "def_plus_plus" -> baseDef += (10 * qte)
                 "vit_plus_plus" -> baseVit += (10 * qte)
                 "item_bague_force" -> baseAtk += (25 * qte) //gros boost d'attaque
+                "item_veste_combat" -> baseDef += (25 * qte) //gors boost de défense
+                "item_cape_vitesse" -> baseVit += (25 * qte) //gros boost de vitesse
             }
         }
 
