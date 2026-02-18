@@ -13,12 +13,9 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
 import com.bumptech.glide.Glide
 
 class TenPullActivity : BaseActivity(), PanoramaUI {
@@ -47,13 +44,8 @@ class TenPullActivity : BaseActivity(), PanoramaUI {
         val catchBtn = findViewById<Button>(R.id.catchBtn)
 
         capteurManager = CapteurManager(this, eggCount = 7, isTenPull = true)
-
-        lifecycleScope.launch {
-            backgroundImage.post {
-                lifecycleScope.launch {
-                    capteurManager.loadEggsAsync()
-                }
-            }
+        backgroundImage.post {
+            capteurManager.displayPreparedEggs()
         }
 
         boussole.setOnClickListener {

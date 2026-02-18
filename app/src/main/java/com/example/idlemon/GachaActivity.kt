@@ -9,9 +9,8 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.VideoView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 
 class GachaActivity : BaseActivity() {
@@ -28,24 +27,24 @@ class GachaActivity : BaseActivity() {
     private lateinit var summonVideoView: VideoView
     private lateinit var skipBtn: TextView
 
+    //variable pour garder la trace du calcul en cours
+    private var calculationThread: Thread? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gacha)
 
-        //pleine écran
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
         windowInsetsController.systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 
-        //init vues
         homeBtn = findViewById(R.id.homeBtn)
         teamBtn = findViewById(R.id.teamBtn)
         singlePullBtn = findViewById(R.id.singlePullBtn)
         tenPullBtn = findViewById(R.id.tenPullBtn)
         fieldPokegold = findViewById(R.id.fieldPokegold)
 
-        //init vue vidéo
         videoContainer = findViewById(R.id.videoContainer)
         summonVideoView = findViewById(R.id.summonVideoView)
         skipBtn = findViewById(R.id.skipBtn)
@@ -53,7 +52,6 @@ class GachaActivity : BaseActivity() {
         val player = Player
         fieldPokegold.text = player.getPieces().toString()
 
-        //nav footer
         teamBtn.setOnClickListener { startActivity(Intent(this, TeamActivity::class.java)) }
         homeBtn.setOnClickListener { startActivity(Intent(this, MainActivity::class.java)) }
 
@@ -62,8 +60,8 @@ class GachaActivity : BaseActivity() {
                 player.setPieces(player.getPieces() - 100)
                 fieldPokegold.text = player.getPieces().toString()
 
-                //vid 1 pull
                 playSummonAnimation(1)
+                lancerCalculEnArrierePlan(1)
             }
         }
 
@@ -72,9 +70,49 @@ class GachaActivity : BaseActivity() {
                 player.setPieces(player.getPieces() - 1000)
                 fieldPokegold.text = player.getPieces().toString()
 
-                //vid 10 pull
                 playSummonAnimation(10)
+                lancerCalculEnArrierePlan(10)
             }
+        }
+    }
+
+    private fun lancerCalculEnArrierePlan(nbVoeux: Int) {
+        //on stocke le thread dans la variable de classe
+        calculationThread = Thread {
+            val list = mutableListOf<Pair<List<Pokemon>, Int>>()
+            val eggCount = if (nbVoeux == 10) 7 else 5
+
+            for (i in 0 until eggCount) {
+                val pokemonsInEgg = if (nbVoeux == 10) {
+                    List(10) { DataManager.model.getRandomPokemon() }
+                } else {
+                    listOf(DataManager.model.getRandomPokemon())
+                }
+
+                val bestPokemon = pokemonsInEgg.maxByOrNull { getRarityScore(it.species.rarete) }
+                    ?: pokemonsInEgg.first()
+
+                val drawableRes = when(bestPokemon.species.rarete) {
+                    "Legendaire" -> R.drawable.egg_leg
+                    "Fabuleux" -> R.drawable.egg_fab
+                    "Epique" -> R.drawable.egg_epique
+                    else -> R.drawable.egg
+                }
+
+                list.add(Pair(pokemonsInEgg, drawableRes))
+            }
+            GachaSession.preparedEggs = list
+        }
+        calculationThread?.start()
+    }
+
+    private fun getRarityScore(rarete: String): Int {
+        return when (rarete) {
+            "Legendaire" -> 5
+            "Fabuleux" -> 4
+            "Epique" -> 3
+            "Rare" -> 2
+            else -> 1
         }
     }
 
@@ -104,7 +142,13 @@ class GachaActivity : BaseActivity() {
     }
 
     private fun goToResultActivity(nb: Int) {
-        //lance l'activitée suivante
+        //on s'assure que le calcul est terminé avant de changer de page
+        try {
+            calculationThread?.join()
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+
         val intent = if (nb == 1) {
             Intent(this, SinglePullActivity::class.java)
         } else {
@@ -112,13 +156,11 @@ class GachaActivity : BaseActivity() {
         }
         MusicManager.lancerVoeux(this)
         startActivity(intent)
-        //ajout du fadeIn et out
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
     }
 
     override fun onResume() {
         super.onResume()
-        //on cache la vidéo quand on reviens sur la page
         videoContainer.visibility = View.GONE
     }
 }

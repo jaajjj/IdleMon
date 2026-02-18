@@ -11,12 +11,9 @@ import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
 import com.bumptech.glide.Glide
 
 class SinglePullActivity : BaseActivity(), PanoramaUI {
@@ -43,14 +40,12 @@ class SinglePullActivity : BaseActivity(), PanoramaUI {
         boussole = findViewById(R.id.boussole)
         val catchBtn = findViewById<Button>(R.id.catchBtn)
 
-        capteurManager = CapteurManager(this, eggCount = 5)
+        //init Manager
+        capteurManager = CapteurManager(this, eggCount = 5, isTenPull = false)
 
-        lifecycleScope.launch {
-            backgroundImage.post {
-                lifecycleScope.launch {
-                    capteurManager.loadEggsAsync()
-                }
-            }
+        //on attend juste que le fond soit mesuré par Android, puis on affiche
+        backgroundImage.post {
+            capteurManager.displayPreparedEggs()
         }
 
         boussole.setOnClickListener { capteurManager.toggleMode() }
@@ -60,6 +55,7 @@ class SinglePullActivity : BaseActivity(), PanoramaUI {
             if (selected != null) {
                 val pokemonList = selected.tag as? List<Pokemon>
                 val pokemon = pokemonList?.firstOrNull()
+
                 if (pokemon != null) {
                     val estDejaPossede = Player.aDejaLePokemon(pokemon.species.num)
 
@@ -85,6 +81,7 @@ class SinglePullActivity : BaseActivity(), PanoramaUI {
         if (event != null) capteurManager.handleTouch(event)
         return super.onTouchEvent(event)
     }
+
     private fun showResultDialog(pokemon: Pokemon, isDuplicate: Boolean) {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.result_single_pull)
@@ -98,8 +95,10 @@ class SinglePullActivity : BaseActivity(), PanoramaUI {
 
         if (isDuplicate) {
             imgSoldOut.visibility = View.VISIBLE
+            imgPoke.alpha = 0.5f
         } else {
             imgSoldOut.visibility = View.GONE
+            imgPoke.alpha = 1.0f
         }
 
         val rareteColor = when (pokemon.species.rarete) {
@@ -113,6 +112,7 @@ class SinglePullActivity : BaseActivity(), PanoramaUI {
         txtNom.setTextColor(rareteColor)
         txtRarete.text = pokemon.species.rarete
         txtRarete.setTextColor(rareteColor)
+
         Glide.with(this).asGif().load(DataManager.model.getFrontSprite(pokemon.species.num)).into(imgPoke)
 
         btnQuit.setOnClickListener {
