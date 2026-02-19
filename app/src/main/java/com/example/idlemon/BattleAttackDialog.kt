@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import android.widget.Toast
 
 class BattleAttackDialog(
     private val context: Context,
@@ -45,6 +46,9 @@ class BattleAttackDialog(
             txtNom.text = attack.name
             txtDesc.text = attack.description
             txtDmg.text = attack.basePower.toString()
+            if(attack.pp == 0){
+                attackView.alpha = 0.7f
+            }
 
             //gestion PP
             val currentPP = pokemon.currentPP[pokemon.attacks.indexOf(attack)] ?: attack.pp
@@ -57,6 +61,10 @@ class BattleAttackDialog(
 
             //clic sur l'attaque
             attackView.setOnClickListener {
+                if(pokemon.currentPP[pokemon.attacks.indexOf(attack)] == 0){
+                    //pas assez de PP
+                    return@setOnClickListener
+                }
                 onAttackSelected(attack)
                 dialog.dismiss()
             }

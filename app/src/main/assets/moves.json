@@ -787,7 +787,8 @@
     "bonus": [],
     "malus": [],
     "heal": 0,
-    "description": "Inflige des dégâts colossaux de type Feu."
+    "description": "Inflige des dégâts colossaux de type Feu.",
+    "exclusive": true
   },
   "Soin": {
     "num": 105,

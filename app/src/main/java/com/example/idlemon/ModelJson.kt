@@ -133,6 +133,7 @@ class ModelJson(context: Context) {
             "Choc Météore" -> pokemon.species.nom == "Solgaleo"
             "Rayon Spectral" -> pokemon.species.nom == "Lunala"
             "Vitesse Extrême" -> pokemon.species.nom in listOf("Arceus", "Lucario", "Arcanin", "Rayquaza")
+            "Ballon Brûlant" -> pokemon.species.nom == "Pyrobut"
             else -> false
         }
     }

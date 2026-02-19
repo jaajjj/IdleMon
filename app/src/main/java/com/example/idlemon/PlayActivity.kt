@@ -65,6 +65,10 @@ class PlayActivity : BaseActivity() {
     private val VIT_TEXTE_XP = 10L
     private val PAUSE_LECTURE = 500L
 
+    // variables pour contrôler le texte asynchrone proprement
+    private val textAnimHandler = Handler(Looper.getMainLooper())
+    private var currentTextRunnable: Runnable? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_play)
@@ -207,7 +211,6 @@ class PlayActivity : BaseActivity() {
                 attack.pp = attack.basePP
             }
         }
-
     }
 
     private fun genererEnnemi() {
@@ -262,6 +265,7 @@ class PlayActivity : BaseActivity() {
             sequenceAttaque(enemyPokemon, imgPokeEnemy, playerPokemon, imgPokePlayer, enemyAttack, playerAttack, false)
         }
     }
+
     private fun sequenceAttaque(first: Pokemon, viewFirst: ImageView, second: Pokemon, viewSecond: ImageView, move1: Attack, move2: Attack, isPlayerFirst: Boolean) {
 
         //écrit le texte d'attaque
@@ -307,7 +311,7 @@ class PlayActivity : BaseActivity() {
 
                                             //efficacité 2ème attaque
                                             if (effMsg2.isNotEmpty()) {
-                                                animateText(effMsg2) {
+                                                afficherDialoguesSuccessifs(effMsg2) {
                                                     Handler(Looper.getMainLooper()).postDelayed({ finDuTour() }, PAUSE_LECTURE)
                                                 }
                                             } else {
@@ -322,7 +326,7 @@ class PlayActivity : BaseActivity() {
 
                     //efficacité 1ère attaque
                     if (efficaciteMsg.isNotEmpty()) {
-                        animateText(efficaciteMsg) {
+                        afficherDialoguesSuccessifs(efficaciteMsg) {
                             Handler(Looper.getMainLooper()).postDelayed({
                                 suiteApresAttaque()
                             }, PAUSE_LECTURE)
@@ -366,7 +370,7 @@ class PlayActivity : BaseActivity() {
                     }
 
                     if (effMsg.isNotEmpty()) {
-                        animateText(effMsg) {
+                        afficherDialoguesSuccessifs(effMsg) {
                             Handler(Looper.getMainLooper()).postDelayed({ checkFinTour() }, PAUSE_LECTURE)
                         }
                     } else {
@@ -393,8 +397,8 @@ class PlayActivity : BaseActivity() {
         }
     }
 
-    private fun applicationDegats(attaquant: Pokemon, defenseur: Pokemon, attaque: Attack): String {
-        var messageRetour = ""
+    private fun applicationDegats(attaquant: Pokemon, defenseur: Pokemon, attaque: Attack): List<String> {
+        val messagesRetour = mutableListOf<String>()
 
         val atkIndex = attaquant.attacks.indexOf(attaque)
         if (atkIndex != -1) {
@@ -406,8 +410,8 @@ class PlayActivity : BaseActivity() {
             val healAmount = (attaquant.getMaxHp() * attaque.heal) / 100
             attaquant.heal(healAmount)
             updateUI(animate = true)
-            appliquerEffetsStats(attaquant, defenseur, attaque)
-            return messageRetour
+            messagesRetour.addAll(appliquerEffetsStats(attaquant, defenseur, attaque))
+            return messagesRetour
         }
 
         val puissance = if (attaque.basePower > 0) attaque.basePower else 0
@@ -422,10 +426,9 @@ class PlayActivity : BaseActivity() {
         val isMiss = Random.nextDouble() >= attaque.accuracy
         if (isCrit && degats > 0) degats *= 1.5
         if(isMiss){
-            messageRetour = "${defenseur.species.nom} évite l'attaque"
-            return messageRetour
+            messagesRetour.add("${defenseur.species.nom} évite l'attaque !")
+            return messagesRetour
         }
-
 
         val typeAtkEnum = try {
             PokemonType.valueOf(attaque.type.uppercase())
@@ -435,19 +438,19 @@ class PlayActivity : BaseActivity() {
         val multiplicateur = PokemonType.calculerEfficaciteContre(typeAtkEnum, defenseur)
         var degatsFinal = (degats * multiplicateur).toInt()
 
-        if (isCrit && degatsFinal > 0) messageRetour += "Coup critique !\n"
+        if (isCrit && degatsFinal > 0) messagesRetour.add("Coup critique !")
 
         if(attaque.basePower != 0){
             if (multiplicateur == 0.0) {
-                messageRetour += "Ça n'affecte pas ${defenseur.species.nom}..."
+                messagesRetour.add("Ça n'affecte pas ${defenseur.species.nom}...")
             } else if (multiplicateur > 2.0) {
-                messageRetour += "C'est extrêmement efficace !"
+                messagesRetour.add("C'est extrêmement efficace !")
             } else if (multiplicateur >= 2.0) {
-                messageRetour += "C'est super efficace !"
+                messagesRetour.add("C'est super efficace !")
             } else if (multiplicateur == 0.5) {
-                messageRetour += "Ce n'est pas très efficace !"
+                messagesRetour.add("Ce n'est pas très efficace !")
             } else if (multiplicateur == 0.25) {
-                messageRetour += "C'est extrêmement inefficace !"
+                messagesRetour.add("C'est extrêmement inefficace !")
             }
         }
         defenseur.prendreDmg(degatsFinal)
@@ -458,21 +461,29 @@ class PlayActivity : BaseActivity() {
                 attaquant.heal(drainAmount)
             }
         }
-        appliquerEffetsStats(attaquant, defenseur, attaque)
+        messagesRetour.addAll(appliquerEffetsStats(attaquant, defenseur, attaque))
         updateUI(animate = true)
-        return messageRetour
+        return messagesRetour
     }
 
-    private fun appliquerEffetsStats(attaquant: Pokemon, defenseur: Pokemon, attaque: Attack) {
+    private fun appliquerEffetsStats(attaquant: Pokemon, defenseur: Pokemon, attaque: Attack): List<String> {
+        val messages = mutableListOf<String>()
         attaque.bonus?.forEach { map ->
-            map.forEach { (stat, valeur) -> appliquerStatChange(attaquant, stat, valeur) }
+            map.forEach { (stat, valeur) ->
+                val msg = appliquerStatChange(attaquant, stat, valeur)
+                if (msg.isNotEmpty()) messages.add(msg)
+            }
         }
         attaque.malus?.forEach { map ->
-            map.forEach { (stat, valeur) -> appliquerStatChange(defenseur, stat, valeur) }
+            map.forEach { (stat, valeur) ->
+                val msg = appliquerStatChange(defenseur, stat, valeur)
+                if (msg.isNotEmpty()) messages.add(msg)
+            }
         }
+        return messages
     }
 
-    private fun appliquerStatChange(cible: Pokemon, stat: String, niveau: Int) {
+    private fun appliquerStatChange(cible: Pokemon, stat: String, niveau: Int): String {
         val facteur = if (niveau > 0) 1.5 else 0.66
         var msg = ""
         when (stat.lowercase()) {
@@ -489,9 +500,7 @@ class PlayActivity : BaseActivity() {
                 msg = if (niveau > 0) "${cible.species.nom} monte sa Vitesse !" else "${cible.species.nom} voit sa Vitesse baisser !"
             }
         }
-        if (msg.isNotEmpty()) {
-            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
-        }
+        return msg
     }
 
     fun ajouterOr(montant: Int) {
@@ -501,7 +510,7 @@ class PlayActivity : BaseActivity() {
     private fun finDuCombat(loser: Pokemon) {
         if (loser == enemyPokemon) {
             val listeDialogues = ArrayList<String>()
-            listeDialogues.add("{${enemyPokemon.species.nom} est K.O.")
+            listeDialogues.add("${enemyPokemon.species.nom} est K.O.")
 
             val xpGain = 20 + (enemyPokemon.currentAtk + enemyPokemon.currentDef + enemyPokemon.currentVit + enemyPokemon.getMaxHp())/5 + (enemyPokemon.level)
 
@@ -549,19 +558,21 @@ class PlayActivity : BaseActivity() {
             }
 
         } else {
-            animateText("${playerPokemon.species.nom} est K.O...")
-
-            isTurnInProgress = false
-            if (Player.getEquipe().all { it.isKO }) {
-                Toast.makeText(this, "GAME OVER - Butin : $nbPieceGagnee Or", Toast.LENGTH_LONG).show()
-                Player.addPieces(nbPieceGagnee)
-                resetPartieDonnees()
-                MusicManager.jouerPlaylistHome(this)
-                Handler(Looper.getMainLooper()).postDelayed({
-                    finish()
-                }, 800)
-            } else {
-                afficherMenuEquipe(true)
+            // ICI: On chaîne les textes proprement pour éviter qu'ils se superposent !
+            animateText("${playerPokemon.species.nom} est K.O...") {
+                isTurnInProgress = false
+                if (Player.getEquipe().all { it.isKO }) {
+                    animateText("GAME OVER - Butin : $nbPieceGagnee Or") {
+                        Player.addPieces(nbPieceGagnee)
+                        resetPartieDonnees()
+                        MusicManager.jouerPlaylistHome(this)
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            finish()
+                        }, 800)
+                    }
+                } else {
+                    afficherMenuEquipe(true)
+                }
             }
         }
     }
@@ -584,26 +595,30 @@ class PlayActivity : BaseActivity() {
     }
 
     private fun animateText(text: String, speed: Long = VIT_TEXTE_NORMAL, onCompleted: (() -> Unit)? = null) {
+        // --- LA MAGIE EST ICI ---
+        // Coupe toute animation en cours avant de lancer la nouvelle
+        currentTextRunnable?.let { textAnimHandler.removeCallbacks(it) }
+
         isTextWriting = true
         txtDialogueBattle.text = ""
         var charIndex = 0
-        val handler = Handler(Looper.getMainLooper())
 
-        val runnable = object : Runnable {
+        currentTextRunnable = object : Runnable {
             override fun run() {
                 if(isDestroyed || isFinishing) return
 
                 if (charIndex < text.length) {
                     txtDialogueBattle.append(text[charIndex].toString())
                     charIndex++
-                    handler.postDelayed(this, speed)
+                    textAnimHandler.postDelayed(this, speed)
                 } else {
                     isTextWriting = false
+                    currentTextRunnable = null
                     onCompleted?.invoke()
                 }
             }
         }
-        handler.post(runnable)
+        textAnimHandler.post(currentTextRunnable!!)
     }
 
     fun resetPartieComplet(){
