@@ -1174,7 +1174,7 @@
   },"Pouvoir Lunaire": {
   "num": 585,
   "name": "Pouvoir Lunaire",
-  "type": "Fée",
+  "type": "Fee",
   "basePower": 95,
   "accuracy": 1.0,
   "pp": 15,
@@ -1192,7 +1192,7 @@
   "Câlinerie": {
     "num": 583,
     "name": "Câlinerie",
-    "type": "Fée",
+    "type": "Fee",
     "basePower": 90,
     "accuracy": 0.9,
     "pp": 10,
@@ -1210,7 +1210,7 @@
   "Vampibaiser": {
     "num": 577,
     "name": "Vampibaiser",
-    "type": "Fée",
+    "type": "Fee",
     "basePower": 50,
     "accuracy": 1.0,
     "pp": 10,
@@ -1224,7 +1224,7 @@
   "Éclat Magique": {
     "num": 605,
     "name": "Éclat Magique",
-    "type": "Fée",
+    "type": "Fee",
     "basePower": 80,
     "accuracy": 1.0,
     "pp": 10,
@@ -1233,7 +1233,7 @@
     "bonus": [],
     "malus": [],
     "heal": 0,
-    "description": "Le lanceur libère une puissante lumière féerique qui inflige des dégâts."
+    "description": "Le lanceur libère une puissante lumière Feerique qui inflige des dégâts."
   },
   "Hydrocanon": {
     "num": 56,
@@ -1579,7 +1579,7 @@
   "Géo-Contrôle": {
     "num": 601,
     "name": "Géo-Contrôle",
-    "type": "Fée",
+    "type": "Fee",
     "basePower": 0,
     "accuracy": 1.0,
     "pp": 10,

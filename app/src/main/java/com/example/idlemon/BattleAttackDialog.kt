@@ -31,10 +31,8 @@ class BattleAttackDialog(
 
         //on remplit la liste avec les attaques du Pokémon
         for (attack in pokemon.attacks) {
-            // On utilise ton layout item_attack_view.xml
             val attackView = LayoutInflater.from(context).inflate(R.layout.item_attack_view, container, false)
 
-            //récupération des vues
             val txtNom = attackView.findViewById<TextView>(R.id.nomAttack)
             val txtDesc = attackView.findViewById<TextView>(R.id.descAttack)
             val txtDmg = attackView.findViewById<TextView>(R.id.dmgTextView)
@@ -42,27 +40,29 @@ class BattleAttackDialog(
             val txtAcc = attackView.findViewById<TextView>(R.id.accTextView)
             val imgType = attackView.findViewById<ImageView>(R.id.CtTypeImg)
 
-            //remplissage des données
             txtNom.text = attack.name
             txtDesc.text = attack.description
             txtDmg.text = attack.basePower.toString()
-            if(attack.pp == 0){
-                attackView.alpha = 0.7f
-            }
 
-            //gestion PP
-            val currentPP = pokemon.currentPP[pokemon.attacks.indexOf(attack)] ?: attack.pp
+            //gestion pp
+            val attackIndex = pokemon.attacks.indexOf(attack)
+            //récup des pp actuelles
+            val currentPP = pokemon.currentPP[attackIndex] ?: attack.pp
+
             txtPp.text = "$currentPP/${attack.pp}"
 
-            txtAcc.text = (attack.accuracy * 100).toInt().toString()
+            if (currentPP == 0) {
+                attackView.alpha = 0.5f
+            } else {
+                attackView.alpha = 1.0f
+            }
 
-            //image du type
+            txtAcc.text = (attack.accuracy * 100).toInt().toString()
             imgType.setImageResource(DataManager.model.getIconType(attack.type))
 
-            //clic sur l'attaque
             attackView.setOnClickListener {
-                if(pokemon.currentPP[pokemon.attacks.indexOf(attack)] == 0){
-                    //pas assez de PP
+                if (currentPP == 0) {
+                    //Pas assez de PP
                     return@setOnClickListener
                 }
                 onAttackSelected(attack)

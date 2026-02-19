@@ -95,7 +95,14 @@ class PlayActivity : BaseActivity() {
         }
 
         btnCloseTeam.setOnClickListener {
-            layoutMenuEquipe.visibility = View.GONE
+            //si le poké actif est ko, on force le changement de poké
+            if(playerPokemon.isKO){
+                Toast.makeText(this, "Veuillez changer de pokémon", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }else{
+                layoutMenuEquipe.visibility = View.GONE
+            }
+
         }
 
         return_btn.setOnClickListener {
@@ -207,8 +214,8 @@ class PlayActivity : BaseActivity() {
     private fun soignerTout() {
         for (pokemon in Player.getEquipe()) {
             pokemon.heal(pokemon.getMaxHp())
-            for (attack in pokemon.attacks) {
-                attack.pp = attack.basePP
+            for (i in pokemon.attacks.indices) {
+                pokemon.currentPP[i] = pokemon.attacks[i].pp
             }
         }
     }
@@ -512,7 +519,7 @@ class PlayActivity : BaseActivity() {
             val listeDialogues = ArrayList<String>()
             listeDialogues.add("${enemyPokemon.species.nom} est K.O.")
 
-            val xpGain = 20 + (enemyPokemon.currentAtk + enemyPokemon.currentDef + enemyPokemon.currentVit + enemyPokemon.getMaxHp())/5 + (enemyPokemon.level)
+            val xpGain = 20 + (enemyPokemon.currentAtk + enemyPokemon.currentDef + enemyPokemon.currentVit + enemyPokemon.getMaxHp())/5 + (enemyPokemon.level*20)
 
             for(poke in Player.getEquipe()){
                 if(!poke.isKO){
@@ -527,9 +534,9 @@ class PlayActivity : BaseActivity() {
                     }
                     listeDialogues.add(msgXP)
                     if (aLevelUp){
-                        if(poke.species.evo != null && poke.species.evoLevel != null && poke.species.evoLevel!! <= poke.level){
+                        if(poke.species.evoLevel != null && poke.species.evoLevel!! <= poke.level){
+                            Toast.makeText(this, "EVOLUTIONN", Toast.LENGTH_SHORT).show()
                             listeDialogues.add("Hein ? ${poke.species.nom} évolue !")
-
                             val oldName = poke.species.nom
                             val oldLevel = poke.level
                             poke.species = modelJson.creerPokemon(poke.species.evo).species
@@ -545,13 +552,15 @@ class PlayActivity : BaseActivity() {
 
             afficherDialoguesSuccessifs(listeDialogues) {
                 if (!isDestroyed && !isFinishing) {
-                    val rewardDialog = RewardBattleVague(this, playerPokemon) {
-                        vagueActuelle++
-                        currentTurn = 1
-                        numVague.text = "Vague $vagueActuelle | Tour $currentTurn"
-                        updateUI(animate = false)
-                        setupBattle()
-                        isTurnInProgress = false
+                    val rewardDialog = RewardBattleVague(this, playerPokemon) { messagesReward ->
+                        afficherDialoguesSuccessifs(messagesReward) {
+                            vagueActuelle++
+                            currentTurn = 1
+                            numVague.text = "Vague $vagueActuelle | Tour $currentTurn"
+                            updateUI(animate = false) // Met à jour le sprite et les PV max si évolution/soin
+                            setupBattle()
+                            isTurnInProgress = false
+                        }
                     }
                     rewardDialog.show()
                 }
@@ -635,14 +644,20 @@ class PlayActivity : BaseActivity() {
         nbPieceGagnee = 0
         vagueActuelle = 1
         currentTurn = 1
+
         for (pokemon in Player.getEquipe()) {
+            pokemon.species = pokemon.originalSpecies
+
+            pokemon.objets.clear()
             pokemon.isKO = false
-            pokemon.currentHp = pokemon.getMaxHp()
             pokemon.level = 1
             pokemon.exp = 0
-            pokemon.currentAtk = ((2 * pokemon.species.baseStats.atk * pokemon.level) / 100) + 5
-            pokemon.currentDef = ((2 * pokemon.species.baseStats.def * pokemon.level) / 100) + 5
-            pokemon.currentVit = ((2 * pokemon.species.baseStats.vit * pokemon.level) / 100) + 5
+            pokemon.recalculerStats()
+            pokemon.currentHp = pokemon.getMaxHp()
+
+            for (i in pokemon.attacks.indices) {
+                pokemon.currentPP[i] = pokemon.attacks[i].pp
+            }
         }
     }
 

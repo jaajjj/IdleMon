@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -17,12 +16,10 @@ import kotlin.random.Random
 class RewardBattleVague(
     private val context: Context,
     private val activePokemon: Pokemon,
-    private val onRewardSelected: () -> Unit
+    private val onRewardSelected: (List<String>) -> Unit
 ) {
-    //UI
     val dialog = Dialog(context)
 
-    //raretés avec leurs couleurs
     enum class Rarity(val color: Int) {
         COMMON(Color.BLACK),
         EPIC(Color.parseColor("#9C27B0")),
@@ -36,70 +33,71 @@ class RewardBattleVague(
         val imageRes: Int,
         val rarity: Rarity,
         val weight: Int,
-        val action: (Pokemon) -> Unit
+        val action: (Pokemon) -> String
     )
 
-    //liste des objets
     private val availableRewards = listOf(
         //COMMUNS
         Reward("lvl_1", "Bonbon", "+1 Niveau", R.drawable.bonbon, Rarity.COMMON, 50) { poke ->
-            poke.monterLevel()
-            Toast.makeText(context, "${poke.species.nom} gagne 1 niveau !", Toast.LENGTH_SHORT).show()
+            for(i in 1 until 30){
+                poke.monterLevel()
+            }
+            "${poke.species.nom} mange un Bonbon et gagne 1 niveau !"
         },
         Reward("atk_1", "Attack +", "+5 Attaque (Perm.)", R.drawable.attaque_plus, Rarity.COMMON, 40) { poke ->
             poke.ajouterObjet("atk_plus")
-            Toast.makeText(context, "Attaque augmentée de 5 !", Toast.LENGTH_SHORT).show()
+            "L'Attaque de ${poke.species.nom} augmente de 5 !"
         },
         Reward("pv_1", "PV +", "+10 PV Max (Perm.)", R.drawable.pv_plus, Rarity.COMMON, 40) { poke ->
             poke.ajouterObjet("pv_plus")
             poke.heal(10)
-            Toast.makeText(context, "PV Max augmentés de 10 !", Toast.LENGTH_SHORT).show()
+            "Les PV Max de ${poke.species.nom} augmentent de 10 !"
         },
         Reward("def_1", "Defense +", "+5 Défense (Perm.)", R.drawable.def_plus, Rarity.COMMON, 40) { poke ->
             poke.ajouterObjet("def_plus")
-            Toast.makeText(context, "Défense augmentée de 5 !", Toast.LENGTH_SHORT).show()
+            "La Défense de ${poke.species.nom} augmente de 5 !"
         },
         Reward("vit_1", "Vitesse +", "+5 Vitesse (Perm.)", R.drawable.vit_plus, Rarity.COMMON, 40) { poke ->
             poke.ajouterObjet("vit_plus")
-            Toast.makeText(context, "Vitesse augmentée de 5 !", Toast.LENGTH_SHORT).show()
+            "La Vitesse de ${poke.species.nom} augmente de 5 !"
         },
         Reward("heal_50", "Soin", "Soin 50%", R.drawable.potion, Rarity.COMMON, 60) { poke ->
             val amount = (poke.getMaxHp() * 0.5).toInt()
             poke.heal(amount)
-            Toast.makeText(context, "${poke.species.nom} soigné de 50% !", Toast.LENGTH_SHORT).show()
+            "${poke.species.nom} récupère 50% de ses PV !"
         },
 
         //ÉPIQUES
         Reward("lvl_3", "Super Bonbon", "+3 Niveaux", R.drawable.super_bonbon, Rarity.EPIC, 15) { poke ->
-            repeat(3) { poke.monterLevel() }
-            Toast.makeText(context, "${poke.species.nom} gagne 3 niveaux !", Toast.LENGTH_SHORT).show()
+            repeat(20) { poke.monterLevel() }
+            "${poke.species.nom} engloutit un Super Bonbon et gagne 3 niveaux !"
         },
         Reward("atk_2", "Attack ++", "+10 Attaque (Perm.)", R.drawable.attaque_plus, Rarity.EPIC, 10) { poke ->
             poke.ajouterObjet("atk_plus_plus")
-            Toast.makeText(context, "Attaque augmentée de 10 !", Toast.LENGTH_SHORT).show()
+            "L'Attaque de ${poke.species.nom} augmente fortement (+10) !"
         },
         Reward("pv_2", "PV ++", "+20 PV Max (Perm.)", R.drawable.pv_plus, Rarity.EPIC, 10) { poke ->
             poke.ajouterObjet("pv_plus_plus")
             poke.heal(20)
-            Toast.makeText(context, "PV Max augmentés de 20 !", Toast.LENGTH_SHORT).show()
+            "Les PV Max de ${poke.species.nom} augmentent fortement (+20) !"
         },
         Reward("def_2", "Defense ++", "+10 Défense (Perm.)", R.drawable.def_plus, Rarity.EPIC, 10) { poke ->
             poke.ajouterObjet("def_plus_plus")
-            Toast.makeText(context, "Défense augmentée de 10 !", Toast.LENGTH_SHORT).show()
+            "La Défense de ${poke.species.nom} augmente fortement (+10) !"
         },
         Reward("vit_2", "Vitesse ++", "+10 Vitesse (Perm.)", R.drawable.vit_plus, Rarity.EPIC, 10) { poke ->
             poke.ajouterObjet("vit_plus_plus")
-            Toast.makeText(context, "Vitesse augmentée de 10 !", Toast.LENGTH_SHORT).show()
+            "La Vitesse de ${poke.species.nom} augmente fortement (+10) !"
         },
         Reward("heal_100", "Super Soin", "Soin 100%", R.drawable.super_potion, Rarity.EPIC, 25) { poke ->
             poke.heal(poke.getMaxHp())
-            Toast.makeText(context, "${poke.species.nom} entièrement soigné !", Toast.LENGTH_SHORT).show()
+            "${poke.species.nom} est entièrement soigné !"
         },
 
         //LÉGENDAIRES
         Reward("heal_team", "Hyper Soin", "Soin Équipe 100%", R.drawable.hyper_potion, Rarity.LEGENDARY, 5) { _ ->
             Player.getEquipe().forEach { it.heal(it.getMaxHp()) }
-            Toast.makeText(context, "Toute l'équipe est soignée !", Toast.LENGTH_SHORT).show()
+            "Toute l'équipe est entièrement soignée !"
         },
         Reward("rappel_max", "Rappel Max", "Réanime toute l'équipe (50%)", R.drawable.rappel_max, Rarity.LEGENDARY, 5) { _ ->
             var count = 0
@@ -110,8 +108,7 @@ class RewardBattleVague(
                     count++
                 }
             }
-            if(count > 0) Toast.makeText(context, "$count Pokémon réanimés !", Toast.LENGTH_SHORT).show()
-            else Toast.makeText(context, "Aucun Pokémon K.O.", Toast.LENGTH_SHORT).show()
+            if(count > 0) "$count Pokémon réanimés !" else "Aucun Pokémon n'était K.O."
         },
         Reward("gold", "PokéGold", "Or aléatoire (10-50)", R.drawable.gold, Rarity.LEGENDARY, 35) { _ ->
             val amount = Random.nextInt(10, 51)
@@ -119,25 +116,24 @@ class RewardBattleVague(
                 context.ajouterOr(amount)
             }
             Player.addPieces(amount)
-            Toast.makeText(context, "Gagné $amount PokéGold !", Toast.LENGTH_SHORT).show()
+            "Vous trouvez $amount PokéGold supplémentaires !"
         },
         Reward("item_restes", "Restes", "Soigne à chaque tour", R.drawable.restes, Rarity.LEGENDARY, 5) { poke ->
             poke.ajouterObjet("item_restes")
-            Toast.makeText(context, "${poke.species.nom} a équipé Restes !", Toast.LENGTH_SHORT).show()
+            "${poke.species.nom} s'équipe de Restes !"
         },
         Reward("item_bague_force", "Bague Force", "+25 Attaque (Perm.)", R.drawable.bague_force, Rarity.LEGENDARY, 5) { poke ->
             poke.ajouterObjet("item_bague_force")
-            Toast.makeText(context, "Attaque augmentée drastiquement !", Toast.LENGTH_SHORT).show()
+            "L'Attaque de ${poke.species.nom} explose (+25) !"
         },
         Reward("item_veste_combat", "Veste de Combat", "+25 defense (Perm.)", R.drawable.veste_combat, Rarity.LEGENDARY, 5) { poke ->
             poke.ajouterObjet("item_veste_combat")
-            Toast.makeText(context, "Défense augmentée drastiquement !", Toast.LENGTH_SHORT).show()
+            "La Défense de ${poke.species.nom} explose (+25) !"
         },
         Reward("item_cape_vitesse", "Cape Vitesse", "+25 vitesse (Perm.)", R.drawable.cape_vitesse, Rarity.LEGENDARY, 5) { poke ->
             poke.ajouterObjet("item_cape_vitesse")
-            Toast.makeText(context, "Vitesse augmentée drastiquement !", Toast.LENGTH_SHORT).show()
+            "La Vitesse de ${poke.species.nom} explose (+25) !"
         }
-
     )
 
     fun show() {
@@ -150,13 +146,9 @@ class RewardBattleVague(
         if (window != null) {
             val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
             windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
-            windowInsetsController.systemBarsBehavior =
-                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-
+            windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
             window.setDimAmount(0.7f)
-
-            //taille du popup
             val width = (context.resources.displayMetrics.widthPixels * 0.95).toInt()
             val height = (context.resources.displayMetrics.heightPixels * 0.60).toInt()
             window.setLayout(width, height)
@@ -182,9 +174,26 @@ class RewardBattleVague(
         Glide.with(context).load(reward.imageRes).into(img)
 
         container.setOnClickListener {
-            reward.action(activePokemon)
+            val messages = mutableListOf<String>()
+            val messageReward = reward.action(activePokemon)
+            messages.add(messageReward)
+            if (activePokemon.species.evoLevel != null && activePokemon.species.evoLevel!! <= activePokemon.level) {
+                messages.add("Hein ? ${activePokemon.species.nom} évolue !")
+
+                val oldName = activePokemon.species.nom
+                val oldLevel = activePokemon.level
+
+                // Évolution effective
+                activePokemon.species = DataManager.model.creerPokemon(activePokemon.species.evo).species
+                activePokemon.level = 1
+                for (i in 1 until oldLevel) activePokemon.monterLevel()
+                activePokemon.currentHp = activePokemon.getMaxHp()
+
+                messages.add("$oldName a évolué en ${activePokemon.species.nom} !")
+            }
+
             dialog.dismiss()
-            onRewardSelected()
+            onRewardSelected(messages)
         }
     }
 
@@ -197,7 +206,6 @@ class RewardBattleVague(
                 val totalWeight = pool.sumOf { it.weight }
                 var randomValue = Random.nextInt(totalWeight)
                 var selected: Reward? = null
-
                 for (reward in pool) {
                     randomValue -= reward.weight
                     if (randomValue < 0) {
@@ -205,7 +213,6 @@ class RewardBattleVague(
                         break
                     }
                 }
-
                 if (selected != null) {
                     picked.add(selected)
                     pool.remove(selected)

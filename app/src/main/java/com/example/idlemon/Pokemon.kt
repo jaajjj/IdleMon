@@ -13,6 +13,7 @@ class Pokemon(
     var currentDef: Int = 0
     var currentVit: Int = 0
     var isKO: Boolean = false
+    val originalSpecies: PokemonSpecies = species
 
     //INVENTAIRE
     //Key: ID de l'objet (ex: "pv_plus", "restes"), Value: Quantité
@@ -75,7 +76,7 @@ class Pokemon(
         this.currentHp += (newMax - oldMax)
     }
 
-    private fun recalculerStats() {
+    fun recalculerStats() {
         var baseAtk = ((2 * species.baseStats.atk * level) / 100) + 5
         var baseDef = ((2 * species.baseStats.def * level) / 100) + 5
         var baseVit = ((2 * species.baseStats.vit * level) / 100) + 5
@@ -89,9 +90,9 @@ class Pokemon(
                 "atk_plus_plus" -> baseAtk += (10 * qte)
                 "def_plus_plus" -> baseDef += (10 * qte)
                 "vit_plus_plus" -> baseVit += (10 * qte)
-                "item_bague_force" -> baseAtk += (25 * qte) //gros boost d'attaque
-                "item_veste_combat" -> baseDef += (25 * qte) //gors boost de défense
-                "item_cape_vitesse" -> baseVit += (25 * qte) //gros boost de vitesse
+                "item_bague_force" -> baseAtk += (25 * qte)
+                "item_veste_combat" -> baseDef += (25 * qte)
+                "item_cape_vitesse" -> baseVit += (25 * qte)
             }
         }
 
