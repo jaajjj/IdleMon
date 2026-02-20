@@ -11,8 +11,13 @@ import android.view.animation.LinearInterpolator
 object MusicManager {
 
     private var mediaPlayer: MediaPlayer? = null
-    var soundPool: SoundPool = SoundPool.Builder().setMaxStreams(3).build()
-    private val mapDeSon: HashMap<String, Int> = HashMap()
+    var soundPool: SoundPool = SoundPool.Builder().setMaxStreams(5).build()
+    private val mapDePokeCri: HashMap<String, Int> = HashMap()
+    private val mapDeBossCri: HashMap<String, Int> = HashMap()
+    private val mapDeSonBattle: HashMap<String, Int> = HashMap()
+    private var dernierCriJoue: String = ""
+    private val mapDeMoveSounds: HashMap<String, MutableList<Int>> = HashMap()
+
     private var compteurActivites = 0
 
     private const val FADE_DURATION = 800L
@@ -52,10 +57,47 @@ object MusicManager {
 
     fun setup(context: Context) {
         if (mediaPlayer == null) {
-            /*mapDeSon["son1"] = soundPool.load(context, R.raw.son1, 1)
-            mapDeSon["son2"] = soundPool.load(context, R.raw.son2, 1)
-            mapDeSon["son3"] = soundPool.load(context, R.raw.son3, 1)
-            mapDeSon["faa"] = soundPool.load(context, R.raw.faa, 1)*/
+            //load des pokeCri
+            for(i in 1..44) {
+                mapDePokeCri["pokeCri$i"] = soundPool.load(context, context.resources.getIdentifier("poke_cri$i", "raw", context.packageName), 1)
+            }
+            mapDePokeCri["zacian"] = soundPool.load(context, R.raw.zacian, 1)
+            mapDePokeCri["pikachu"] = soundPool.load(context, R.raw.pikachu, 1)
+
+            //load des BossCri
+            for(i in 1..45){
+                mapDeBossCri["bossCri$i"] = soundPool.load(context, context.resources.getIdentifier("boss_cri$i", "raw", context.packageName), 1)
+            }
+            //load des sons
+            mapDeSonBattle["poke_spawn"] = soundPool.load(context, R.raw.poke_spawn, 1)
+            mapDeSonBattle["ko_sound"] = soundPool.load(context, R.raw.ko_sound, 1)
+            mapDeSonBattle["heal"] = soundPool.load(context, R.raw.heal, 1)
+            mapDeSonBattle["item_active"] = soundPool.load(context, R.raw.item_active, 1)
+            mapDeSonBattle["weak_eff"] = soundPool.load(context, R.raw.weak_eff, 1)
+            mapDeSonBattle["super_eff"] = soundPool.load(context, R.raw.super_eff, 1)
+            mapDeSonBattle["low_hp"] = soundPool.load(context, R.raw.low_hp, 1)
+            mapDeSonBattle["malus_stat_sound"] = soundPool.load(context, R.raw.malus_stat_sound, 1)
+            mapDeSonBattle["bonus_stat_sound"] = soundPool.load(context, R.raw.bonus_stat_sound, 1)
+
+            //Types moves sons
+            val moveCounts = mapOf(
+                "normal" to 4, "combat" to 3, "air" to 4, "poison" to 3,
+                "feu" to 7, "eau" to 3, "plante" to 3, "elec" to 5,
+                "glace" to 2, "sol" to 3, "roche" to 2, "acier" to 2,
+                "psy" to 3, "spectre" to 3, "tenebre" to 2, "fee" to 3,
+                "drag" to 4, "insect" to 5, "bonus" to 4, "malus" to 3
+            )
+            for ((type, count) in moveCounts) {
+                val soundIds = mutableListOf<Int>()
+                for (i in 1..count) {
+                    val resName = "${type}_move$i" // ex: feu_move1, eau_move2...
+                    val resId = context.resources.getIdentifier(resName, "raw", context.packageName)
+                    soundIds.add(soundPool.load(context, resId, 1))
+                }
+                mapDeMoveSounds[type] = soundIds
+            }
+            val drainId = context.resources.getIdentifier("drain_move", "raw", context.packageName)
+            mapDeMoveSounds["drain"] = mutableListOf(soundPool.load(context, drainId, 1))
 
             jouerPlaylistHome(context)
         }
@@ -108,6 +150,27 @@ object MusicManager {
     fun lancerVoeux(context: Context) {
         val musiqueSuivante = playlistVoeux.random()
         transitionVersMusique(context, musiqueSuivante, loop = true)
+    }
+
+    //BATTLE
+    fun jouerSonAttaque(type: String) {
+        val typeKey = type.lowercase()
+
+        val listeSons = mapDeMoveSounds[typeKey]
+
+        if (!listeSons.isNullOrEmpty()) {
+            val soundId = listeSons.random()
+            soundPool.play(soundId, 1f, 1f, 1, 0, 1f)
+        } else {
+            mapDeMoveSounds["normal"]?.randomOrNull()?.let {
+                soundPool.play(it, 1f, 1f, 1, 0, 1f)
+            }
+        }
+    }
+    fun jouerSonBattle(nomSon: String) {
+        mapDeSonBattle[nomSon]?.let { soundId ->
+            soundPool.play(soundId, 1f, 1f, 1, 0, 1f)
+        }
     }
 
     fun jouerPlaylistBoss(context: Context) {
@@ -214,11 +277,40 @@ object MusicManager {
         play()
     }
 
-    fun playNotif(soundKey: String = "faa") {
+    /*fun playNotif(soundKey: String = "faa") {
         mapDeSon[soundKey]?.let { soundId ->
             soundPool.play(soundId, 1f, 1f, 1, 0, 1f)
         }
+    }*/
+
+    fun crierPokemon(pok: Pokemon) {
+        //si zacian ou pikachi, son custop, sinon random
+        if (pok.species.nom == "Zacian") {
+            mapDePokeCri["zacian"]?.let { soundPool.play(it, 1f, 1f, 1, 0, 1f) }
+            return
+        }
+        if (pok.species.nom == "Pikachu") {
+            mapDePokeCri["pikachu"]?.let { soundPool.play(it, 1f, 1f, 1, 0, 1f) }
+            return
+        }
+        val clesDispo = mapDePokeCri.keys.filter { it != "zacian" && it != "pikachu" && it != dernierCriJoue }
+        if (clesDispo.isNotEmpty()) {
+            val soundKey = clesDispo.random()
+            dernierCriJoue = soundKey // On mémorise ce cri
+            mapDePokeCri[soundKey]?.let { soundId ->
+                soundPool.play(soundId, 1f, 1f, 1, 0, 1f)
+            }
+        }
     }
+
+    fun crierBoss() {
+        mapDeBossCri.keys.random().let { soundKey ->
+            mapDeBossCri[soundKey]?.let { soundId ->
+                soundPool.play(soundId, 1f, 1f, 1, 0, 1f)
+            }
+        }
+    }
+
 
     fun onStartActivity() {
         if (compteurActivites == 0) {

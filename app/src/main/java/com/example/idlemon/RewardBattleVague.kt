@@ -39,29 +39,33 @@ class RewardBattleVague(
     private val availableRewards = listOf(
         //COMMUNS
         Reward("lvl_1", "Bonbon", "+1 Niveau", R.drawable.bonbon, Rarity.COMMON, 50) { poke ->
-            for(i in 1 until 30){
-                poke.monterLevel()
-            }
+            MusicManager.jouerSonBattle("item_active")
+            for(i in 1 until 30) poke.monterLevel()
             "${poke.species.nom} mange un Bonbon et gagne 1 niveau !"
         },
         Reward("atk_1", "Attack +", "+5 Attaque (Perm.)", R.drawable.attaque_plus, Rarity.COMMON, 40) { poke ->
+            MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("atk_plus")
             "L'Attaque de ${poke.species.nom} augmente de 5 !"
         },
         Reward("pv_1", "PV +", "+10 PV Max (Perm.)", R.drawable.pv_plus, Rarity.COMMON, 40) { poke ->
+            MusicManager.jouerSonBattle("heal")
             poke.ajouterObjet("pv_plus")
             poke.heal(10)
             "Les PV Max de ${poke.species.nom} augmentent de 10 !"
         },
         Reward("def_1", "Defense +", "+5 Défense (Perm.)", R.drawable.def_plus, Rarity.COMMON, 40) { poke ->
+            MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("def_plus")
             "La Défense de ${poke.species.nom} augmente de 5 !"
         },
         Reward("vit_1", "Vitesse +", "+5 Vitesse (Perm.)", R.drawable.vit_plus, Rarity.COMMON, 40) { poke ->
+            MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("vit_plus")
             "La Vitesse de ${poke.species.nom} augmente de 5 !"
         },
         Reward("heal_50", "Soin", "Soin 50%", R.drawable.potion, Rarity.COMMON, 60) { poke ->
+            MusicManager.jouerSonBattle("heal")
             val amount = (poke.getMaxHp() * 0.5).toInt()
             poke.heal(amount)
             "${poke.species.nom} récupère 50% de ses PV !"
@@ -69,33 +73,40 @@ class RewardBattleVague(
 
         //ÉPIQUES
         Reward("lvl_3", "Super Bonbon", "+3 Niveaux", R.drawable.super_bonbon, Rarity.EPIC, 15) { poke ->
+            MusicManager.jouerSonBattle("item_active")
             repeat(20) { poke.monterLevel() }
             "${poke.species.nom} engloutit un Super Bonbon et gagne 3 niveaux !"
         },
         Reward("atk_2", "Attack ++", "+10 Attaque (Perm.)", R.drawable.attaque_plus, Rarity.EPIC, 10) { poke ->
+            MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("atk_plus_plus")
             "L'Attaque de ${poke.species.nom} augmente fortement (+10) !"
         },
         Reward("pv_2", "PV ++", "+20 PV Max (Perm.)", R.drawable.pv_plus, Rarity.EPIC, 10) { poke ->
+            MusicManager.jouerSonBattle("heal")
             poke.ajouterObjet("pv_plus_plus")
             poke.heal(20)
             "Les PV Max de ${poke.species.nom} augmentent fortement (+20) !"
         },
         Reward("def_2", "Defense ++", "+10 Défense (Perm.)", R.drawable.def_plus, Rarity.EPIC, 10) { poke ->
+            MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("def_plus_plus")
             "La Défense de ${poke.species.nom} augmente fortement (+10) !"
         },
         Reward("vit_2", "Vitesse ++", "+10 Vitesse (Perm.)", R.drawable.vit_plus, Rarity.EPIC, 10) { poke ->
+            MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("vit_plus_plus")
             "La Vitesse de ${poke.species.nom} augmente fortement (+10) !"
         },
         Reward("heal_100", "Super Soin", "Soin 100%", R.drawable.super_potion, Rarity.EPIC, 25) { poke ->
+            MusicManager.jouerSonBattle("heal")
             poke.heal(poke.getMaxHp())
             "${poke.species.nom} est entièrement soigné !"
         },
 
         //LÉGENDAIRES
         Reward("heal_team", "Hyper Soin", "Soin Équipe 100%", R.drawable.hyper_potion, Rarity.LEGENDARY, 5) { _ ->
+            MusicManager.jouerSonBattle("heal")
             Player.getEquipe().forEach { it.heal(it.getMaxHp()) }
             "Toute l'équipe est entièrement soignée !"
         },
@@ -108,29 +119,35 @@ class RewardBattleVague(
                     count++
                 }
             }
-            if(count > 0) "$count Pokémon réanimés !" else "Aucun Pokémon n'était K.O."
+            if(count > 0) {
+                MusicManager.jouerSonBattle("heal")
+                "$count Pokémon réanimés !"
+            } else "Aucun Pokémon n'était K.O."
         },
         Reward("gold", "PokéGold", "Or aléatoire (10-50)", R.drawable.gold, Rarity.LEGENDARY, 35) { _ ->
+            MusicManager.jouerSonBattle("item_active")
             val amount = Random.nextInt(10, 51)
-            if (context is PlayActivity) {
-                context.ajouterOr(amount)
-            }
+            if (context is PlayActivity) context.ajouterOr(amount)
             Player.addPieces(amount)
             "Vous trouvez $amount PokéGold supplémentaires !"
         },
         Reward("item_restes", "Restes", "Soigne à chaque tour", R.drawable.restes, Rarity.LEGENDARY, 5) { poke ->
+            MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("item_restes")
             "${poke.species.nom} s'équipe de Restes !"
         },
-        Reward("item_bague_force", "Bague Force", "+25 Attaque (Perm.)", R.drawable.bague_force, Rarity.LEGENDARY, 5) { poke ->
+        Reward("item_bague_force", "Bague Force", "+25 Attaque", R.drawable.bague_force, Rarity.LEGENDARY, 5) { poke ->
+            MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("item_bague_force")
             "L'Attaque de ${poke.species.nom} explose (+25) !"
         },
-        Reward("item_veste_combat", "Veste de Combat", "+25 defense (Perm.)", R.drawable.veste_combat, Rarity.LEGENDARY, 5) { poke ->
+        Reward("item_veste_combat", "Veste de Combat", "+25 defense", R.drawable.veste_combat, Rarity.LEGENDARY, 5) { poke ->
+            MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("item_veste_combat")
             "La Défense de ${poke.species.nom} explose (+25) !"
         },
-        Reward("item_cape_vitesse", "Cape Vitesse", "+25 vitesse (Perm.)", R.drawable.cape_vitesse, Rarity.LEGENDARY, 5) { poke ->
+        Reward("item_cape_vitesse", "Cape Vitesse", "+25 vitesse", R.drawable.cape_vitesse, Rarity.LEGENDARY, 5) { poke ->
+            MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("item_cape_vitesse")
             "La Vitesse de ${poke.species.nom} explose (+25) !"
         }
