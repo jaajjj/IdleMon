@@ -507,8 +507,13 @@ class PlayActivity : BaseActivity() {
         if (isCrit) messagesRetour.add("Coup critique !")
 
         //Application finale des dégâts
-        var degatsFinal = (degats * multiplicateur).toInt()
-        // sécurité pour infliger au moins 1 si ce n'est pas immunisé
+        val estStabbe = attaquant.species.type.any { it.nom.equals(attaque.type, ignoreCase = true) }
+        val stabMultiplicateur = if (estStabbe) 1.3 else 1.0 //attaque stabbée
+
+        var degatsDouble = degats * multiplicateur * stabMultiplicateur
+        var degatsFinal = degatsDouble.toInt()
+
+        //save si attaque est très basse
         if (degatsFinal < 1) degatsFinal = 1
 
         defenseur.prendreDmg(degatsFinal)
