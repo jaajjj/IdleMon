@@ -67,19 +67,32 @@ class ChangeTeamDialog(
         for (i in teamIds.indices) {
             val imgView = dialog.findViewById<ImageView>(teamIds[i])
 
-            // Listeners
+            //listeners team
             imgView.setOnClickListener {
+                val currentEquipe = Player.getEquipe()
+
                 if (selectedIndex == i) {
                     selectedIndex = -1
                     resetSelectionEffects()
                     imgPokemonChange.setImageDrawable(null)
                     txtNomPokemon.text = ""
+                } else if (selectedIndex != -1 && selectedIndex < currentEquipe.size && i < currentEquipe.size) { //On clique sur un poké de l'équipe alors qu'il y a déja un selected
+                    val temp = currentEquipe[selectedIndex]
+                    currentEquipe[selectedIndex] = currentEquipe[i]
+                    currentEquipe[i] = temp
+                    Toast.makeText(context, "Positions échangées !", Toast.LENGTH_SHORT).show()
+                    selectedIndex = -1
+                    resetSelectionEffects()
+                    imgPokemonChange.setImageDrawable(null)
+                    txtNomPokemon.text = ""
+                    refreshTeamList()
                 } else {
                     selectedIndex = i
                     resetSelectionEffects()
                     imgView.alpha = 0.5f
-                    if (i < equipe.size) {
-                        val p = equipe[i]
+
+                    if (i < currentEquipe.size) {
+                        val p = currentEquipe[i]
                         txtNomPokemon.text = p.species.nom
                         Glide.with(context)
                             .asGif()
@@ -94,13 +107,15 @@ class ChangeTeamDialog(
             }
 
             //supp poke equipe
+            //supp poke equipe
             imgView.setOnLongClickListener {
                 val currentEquipe = Player.getEquipe()
                 if (i < currentEquipe.size) {
                     if (currentEquipe.size > 1) {
                         val pokeSupprimer = currentEquipe[i]
-                        Toast.makeText(context, "Pokémon supprimé de l'équipe", Toast.LENGTH_SHORT).show()
-                        Player.addPokemon(pokeSupprimer)
+                        Toast.makeText(context, "Pokémon envoyé dans la boîte", Toast.LENGTH_SHORT).show()
+
+                        Player.addPokemonToBox(pokeSupprimer)
                         Player.removeEquipe(pokeSupprimer)
 
                         selectedIndex = -1
@@ -175,9 +190,11 @@ class ChangeTeamDialog(
                         val indexDansBox = box.indexOf(pokemon)
                         if (indexDansBox != -1) {
                             box[indexDansBox] = pokemonQuiSort
+                            MusicManager.crierPokemon(pokemon)
                         }
                     } else {
                         Toast.makeText(context, "Pokémon ajouté à l'équipe", Toast.LENGTH_SHORT).show()
+                        MusicManager.crierPokemon(pokemon)
                         Player.addEquipe(pokemon)
                         Player.removePokemonBox(pokemon)
                     }

@@ -286,11 +286,11 @@ object MusicManager {
     fun crierPokemon(pok: Pokemon) {
         //si zacian ou pikachi, son custop, sinon random
         if (pok.species.nom == "Zacian") {
-            mapDePokeCri["zacian"]?.let { soundPool.play(it, 1f, 1f, 1, 0, 1f) }
+            mapDePokeCri["zacian"]?.let { soundPool.play(it, 0.6f, 0.6f, 1, 0, 1f) }
             return
         }
         if (pok.species.nom == "Pikachu") {
-            mapDePokeCri["pikachu"]?.let { soundPool.play(it, 1f, 1f, 1, 0, 1f) }
+            mapDePokeCri["pikachu"]?.let { soundPool.play(it, 0.6f, 0.6f, 1, 0, 1f) }
             return
         }
         val clesDispo = mapDePokeCri.keys.filter { it != "zacian" && it != "pikachu" && it != dernierCriJoue }
@@ -298,7 +298,7 @@ object MusicManager {
             val soundKey = clesDispo.random()
             dernierCriJoue = soundKey // On mémorise ce cri
             mapDePokeCri[soundKey]?.let { soundId ->
-                soundPool.play(soundId, 1f, 1f, 1, 0, 1f)
+                soundPool.play(soundId, 0.6f, 0.6f, 1, 0, 1f)
             }
         }
     }

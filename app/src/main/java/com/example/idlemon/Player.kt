@@ -46,7 +46,9 @@ object Player {
     //box
     fun getNbPokemon(): Int = tabPokemon.size
 
-    fun getPokemon(index: Int): Pokemon = tabPokemon[index]
+    fun addPokemonToBox(pokemon: Pokemon) {
+        tabPokemon.add(pokemon)
+    }
 
     fun aDejaLePokemon(numPokedex: Int): Boolean {
         val dansEquipe = tabEquipe.any { it.species.num == numPokedex }

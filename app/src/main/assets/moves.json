@@ -349,24 +349,6 @@
     "heal": 0,
     "description": "Augmente l'attaque du lanceur."
   },
-  "Mâchouille": {
-    "num": 242,
-    "name": "Mâchouille",
-    "type": "Tenebre",
-    "basePower": 80,
-    "accuracy": 1.0,
-    "pp": 15,
-    "critRatio": 0.04,
-    "drain": false,
-    "bonus": [],
-    "malus": [
-      {
-        "def": -1
-      }
-    ],
-    "heal": 0,
-    "description": "Inflige de lourds dégâts de type Tenebre, baisse la défense de la cible."
-  },
   "Coup d’Jus": {
     "num": 435,
     "name": "Coup d’Jus",
