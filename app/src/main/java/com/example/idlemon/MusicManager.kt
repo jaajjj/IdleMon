@@ -7,6 +7,7 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.media.SoundPool
 import android.view.animation.LinearInterpolator
+import android.widget.Toast
 
 object MusicManager {
 
@@ -17,6 +18,8 @@ object MusicManager {
     private val mapDeSonBattle: HashMap<String, Int> = HashMap()
     private var dernierCriJoue: String = ""
     private val mapDeMoveSounds: HashMap<String, MutableList<Int>> = HashMap()
+    private val mapDeNomsDesSons: HashMap<Int, String> = HashMap()
+    private var appContext: Context? = null
 
     private var compteurActivites = 0
 
@@ -55,19 +58,144 @@ object MusicManager {
         R.raw.voeux
     )
 
+    //sons attacks
+    private val sonsAttackFeu = listOf(
+        R.raw.feu_move1,
+        R.raw.feu_move3,
+        R.raw.feu_move4,
+        R.raw.feu_move5,
+        R.raw.feu_move6,
+        R.raw.feu_move7
+    )
+
+    private val sonsAttackEau = listOf(
+        R.raw.eau_move1,
+        R.raw.eau_move2,
+        R.raw.eau_move3
+    )
+
+    private val sonsAttackPlante = listOf(
+        R.raw.plante_move1,
+        R.raw.plante_move2,
+        R.raw.plante_move3
+    )
+
+    private val sonsAttackElec = listOf(
+        R.raw.elec_move1,
+        R.raw.elec_move2,
+        R.raw.elec_move3,
+        R.raw.elec_move4,
+        R.raw.elec_move5
+    )
+
+    private val sonsAttackNormal = listOf(
+        R.raw.normal_move1,
+        R.raw.normal_move2,
+        R.raw.normal_move3,
+        R.raw.normal_move4
+    )
+
+    private val sonsAttackFee = listOf(
+        R.raw.fee_move1,
+        R.raw.fee_move2,
+        R.raw.fee_move3
+    )
+
+    private val sonsAttackPsy = listOf(
+        R.raw.psy_move1,
+        R.raw.psy_move2,
+        R.raw.psy_move3
+    )
+
+    private val sonsAttackGlace = listOf(
+        R.raw.glace_move1,
+        R.raw.glace_move2
+    )
+
+    private val sonsAttackSpectre = listOf(
+        R.raw.spectre_move1,
+        R.raw.spectre_move2,
+        R.raw.spectre_move3
+    )
+
+    private val sonsAttackTenebre = listOf(
+        R.raw.tenebre_move1,
+        R.raw.tenebre_move2
+    )
+
+    private val sonsAttackDragon = listOf(
+        R.raw.drag_move1,
+        R.raw.drag_move2,
+        R.raw.drag_move3,
+        R.raw.drag_move4
+    )
+
+    private val sonsAttackVol = listOf(
+        R.raw.air_move1,
+        R.raw.air_move2,
+        R.raw.air_move3,
+        R.raw.air_move4
+    )
+
+    private val sonsAttackSol = listOf(
+        R.raw.sol_move1,
+        R.raw.sol_move2)
+
+    private val sonsAttackRoche = listOf(
+        R.raw.roche_move1,
+        R.raw.roche_move2
+    )
+
+    private val sonsAttackAcier = listOf(
+        R.raw.acier_move1,
+        R.raw.acier_move2
+    )
+
+    private val sonsAttackInsect = listOf(
+        R.raw.insect_move1,
+        R.raw.insect_move2,
+        R.raw.insect_move3,
+        R.raw.insect_move4,
+        R.raw.insect_move5
+    )
+
+    private val sonsAttackMalus = listOf(
+        R.raw.malus_move1,
+        R.raw.malus_move2,
+        R.raw.malus_move3
+    )
+
+    private val sonsAttackBonus = listOf(
+        R.raw.bonus_move1,
+        R.raw.bonus_move2,
+        R.raw.bonus_move3,
+        R.raw.bonus_move4
+    )
+
+    private val sonsAttackPoison = listOf(
+        R.raw.poison_move1,
+        R.raw.poison_move2,
+        R.raw.poison_move3
+    )
+
+    private val sonsAttackCombat = listOf(
+        R.raw.combat_move1,
+        R.raw.combat_move2,
+        R.raw.combat_move3
+    )
+
     fun setup(context: Context) {
+        appContext = context.applicationContext
         if (mediaPlayer == null) {
+
             //load des pokeCri
-            for(i in 1..44) {
-                mapDePokeCri["pokeCri$i"] = soundPool.load(context, context.resources.getIdentifier("poke_cri$i", "raw", context.packageName), 1)
-            }
+            for(i in 1..44) { mapDePokeCri["pokeCri$i"] = soundPool.load(context, context.resources.getIdentifier("poke_cri$i", "raw", context.packageName), 1) }
             mapDePokeCri["zacian"] = soundPool.load(context, R.raw.zacian, 1)
             mapDePokeCri["pikachu"] = soundPool.load(context, R.raw.pikachu, 1)
 
             //load des BossCri
-            for(i in 1..45){
-                mapDeBossCri["bossCri$i"] = soundPool.load(context, context.resources.getIdentifier("boss_cri$i", "raw", context.packageName), 1)
-            }
+            for(i in 1..45){ mapDeBossCri["bossCri$i"] = soundPool.load(context, context.resources.getIdentifier("boss_cri$i", "raw", context.packageName), 1) }
+
             //load des sons
             mapDeSonBattle["poke_spawn"] = soundPool.load(context, R.raw.poke_spawn, 1)
             mapDeSonBattle["ko_sound"] = soundPool.load(context, R.raw.ko_sound, 1)
@@ -79,25 +207,29 @@ object MusicManager {
             mapDeSonBattle["malus_stat_sound"] = soundPool.load(context, R.raw.malus_stat_sound, 1)
             mapDeSonBattle["bonus_stat_sound"] = soundPool.load(context, R.raw.bonus_stat_sound, 1)
 
-            //Types moves sons
-            val moveCounts = mapOf(
-                "normal" to 4, "combat" to 3, "air" to 4, "poison" to 3,
-                "feu" to 7, "eau" to 3, "plante" to 3, "elec" to 5,
-                "glace" to 2, "sol" to 3, "roche" to 2, "acier" to 2,
-                "psy" to 3, "spectre" to 3, "tenebre" to 2, "fee" to 3,
-                "drag" to 4, "insect" to 5, "bonus" to 4, "malus" to 3
-            )
-            for ((type, count) in moveCounts) {
-                val soundIds = mutableListOf<Int>()
-                for (i in 1..count) {
-                    val resName = "${type}_move$i" // ex: feu_move1, eau_move2...
-                    val resId = context.resources.getIdentifier(resName, "raw", context.packageName)
-                    soundIds.add(soundPool.load(context, resId, 1))
-                }
-                mapDeMoveSounds[type] = soundIds
-            }
             val drainId = context.resources.getIdentifier("drain_move", "raw", context.packageName)
             mapDeMoveSounds["drain"] = mutableListOf(soundPool.load(context, drainId, 1))
+            mapDeNomsDesSons[mapDeMoveSounds["drain"]!![0]] = "drain_move"
+
+            val toutesLesAttaques = mapOf(
+                "feu" to sonsAttackFeu, "eau" to sonsAttackEau, "plante" to sonsAttackPlante,
+                "electrik" to sonsAttackElec, "normal" to sonsAttackNormal, "fee" to sonsAttackFee,
+                "psy" to sonsAttackPsy, "glace" to sonsAttackGlace, "spectre" to sonsAttackSpectre,
+                "tenebre" to sonsAttackTenebre, "dragon" to sonsAttackDragon, "vol" to sonsAttackVol,
+                "sol" to sonsAttackSol, "roche" to sonsAttackRoche, "acier" to sonsAttackAcier,
+                "insect" to sonsAttackInsect, "malus" to sonsAttackMalus, "bonus" to sonsAttackBonus,
+                "poison" to sonsAttackPoison, "combat" to sonsAttackCombat
+            )
+
+            for ((type, listRaw) in toutesLesAttaques) {
+                val listeIdsLoaded = mutableListOf<Int>()
+                for (rawId in listRaw) {
+                    val idSoundPool = soundPool.load(context, rawId, 1)
+                    listeIdsLoaded.add(idSoundPool)
+                    mapDeNomsDesSons[idSoundPool] = context.resources.getResourceEntryName(rawId)
+                }
+                mapDeMoveSounds[type] = listeIdsLoaded
+            }
 
             jouerPlaylistHome(context)
         }
@@ -154,19 +286,19 @@ object MusicManager {
 
     //BATTLE
     fun jouerSonAttaque(type: String) {
-        val typeKey = type.lowercase()
+        val typeClair = type.lowercase()
+        val ctx = appContext ?: return
 
-        val listeSons = mapDeMoveSounds[typeKey]
+        val listeSons = mapDeMoveSounds[typeClair] ?: mapDeMoveSounds["normal"]
 
         if (!listeSons.isNullOrEmpty()) {
-            val soundId = listeSons.random()
-            soundPool.play(soundId, 1f, 1f, 1, 0, 1f)
-        } else {
-            mapDeMoveSounds["normal"]?.randomOrNull()?.let {
-                soundPool.play(it, 1f, 1f, 1, 0, 1f)
-            }
+            val sonChoisiId = listeSons.random()
+            val nomDuSon = mapDeNomsDesSons[sonChoisiId] ?: "Inconnu"
+            Toast.makeText(ctx, "Son joué : $nomDuSon", Toast.LENGTH_SHORT).show()
+            soundPool.play(sonChoisiId, 0.5f, 0.5f, 1, 0, 1f)
         }
     }
+
     fun jouerSonBattle(nomSon: String) {
         mapDeSonBattle[nomSon]?.let { soundId ->
             soundPool.play(soundId, 1f, 1f, 1, 0, 1f)
@@ -325,4 +457,36 @@ object MusicManager {
             pause()
         }
     }
+
+    //debug :
+    /*fun lancerDebugSonsAttaques(context: Context) {
+        stop()
+        val toutesLesAttaquesRaw = sonsAttackFeu + sonsAttackEau + sonsAttackPlante +
+                sonsAttackElec + sonsAttackNormal + sonsAttackFee + sonsAttackPsy +
+                sonsAttackGlace + sonsAttackSpectre + sonsAttackTenebre + sonsAttackDragon +
+                sonsAttackVol + sonsAttackSol + sonsAttackRoche + sonsAttackAcier +
+                sonsAttackInsect + sonsAttackMalus + sonsAttackBonus + sonsAttackPoison +
+                sonsAttackCombat
+        Toast.makeText(context, "Début du debug : ${toutesLesAttaquesRaw.size} sons à tester", Toast.LENGTH_SHORT).show()
+        //lecture rec
+        playNextDebugSound(context, toutesLesAttaquesRaw.iterator())
+    }
+
+    private fun playNextDebugSound(context: Context, iterator: Iterator<Int>) {
+        if (!iterator.hasNext()) {
+            Toast.makeText(context, "Fin du test des sons !", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val rawId = iterator.next()
+        val nomDuSon = context.resources.getResourceEntryName(rawId)
+        Toast.makeText(context, "Son : $nomDuSon", Toast.LENGTH_SHORT).show()
+        val soundId = mapDeNomsDesSons.entries.find { it.value == nomDuSon }?.key
+
+        if (soundId != null) {
+            soundPool.play(soundId, 1f, 1f, 1, 0, 1f)
+        }
+        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+            playNextDebugSound(context, iterator)
+        }, 4000)
+    }*/
 }

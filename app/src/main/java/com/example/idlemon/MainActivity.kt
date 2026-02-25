@@ -106,6 +106,8 @@ class MainActivity : BaseActivity() {
                 animPlayBtn()
             }
         }
+        settingsBtn.setOnClickListener {
+        }
     }
 
     override fun onResume() {

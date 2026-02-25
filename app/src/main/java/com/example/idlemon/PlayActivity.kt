@@ -495,7 +495,7 @@ class PlayActivity : BaseActivity() {
 
         if (multiplicateur == 0.0) {
             messagesRetour.add("Ça n'affecte pas ${defenseur.species.nom}...")
-            return messagesRetour // Si immunité, 0 dégâts, pas d'effets secondaires
+            return messagesRetour //si immunité, 0 dégâts et pas d'effets
         } else if (multiplicateur >= 2.0) {
             MusicManager.jouerSonBattle("super_eff")
             messagesRetour.add(if (multiplicateur > 2.0) "C'est extrêmement efficace !" else "C'est super efficace !")
