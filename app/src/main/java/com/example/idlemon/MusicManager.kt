@@ -206,6 +206,9 @@ object MusicManager {
             mapDeSonBattle["low_hp"] = soundPool.load(context, R.raw.low_hp, 1)
             mapDeSonBattle["malus_stat_sound"] = soundPool.load(context, R.raw.malus_stat_sound, 1)
             mapDeSonBattle["bonus_stat_sound"] = soundPool.load(context, R.raw.bonus_stat_sound, 1)
+            mapDeSonBattle["levelUp_sound"] = soundPool.load(context, R.raw.level_up, 1)
+            mapDeSonBattle["evo_sound"] = soundPool.load(context, R.raw.evo_sound, 1)
+
 
             val drainId = context.resources.getIdentifier("drain_move", "raw", context.packageName)
             mapDeMoveSounds["drain"] = mutableListOf(soundPool.load(context, drainId, 1))
@@ -440,6 +443,17 @@ object MusicManager {
             mapDeBossCri[soundKey]?.let { soundId ->
                 soundPool.play(soundId, 1f, 1f, 1, 0, 1f)
             }
+        }
+    }
+
+    fun sonLevelUpPoke() {
+        mapDeSonBattle["levelUp_sound"]?.let { soundId ->
+            soundPool.play(soundId, 1f, 1f, 1, 0, 1f)
+        }
+    }
+    fun sonEvoPoke() {
+        mapDeSonBattle["evo_sound"]?.let { soundId ->
+            soundPool.play(soundId, 1f, 1f, 1, 0, 1f)
         }
     }
 

@@ -64,7 +64,7 @@ class MainActivity : BaseActivity() {
         val player = Player
 
         if (Player.getEquipe().isEmpty()) {
-            Player.addEquipe(modelJson.creerPokemon("Victini"))
+            Player.addEquipe(modelJson.creerPokemon("Galekid"))
             Player.addEquipe(modelJson.creerPokemon(94))
             Player.addEquipe(modelJson.creerPokemon(122))
             Player.addEquipe(modelJson.creerPokemon(774))

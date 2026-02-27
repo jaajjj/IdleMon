@@ -40,7 +40,7 @@ class RewardBattleVague(
         //COMMUNS
         Reward("lvl_1", "Bonbon", "+1 Niveau", R.drawable.bonbon, Rarity.COMMON, 50) { poke ->
             MusicManager.jouerSonBattle("item_active")
-            poke.monterLevel()
+            repeat (32) {poke.monterLevel()}
             "${poke.species.nom} mange un Bonbon et gagne 1 niveau !"
         },
         Reward("atk_1", "Attack +", "+5 Attaque (Perm.)", R.drawable.attaque_plus, Rarity.COMMON, 40) { poke ->
@@ -74,7 +74,7 @@ class RewardBattleVague(
         //ÉPIQUES
         Reward("lvl_3", "Super Bonbon", "+3 Niveaux", R.drawable.super_bonbon, Rarity.EPIC, 15) { poke ->
             MusicManager.jouerSonBattle("item_active")
-            repeat(3) { poke.monterLevel() }
+            repeat(32) { poke.monterLevel() }
             "${poke.species.nom} engloutit un Super Bonbon et gagne 3 niveaux !"
         },
         Reward("atk_2", "Attack ++", "+10 Attaque (Perm.)", R.drawable.attaque_plus, Rarity.EPIC, 10) { poke ->

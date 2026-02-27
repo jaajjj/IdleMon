@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.DecelerateInterpolator
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -61,11 +59,11 @@ class PlayActivity : BaseActivity() {
     private var currentTurn = 1
     private var vagueActuelle = 1
     val modelJson = DataManager.model
-    private val VIT_TEXTE_NORMAL = 13L
-    private val VIT_TEXTE_XP = 10L
-    private val PAUSE_LECTURE = 500L
+    private val VIT_TEXTE_NORMAL = 8L
+    private val VIT_TEXTE_XP = 3L
+    private val PAUSE_LECTURE = 100L
 
-    // variables pour contrôler le texte asynchrone proprement
+    //variables pour contrôler le texte asynchrone proprement
     private val textAnimHandler = Handler(Looper.getMainLooper())
     private var currentTextRunnable: Runnable? = null
 
@@ -207,15 +205,15 @@ class PlayActivity : BaseActivity() {
         updateUI(animate = false)
 
         if (vagueActuelle == 1) {
-            animateEntry(imgPokePlayer, isPlayer = true)
+            BattleAnimator.animateEntry(imgPokePlayer, isPlayer = true)
             MusicManager.crierPokemon(playerPokemon) //cri
-            animateEntry(imgPokeEnemy, isPlayer = false)
+            BattleAnimator.animateEntry(imgPokeEnemy, isPlayer = false)
             Handler(Looper.getMainLooper()).postDelayed({
                 if (estUnBoss) MusicManager.crierBoss() else MusicManager.crierPokemon(enemyPokemon) //cri
             }, 500)
 
         } else {
-            animateEntry(imgPokeEnemy, isPlayer = false)
+            BattleAnimator.animateEntry(imgPokeEnemy, isPlayer = false)
             if (estUnBoss) MusicManager.crierBoss() else MusicManager.crierPokemon(enemyPokemon) //cri Boss
         }
 
@@ -254,11 +252,11 @@ class PlayActivity : BaseActivity() {
     private fun changerPokemon(newPokemon: Pokemon, etaitKo: Boolean) {
         isTurnInProgress = true
 
-        animateSwitchOut(imgPokePlayer) {
+        BattleAnimator.animateSwitchOut(imgPokePlayer) {
             playerPokemon = newPokemon
             updateUI(animate = false)
             animateText("Go ! ${playerPokemon.species.nom} !") {
-                animateEntry(imgPokePlayer, true)
+                BattleAnimator.animateEntry(imgPokePlayer, true)
                 MusicManager.crierPokemon(playerPokemon) //cri Poké
 
                 Handler(Looper.getMainLooper()).postDelayed({
@@ -299,13 +297,13 @@ class PlayActivity : BaseActivity() {
                 fun executerImpact1() {
                     val efficaciteMsg = applicationDegats(first, second, move1)
                     if (move1.basePower > 0) {
-                        if (efficaciteMsg.contains("Coup critique !")) animateCritShake(viewSecond)
-                        else animateHit(viewSecond)
+                        if (efficaciteMsg.contains("Coup critique !")) BattleAnimator.animateCritShake(viewSecond)
+                        else BattleAnimator.animateHit(viewSecond)
                     }
 
                     fun suiteApresAttaque() {
                         if (second.isKO) {
-                            animateKO(viewSecond) { finDuCombat(second) }
+                            BattleAnimator.animateKO(viewSecond, second) { finDuCombat(second) }
                         } else {
                             Handler(Looper.getMainLooper()).postDelayed({
                                 animateText("${second.species.nom} utilise ${move2.name} !") {
@@ -315,13 +313,13 @@ class PlayActivity : BaseActivity() {
                                         fun executerImpact2() {
                                             val effMsg2 = applicationDegats(second, first, move2)
                                             if (move2.basePower > 0) {
-                                                if (effMsg2.contains("Coup critique !")) animateCritShake(viewFirst)
-                                                else animateHit(viewFirst)
+                                                if (effMsg2.contains("Coup critique !")) BattleAnimator.animateCritShake(viewFirst)
+                                                else BattleAnimator.animateHit(viewFirst)
                                             }
 
                                             fun finDuTour() {
                                                 if (first.isKO) {
-                                                    animateKO(viewFirst) { finDuCombat(first) }
+                                                    BattleAnimator.animateKO(viewFirst, first) { finDuCombat(first) }
                                                 } else {
                                                     appliquerEffetsFinDeTour(first) {
                                                         appliquerEffetsFinDeTour(second) {
@@ -342,14 +340,14 @@ class PlayActivity : BaseActivity() {
                                         }
 
                                         if (move2.basePower > 0) {
-                                            animateAttackMove(viewSecond, !isPlayerFirst) { executerImpact2() }
+                                            BattleAnimator.animateAttackMove(viewSecond, !isPlayerFirst) { executerImpact2() }
                                         } else {
                                             Handler(Looper.getMainLooper()).postDelayed({ executerImpact2() }, 300)
                                         }
 
                                     }, 200)
                                 }
-                            }, 500)
+                            }, 1200)
                         }
                     }
 
@@ -363,7 +361,7 @@ class PlayActivity : BaseActivity() {
                 }
 
                 if (move1.basePower > 0) {
-                    animateAttackMove(viewFirst, isPlayerFirst) { executerImpact1() }
+                    BattleAnimator.animateAttackMove(viewFirst, isPlayerFirst) { executerImpact1() }
                 } else {
                     Handler(Looper.getMainLooper()).postDelayed({ executerImpact1() }, 300)
                 }
@@ -388,13 +386,13 @@ class PlayActivity : BaseActivity() {
                 fun executerImpactEnnemi() {
                     val effMsg = applicationDegats(enemyPokemon, playerPokemon, enemyAttack)
                     if (enemyAttack.basePower > 0) {
-                        if (effMsg.contains("Coup critique !")) animateCritShake(imgPokePlayer)
-                        else animateHit(imgPokePlayer)
+                        if (effMsg.contains("Coup critique !")) BattleAnimator.animateCritShake(imgPokePlayer)
+                        else BattleAnimator.animateHit(imgPokePlayer)
                     }
 
                     fun checkFinTour() {
                         if (playerPokemon.isKO) {
-                            animateKO(imgPokePlayer) { finDuCombat(playerPokemon) }
+                            BattleAnimator.animateKO(imgPokePlayer, playerPokemon) { finDuCombat(playerPokemon) }
                         } else {
                             appliquerEffetsFinDeTour(enemyPokemon) {
                                 appliquerEffetsFinDeTour(playerPokemon) {
@@ -415,7 +413,7 @@ class PlayActivity : BaseActivity() {
                 }
 
                 if (enemyAttack.basePower > 0) {
-                    animateAttackMove(imgPokeEnemy, false) { executerImpactEnnemi() }
+                    BattleAnimator.animateAttackMove(imgPokeEnemy, false) { executerImpactEnnemi() }
                 } else {
                     Handler(Looper.getMainLooper()).postDelayed({ executerImpactEnnemi() }, 300)
                 }
@@ -572,20 +570,20 @@ class PlayActivity : BaseActivity() {
         val viewAtk = if (attaquant == playerPokemon) imgPokePlayer else imgPokeEnemy
         if (atkBuffed) {
             MusicManager.jouerSonBattle("bonus_stat_sound")
-            animateBuff(viewAtk)
+            BattleAnimator.animateBuff(viewAtk)
         } else if (atkDebuffed) {
             MusicManager.jouerSonBattle("malus_stat_sound")
-            animateDebuff(viewAtk)
+            BattleAnimator.animateDebuff(viewAtk)
         }
 
         //anim defenseur
         val viewDef = if (defenseur == playerPokemon) imgPokePlayer else imgPokeEnemy
         if (defDebuffed) {
             MusicManager.jouerSonBattle("malus_stat_sound")
-            animateDebuff(viewDef)
+            BattleAnimator.animateDebuff(viewDef)
         } else if (defBuffed) {
             MusicManager.jouerSonBattle("bonus_stat_sound")
-            animateBuff(viewDef)
+            BattleAnimator.animateBuff(viewDef)
         }
 
         return messages
@@ -696,6 +694,12 @@ class PlayActivity : BaseActivity() {
         val isXpMsg = messageActuel.contains("XP") || messageActuel.contains("niveau") || messageActuel.contains("gagne")
         val vitesse = if (isXpMsg) VIT_TEXTE_XP else VIT_TEXTE_NORMAL
 
+        if (messageActuel.contains("passe au niveau")) {
+            MusicManager.sonLevelUpPoke()
+        } else if (messageActuel.contains("évolué")) {
+            MusicManager.sonEvoPoke()
+        }
+
         animateText(messageActuel, vitesse) {
             Handler(Looper.getMainLooper()).postDelayed({
                 afficherDialoguesSuccessifs(messages.drop(1), onFinished)
@@ -759,30 +763,6 @@ class PlayActivity : BaseActivity() {
         }
     }
 
-    //animation
-    private fun animateEntry(view: View, isPlayer: Boolean) {
-        view.translationX = if (isPlayer) -500f else 500f
-        view.alpha = 0f
-        view.scaleX = 0.5f; view.scaleY = 0.5f
-        view.animate().translationX(0f).alpha(1f).scaleX(1f).scaleY(1f).setDuration(800).setInterpolator(DecelerateInterpolator()).start()
-    }
-    private fun animateSwitchOut(view: View, onEnd: () -> Unit) {
-        view.animate().translationX(-500f).alpha(0f).setDuration(500).withEndAction(onEnd).start()
-    }
-    private fun animateAttackMove(view: View, isPlayer: Boolean, onImpact: () -> Unit) {
-        view.animate().translationX(if (isPlayer) 300f else -300f).translationY(if (isPlayer) -100f else 100f).setDuration(250).setInterpolator(AccelerateDecelerateInterpolator()).withEndAction {
-            onImpact()
-            view.animate().translationX(0f).translationY(0f).setDuration(300).start()
-        }.start()
-    }
-    private fun animateHit(view: View) {
-        view.animate().translationX(20f).setDuration(50).withEndAction { view.animate().translationX(-20f).setDuration(50).withEndAction { view.animate().translationX(0f).setDuration(50).start() }.start() }.start()
-    }
-    private fun animateKO(view: View, onEnd: () -> Unit) {
-        MusicManager.jouerSonBattle("ko_sound")
-        view.animate().scaleX(0f).scaleY(0f).alpha(0f).rotation(360f).setDuration(800).withEndAction(onEnd).start()
-    }
-
     //UI
     private fun updateUI(animate: Boolean) {
         if(isDestroyed || isFinishing) return
@@ -837,59 +817,6 @@ class PlayActivity : BaseActivity() {
             }
         }
         animation.start()
-    }
-
-    private fun animateCritShake(view: View) {
-        val shakeX = ObjectAnimator.ofFloat(view, "translationX", 0f, -30f, 30f, -20f, 20f, -10f, 10f, 0f)
-        val shakeY = ObjectAnimator.ofFloat(view, "translationY", 0f, -15f, 15f, -5f, 5f, 0f)
-
-        shakeX.duration = 400
-        shakeY.duration = 400
-
-        shakeX.start()
-        shakeY.start()
-
-        //flash blanc
-        if (view is ImageView) {
-            view.setColorFilter(android.graphics.Color.WHITE, android.graphics.PorterDuff.Mode.SRC_IN)
-            Handler(Looper.getMainLooper()).postDelayed({
-                view.clearColorFilter()
-            }, 100)
-        }
-    }
-
-    private fun animateBuff(view: View) {
-        val scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1.0f, 1.2f, 1.0f)
-        val scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1.0f, 1.2f, 1.0f)
-
-        scaleX.duration = 400
-        scaleY.duration = 400
-        scaleX.interpolator = DecelerateInterpolator()
-        scaleY.interpolator = DecelerateInterpolator()
-        if (view is ImageView) {
-            view.setColorFilter(android.graphics.Color.argb(100, 100, 200, 255), android.graphics.PorterDuff.Mode.SRC_ATOP)
-            Handler(Looper.getMainLooper()).postDelayed({ view.clearColorFilter() }, 400)
-        }
-
-        scaleX.start()
-        scaleY.start()
-    }
-
-    private fun animateDebuff(view: View) {
-        val scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1.0f, 0.8f, 1.0f)
-        val scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1.0f, 0.8f, 1.0f)
-
-        scaleX.duration = 400
-        scaleY.duration = 400
-        scaleX.interpolator = DecelerateInterpolator()
-        scaleY.interpolator = DecelerateInterpolator()
-        if (view is ImageView) {
-            view.setColorFilter(android.graphics.Color.argb(100, 150, 0, 150), android.graphics.PorterDuff.Mode.SRC_ATOP)
-            Handler(Looper.getMainLooper()).postDelayed({ view.clearColorFilter() }, 400)
-        }
-
-        scaleX.start()
-        scaleY.start()
     }
 
     private fun updateHpColor(bar: ProgressBar, current: Int, max: Int) {
