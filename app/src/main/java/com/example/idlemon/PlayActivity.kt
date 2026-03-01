@@ -1,10 +1,14 @@
 package com.example.idlemon
 
 import android.animation.ObjectAnimator
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.GridLayout
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -27,6 +31,9 @@ class PlayActivity : BaseActivity() {
     //menu
     private lateinit var layoutMenuPrincipal: View
     private lateinit var layoutMenuEquipe: View
+    private lateinit var layoutMenuAttacks: ConstraintLayout
+    private lateinit var attacksGrid: GridLayout
+    private lateinit var btnReturnAttacks: ImageView
 
     //menue équipe
     private lateinit var teamListContainer: LinearLayout
@@ -79,11 +86,15 @@ class PlayActivity : BaseActivity() {
 
         btnAttack.setOnClickListener {
             if (!isTurnInProgress && !isTextWriting) {
-                val dialog = BattleAttackDialog(this, playerPokemon) { attack ->
-                    executerTourDeJeu(attack)
-                }
-                dialog.show()
+                layoutMenuPrincipal.visibility = View.GONE
+                layoutMenuAttacks.visibility = View.VISIBLE
+                afficherAttaques(playerPokemon)
             }
+        }
+
+        btnReturnAttacks.setOnClickListener {
+            layoutMenuAttacks.visibility = View.GONE
+            layoutMenuPrincipal.visibility = View.VISIBLE
         }
 
         btnTeam.setOnClickListener {
@@ -121,6 +132,10 @@ class PlayActivity : BaseActivity() {
         layoutMenuPrincipal = findViewById(R.id.layout_menu_principal)
         layoutMenuEquipe = findViewById(R.id.layout_menu_equipe)
 
+        layoutMenuAttacks = findViewById(R.id.layout_menu_attacks)
+        attacksGrid = findViewById(R.id.attacks_grid)
+        btnReturnAttacks = findViewById(R.id.btn_return_attacks)
+
         teamListContainer = findViewById(R.id.team_list_container)
         btnCloseTeam = findViewById(R.id.btn_close_team)
 
@@ -137,6 +152,53 @@ class PlayActivity : BaseActivity() {
 
         btnAttack = findViewById(R.id.btn_attack_container)
         btnTeam = findViewById(R.id.btn_team_container)
+    }
+
+    private fun afficherAttaques(pokemon: Pokemon) {
+        attacksGrid.removeAllViews()
+
+        for (attack in pokemon.attacks) {
+            val attackView = LayoutInflater.from(this).inflate(R.layout.item_attack_battle, attacksGrid, false)
+
+            val params = GridLayout.LayoutParams()
+            params.width = 0
+            params.height = 0
+            params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, GridLayout.FILL, 1f)
+            params.rowSpec = GridLayout.spec(GridLayout.UNDEFINED, GridLayout.FILL, 1f)
+            attackView.layoutParams = params
+
+            val txtNom = attackView.findViewById<TextView>(R.id.nomAttack)
+            val txtPp = attackView.findViewById<TextView>(R.id.ppMaxTextView)
+            val rootLayout = attackView.findViewById<ConstraintLayout>(R.id.attack_item_root)
+
+            txtNom.text = attack.name
+
+            val attackIndex = pokemon.attacks.indexOf(attack)
+            val currentPP = pokemon.currentPP[attackIndex] ?: attack.pp
+
+            txtPp.text = "$currentPP/${attack.pp}"
+
+            rootLayout.backgroundTintList = ColorStateList.valueOf(getColorForType(attack.type))
+
+            if (currentPP == 0) {
+                attackView.alpha = 0.5f
+            } else {
+                attackView.alpha = 1.0f
+            }
+
+            attackView.setOnClickListener {
+                if (currentPP > 0) {
+                    layoutMenuAttacks.visibility = View.GONE
+                    layoutMenuPrincipal.visibility = View.VISIBLE
+
+                    executerTourDeJeu(attack)
+                } else {
+                    Toast.makeText(this, "Plus de PP pour cette attaque !", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            attacksGrid.addView(attackView)
+        }
     }
 
     private fun afficherMenuEquipe(etaitKo: Boolean) {
@@ -833,5 +895,28 @@ class PlayActivity : BaseActivity() {
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
         windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+    }
+
+    private fun getColorForType(type: String): Int {
+        return when (type.lowercase()) {
+            "feu" -> Color.parseColor("#EE8130")
+            "eau" -> Color.parseColor("#6390F0")
+            "plante" -> Color.parseColor("#7AC74C")
+            "électrik", "electrik" -> Color.parseColor("#F7D02C")
+            "glace" -> Color.parseColor("#96D9D6")
+            "combat" -> Color.parseColor("#C22E28")
+            "poison" -> Color.parseColor("#A33EA1")
+            "sol" -> Color.parseColor("#E2BF65")
+            "vol" -> Color.parseColor("#A98FF3")
+            "psy" -> Color.parseColor("#F95587")
+            "insecte" -> Color.parseColor("#A6B91A")
+            "roche" -> Color.parseColor("#B6A136")
+            "spectre" -> Color.parseColor("#735797")
+            "dragon" -> Color.parseColor("#6F35FC")
+            "ténèbres", "tenebres" -> Color.parseColor("#705848")
+            "acier" -> Color.parseColor("#B7B7CE")
+            "fée", "fee" -> Color.parseColor("#D685AD")
+            else -> Color.parseColor("#A8A77A")
+        }
     }
 }
