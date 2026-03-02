@@ -58,21 +58,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
-            android:id="@+id/imageView9"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:alpha="1"
-            android:cropToPadding="false"
-            android:paddingBottom="-20dp"
-            android:rotation="180"
-            app:barrierAllowsGoneWidgets="false"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="1.5"
-            app:srcCompat="@drawable/back_gradient_white" />
-
-        <ImageView
             android:id="@+id/settingsBtn"
             android:layout_width="60dp"
             android:layout_height="60dp"
