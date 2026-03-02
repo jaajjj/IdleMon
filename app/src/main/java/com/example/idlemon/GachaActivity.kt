@@ -19,6 +19,8 @@ class GachaActivity : BaseActivity() {
     private lateinit var homeBtn: ImageView
     private lateinit var teamBtn: ImageView
     private lateinit var singlePullBtn: Button
+    private lateinit var settingsBtn: ImageView
+
     private lateinit var tenPullBtn: Button
     private lateinit var fieldPokegold: TextView
 
@@ -44,6 +46,7 @@ class GachaActivity : BaseActivity() {
         singlePullBtn = findViewById(R.id.singlePullBtn)
         tenPullBtn = findViewById(R.id.tenPullBtn)
         fieldPokegold = findViewById(R.id.fieldPokegold)
+        settingsBtn = findViewById(R.id.settingsBtn)
 
         videoContainer = findViewById(R.id.videoContainer)
         summonVideoView = findViewById(R.id.summonVideoView)
@@ -55,6 +58,9 @@ class GachaActivity : BaseActivity() {
         teamBtn.setOnClickListener { startActivity(Intent(this, TeamActivity::class.java)) }
         homeBtn.setOnClickListener { startActivity(Intent(this, MainActivity::class.java)) }
 
+        settingsBtn.setOnClickListener {
+            showSettingsDialog()
+        }
         singlePullBtn.setOnClickListener {
             if (player.getPieces() >= 100) {
                 player.setPieces(player.getPieces() - 100)

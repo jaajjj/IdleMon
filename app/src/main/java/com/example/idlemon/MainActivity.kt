@@ -107,6 +107,7 @@ class MainActivity : BaseActivity() {
             }
         }
         settingsBtn.setOnClickListener {
+            showSettingsDialog()
         }
     }
 

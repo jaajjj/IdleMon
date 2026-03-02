@@ -18,6 +18,7 @@ class TeamActivity : BaseActivity() {
     //UI
     private lateinit var pokegold: TextView
     private lateinit var changeTeamBtn: ImageView
+    private lateinit var settingsBtn: ImageView
     private lateinit var homeBtn: ImageView
     private lateinit var gachaBtn: ImageView
     private lateinit var teamList: LinearLayout
@@ -51,6 +52,7 @@ class TeamActivity : BaseActivity() {
         homeBtn = findViewById(R.id.homeBtn)
         gachaBtn = findViewById(R.id.gachaBtn)
         teamList = findViewById(R.id.teamList)
+        settingsBtn = findViewById(R.id.settingsBtn)
 
         //Leader UI
         pokeSprite1 = findViewById(R.id.pokeSprite1)
@@ -68,6 +70,9 @@ class TeamActivity : BaseActivity() {
 
         homeBtn.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
+        }
+        settingsBtn.setOnClickListener {
+            showSettingsDialog()
         }
 
         changeTeamBtn.setOnClickListener {

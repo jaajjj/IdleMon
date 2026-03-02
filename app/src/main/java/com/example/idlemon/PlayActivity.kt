@@ -66,9 +66,9 @@ class PlayActivity : BaseActivity() {
     private var currentTurn = 1
     private var vagueActuelle = 1
     val modelJson = DataManager.model
-    private val VIT_TEXTE_NORMAL = 8L
-    private val VIT_TEXTE_XP = 3L
-    private val PAUSE_LECTURE = 100L
+    private var VIT_TEXTE_NORMAL = 8L
+    private var VIT_TEXTE_XP = 3L
+    private var PAUSE_LECTURE = 100L
 
     //variables pour contrôler le texte asynchrone proprement
     private val textAnimHandler = Handler(Looper.getMainLooper())
@@ -78,6 +78,17 @@ class PlayActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_play)
         setupFullscreen()
+
+        //param vitesse dialogues
+        if (SettingsManager.isFastDialogue(this)) {
+            VIT_TEXTE_NORMAL = 2L
+            VIT_TEXTE_XP = 1L
+            PAUSE_LECTURE = 30L
+        } else {
+            VIT_TEXTE_NORMAL = 8L
+            VIT_TEXTE_XP = 3L
+            PAUSE_LECTURE = 100L
+        }
 
         PokemonType.initialiserTable()
 
