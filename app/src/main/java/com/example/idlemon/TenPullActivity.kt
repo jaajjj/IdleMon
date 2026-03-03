@@ -75,6 +75,12 @@ class TenPullActivity : BaseActivity(), PanoramaUI {
                         resultList.add(Pair(pokemon, estDejaPossede))
                     }
 
+                    // --- SAUVEGARDE IMMÉDIATE APRÈS LE TIRAGE ---
+                    SaveManager.sauvegarderLocal(this)
+                    if (ConnexionManager.estConnecte()) {
+                        SaveManager.sauvegarder()
+                    }
+
                     capteurManager.stop()
                     capteurManager.cleanUpResources()
                     showResultDialog(resultList)

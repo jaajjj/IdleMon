@@ -40,10 +40,8 @@ class SinglePullActivity : BaseActivity(), PanoramaUI {
         boussole = findViewById(R.id.boussole)
         val catchBtn = findViewById<Button>(R.id.catchBtn)
 
-        //init Manager
         capteurManager = CapteurManager(this, eggCount = 5, isTenPull = false)
 
-        //on attend juste que le fond soit mesuré par Android, puis on affiche
         backgroundImage.post {
             capteurManager.displayPreparedEggs()
         }
@@ -69,6 +67,13 @@ class SinglePullActivity : BaseActivity(), PanoramaUI {
                     } else {
                         Player.getBoxPokemon().add(pokemon)
                     }
+                    
+                    // --- SAUVEGARDE IMMÉDIATE ---
+                    SaveManager.sauvegarderLocal(this)
+                    if (ConnexionManager.estConnecte()) {
+                        SaveManager.sauvegarder()
+                    }
+
                     capteurManager.stop()
                     capteurManager.cleanUpResources()
                     showResultDialog(pokemon, estDejaPossede)

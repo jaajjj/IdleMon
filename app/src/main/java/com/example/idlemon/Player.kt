@@ -1,8 +1,8 @@
 package com.example.idlemon
 
 object Player {
-    //init Player
-    private var nbPieces: Int = 400000
+    //donnee de base
+    private var nbPieces: Int = 1000
     private val tabPokemon: MutableList<Pokemon> = mutableListOf()
     private val tabEquipe: MutableList<Pokemon> = mutableListOf()
 
