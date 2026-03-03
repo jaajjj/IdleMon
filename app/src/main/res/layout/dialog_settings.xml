@@ -46,14 +46,15 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="24dp">
+            android:clipToPadding="false"
+            android:paddingBottom="32dp">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guidelineStart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="76dp" />
+                app:layout_constraintGuide_percent="0.2005277" />
 
             <Switch
                 android:id="@+id/switchMusique"
@@ -114,6 +115,7 @@
                 android:hint="Adresse Email"
                 android:inputType="textEmailAddress"
                 android:paddingHorizontal="12dp"
+                android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvAccountTitle" />
@@ -129,18 +131,22 @@
                 android:hint="Mot de passe"
                 android:inputType="textPassword"
                 android:paddingHorizontal="12dp"
+                android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etEmail" />
 
             <LinearLayout
                 android:id="@+id/loginButtonsLayout"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="32dp"
+                android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="24dp"
+                android:clipToPadding="false"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
+                android:paddingHorizontal="8dp"
+                android:paddingBottom="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etPassword">
@@ -166,17 +172,19 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/btnGoogleSignInLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="#FFFFFF"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/btn_google_connect"
                     android:clickable="true"
-                    android:elevation="4dp"
-                    android:focusable="true">
+                    android:elevation="6dp"
+                    android:focusable="true"
+                    android:outlineProvider="background">
 
                     <ImageView
                         android:id="@+id/googleIcon"
-                        android:layout_width="61dp"
+                        android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="20dp"
                         android:scaleType="fitCenter"
                         android:src="@drawable/google_logo"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -186,10 +194,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
                         android:text="Continuer avec Google"
-                        android:textColor="#757575"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
+                        android:textColor="#444444"
+                        android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -216,9 +224,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:minHeight="55dp"
                 android:background="@drawable/btn_summon_multi"
                 android:elevation="8dp"
+                android:gravity="center|center_horizontal"
+                android:minHeight="55dp"
+                android:paddingBottom="20dp"
                 android:shadowColor="#7F000000"
                 android:shadowDx="1"
                 android:shadowDy="2"
@@ -227,10 +237,10 @@
                 android:textColor="#FFFFFF"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintWidth_percent="0.45"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCreateAccount" />
+                app:layout_constraintTop_toBottomOf="@+id/tvCreateAccount"
+                app:layout_constraintWidth_percent="0.45" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
