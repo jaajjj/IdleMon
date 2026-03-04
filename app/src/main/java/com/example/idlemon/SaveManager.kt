@@ -14,6 +14,7 @@ object SaveManager {
     private const val CLE_PLAYER_DATA = "player_data"
     
     var isLoaded = false
+    var cloudSyncComplete = false // Sécurité pour la synchro multi-appareils
 
     private fun toInt(value: Any?): Int {
         return when (value) {
@@ -23,6 +24,7 @@ object SaveManager {
         }
     }
 
+    //save quand on quit
     fun sauvegarderLocal(context: Context) {
         val fichier = context.getSharedPreferences(NOM_FI_LOCAL, Context.MODE_PRIVATE)
         val equipeData = Player.getEquipe().map { serializePokemon(it) }
@@ -46,6 +48,7 @@ object SaveManager {
         )
     }
 
+    //chargement unique au lancement
     fun chargerLocal(context: Context) {
         if (isLoaded) return
         
@@ -97,8 +100,13 @@ object SaveManager {
         return poke
     }
 
+    //save cloud si login
     fun sauvegarder(onSuccess: () -> Unit = {}, onFailure: (String) -> Unit = {}) {
         val user = auth.currentUser ?: return
+        
+        // SECURITÉ : On ne save pas sur le cloud si on n'a pas encore fini de charger les données existantes
+        if (!cloudSyncComplete) return 
+
         val data = hashMapOf(
             "email" to user.email,
             "nbPieces" to Player.getPieces(),
@@ -110,23 +118,28 @@ object SaveManager {
             .addOnFailureListener { onFailure(it.message ?: "Erreur cloud") }
     }
 
+    //synchro cloud si login
     fun charger(context: Context, onSuccess: () -> Unit, onFailure: () -> Unit = {}) {
         val userId = auth.currentUser?.uid ?: return
-        db.collection("users").document(userId).get().addOnSuccessListener { doc ->
-            if (doc != null && doc.exists()) {
-                reconstruirePlayerDepuisMap(doc.data!!, context)
-                isLoaded = true
-                onSuccess()
-            } else {
-                onFailure() // Signale qu'il n'y a pas de sauvegarde pour ce compte
+        db.collection("users").document(userId).get()
+            .addOnSuccessListener { doc ->
+                if (doc != null && doc.exists()) {
+                    reconstruirePlayerDepuisMap(doc.data!!, context)
+                    isLoaded = true
+                    cloudSyncComplete = true // Synchro réussie
+                    sauvegarderLocal(context)
+                    onSuccess()
+                } else {
+                    cloudSyncComplete = true // Pas de save cloud, le local devient la référence
+                    onFailure()
+                }
             }
-        }.addOnFailureListener {
-            onFailure()
-        }
+            .addOnFailureListener { onFailure() }
     }
 
     fun deleteLocal(context: Context) {
         context.getSharedPreferences(NOM_FI_LOCAL, Context.MODE_PRIVATE).edit { remove(CLE_PLAYER_DATA) }
         isLoaded = false
+        cloudSyncComplete = false
     }
 }

@@ -25,6 +25,9 @@ class TenPullActivity : BaseActivity(), PanoramaUI {
     override lateinit var backgroundImage: ImageView
     override lateinit var eggsContainer: FrameLayout
     override lateinit var boussole: ImageView
+    
+    //UI
+    private lateinit var catchBtn: Button
 
     override val context: Context
         get() = this
@@ -33,15 +36,13 @@ class TenPullActivity : BaseActivity(), PanoramaUI {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_single_pull)
 
-        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
-        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
-        windowInsetsController.systemBarsBehavior =
-            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        //init les vues
+        initViews()
 
-        backgroundImage = findViewById(R.id.background360)
-        eggsContainer = findViewById(R.id.eggsContainer)
-        boussole = findViewById(R.id.boussole)
-        val catchBtn = findViewById<Button>(R.id.catchBtn)
+        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
+        windowInsetsController?.hide(WindowInsetsCompat.Type.systemBars())
+        windowInsetsController?.systemBarsBehavior =
+            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 
         capteurManager = CapteurManager(this, eggCount = 7, isTenPull = true)
         backgroundImage.post {
@@ -51,7 +52,9 @@ class TenPullActivity : BaseActivity(), PanoramaUI {
         boussole.setOnClickListener {
             capteurManager.toggleMode()
         }
+
         catchBtn.setOnClickListener {
+            Player.removePieces(1000)
             val selected = capteurManager.selectedEgg
             if (selected != null) {
                 val pokemonsList = selected.tag as? List<Pokemon>
@@ -75,7 +78,7 @@ class TenPullActivity : BaseActivity(), PanoramaUI {
                         resultList.add(Pair(pokemon, estDejaPossede))
                     }
 
-                    // --- SAUVEGARDE IMMÉDIATE APRÈS LE TIRAGE ---
+                    //save quand on quit
                     SaveManager.sauvegarderLocal(this)
                     if (ConnexionManager.estConnecte()) {
                         SaveManager.sauvegarder()
@@ -87,6 +90,13 @@ class TenPullActivity : BaseActivity(), PanoramaUI {
                 }
             }
         }
+    }
+
+    private fun initViews() {
+        backgroundImage = findViewById(R.id.background360)
+        eggsContainer = findViewById(R.id.eggsContainer)
+        boussole = findViewById(R.id.boussole)
+        catchBtn = findViewById(R.id.catchBtn)
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {

@@ -18,18 +18,15 @@ open class BaseActivity : AppCompatActivity() {
         
         //chargement local
         SaveManager.chargerLocal(this)
+        
+        //refresh global de l'UI
+        refreshUI()
+    }
+
+    //refresh global de l'UI
+    open fun refreshUI() {
         //change la display du poké de l'accueil
         updateDisplayPokemon()
-
-        //synchro cloud si login
-        if (ConnexionManager.estConnecte()) {
-            SaveManager.charger(this,
-                onSuccess = {
-                    //change la display du poké de l'accueil
-                    updateDisplayPokemon()
-                }
-            )
-        }
     }
 
     //change la display du poké de l'accueil
@@ -63,9 +60,9 @@ open class BaseActivity : AppCompatActivity() {
 
     //boite de dialogue options
     fun showSettingsDialog() {
-        //affiche le dialog
         SettingsManager.showSettingsDialog(this) {
-            updateDisplayPokemon()
+            //refresh l'accueil après login/logout/reset
+            refreshUI()
         }
     }
 }

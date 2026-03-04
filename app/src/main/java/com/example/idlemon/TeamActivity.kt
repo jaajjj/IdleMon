@@ -35,6 +35,9 @@ class TeamActivity : BaseActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_team)
 
+        //init les vues
+        initViews()
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.homePage)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -43,26 +46,12 @@ class TeamActivity : BaseActivity() {
 
         //Sans barre sys
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
-        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
-        windowInsetsController.systemBarsBehavior =
+        windowInsetsController?.hide(WindowInsetsCompat.Type.systemBars())
+        windowInsetsController?.systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 
-        pokegold = findViewById(R.id.fieldPokegold)
-        changeTeamBtn = findViewById(R.id.changeTeamBtn)
-        homeBtn = findViewById(R.id.homeBtn)
-        gachaBtn = findViewById(R.id.gachaBtn)
-        teamList = findViewById(R.id.teamList)
-        settingsBtn = findViewById(R.id.settingsBtn)
-
-        //Leader UI
-        pokeSprite1 = findViewById(R.id.pokeSprite1)
-        pokeName1 = findViewById(R.id.pokeName1)
-        type1Leader = findViewById(R.id.pokeType1)
-        type2Leader = findViewById(R.id.pokeType4)
-        attackBtn1 = findViewById(R.id.attackBtn1)
-
         //Data et listener
-        pokegold.text = Player.getPieces().toString()
+        refreshUI()
 
         gachaBtn.setOnClickListener {
             startActivity(Intent(this, GachaActivity::class.java))
@@ -80,12 +69,45 @@ class TeamActivity : BaseActivity() {
             dialog.dialog.setOnDismissListener { afficherEquipe() }
             dialog.show()
         }
+    }
+
+    private fun initViews() {
+        //pokemonDisplay est deja init dans BaseActivity
+        pokegold = findViewById(R.id.fieldPokegold)
+        changeTeamBtn = findViewById(R.id.changeTeamBtn)
+        homeBtn = findViewById(R.id.homeBtn)
+        gachaBtn = findViewById(R.id.gachaBtn)
+        teamList = findViewById(R.id.teamList)
+        settingsBtn = findViewById(R.id.settingsBtn)
+
+        //Leader UI
+        pokeSprite1 = findViewById(R.id.pokeSprite1)
+        pokeName1 = findViewById(R.id.pokeName1)
+        type1Leader = findViewById(R.id.pokeType1)
+        type2Leader = findViewById(R.id.pokeType4)
+        attackBtn1 = findViewById(R.id.attackBtn1)
+    }
+
+    //refresh global de l'UI
+    override fun refreshUI() {
+        super.refreshUI()
+        if (::pokegold.isInitialized) {
+            pokegold.text = Player.getPieces().toString()
+        }
         afficherEquipe()
     }
 
     fun afficherEquipe() {
         val equipe = Player.getEquipe()
-        if (equipe.isEmpty()) return
+        if (equipe.isEmpty()) {
+            //on vide l'affichage si team vide (ex: reset)
+            pokeName1.text = ""
+            pokeSprite1.setImageDrawable(null)
+            type1Leader.visibility = View.GONE
+            type2Leader.visibility = View.GONE
+            if (teamList.childCount > 1) teamList.removeViews(1, teamList.childCount - 1)
+            return
+        }
 
         //Leader
         val leader = equipe[0]
@@ -107,6 +129,7 @@ class TeamActivity : BaseActivity() {
         }
 
         //Type 1
+        type1Leader.visibility = View.VISIBLE
         type1Leader.setImageResource(DataManager.model.getIconType(leader.species.type[0].nom))
         //Type 2 si il y a
         if (leader.species.type.size > 1) {

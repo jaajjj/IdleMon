@@ -23,23 +23,25 @@ object ConnexionManager {
     fun estConnecte(): Boolean = auth.currentUser != null
     fun getEmail(): String? = auth.currentUser?.email
 
+    //déconnexion
     fun deconnexion(context: Context) {
         auth.signOut()
         val credentialManager = CredentialManager.create(context)
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 credentialManager.clearCredentialState(ClearCredentialStateRequest())
-            } catch (e: Exception) {
-                Log.e(TAG, "Error clearing credentials", e)
-            }
+            } catch (e: Exception) { }
         }
         SaveManager.resetToDefault(context)
     }
 
+    //inscription
     fun inscription(email: String, pass: String, context: Context, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
         auth.createUserWithEmailAndPassword(email, pass)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    // Nouveau compte : on autorise la synchro cloud immédiate
+                    SaveManager.cloudSyncComplete = true
                     SaveManager.sauvegarder(onSuccess, onFailure)
                 } else {
                     onFailure(task.exception?.message ?: "Erreur d'inscription")
@@ -47,12 +49,15 @@ object ConnexionManager {
             }
     }
 
+    //connexion normale
     fun connexion(email: String, pass: String, context: Context, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
         auth.signInWithEmailAndPassword(email, pass)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     SaveManager.charger(context, onSuccess, onFailure = {
-                        onSuccess()
+                        // Pas de save cloud : on autorise le local actuel à devenir la référence
+                        SaveManager.cloudSyncComplete = true
+                        SaveManager.sauvegarder(onSuccess, onFailure)
                     })
                 } else {
                     onFailure(task.exception?.message ?: "Identifiants incorrects")
@@ -60,10 +65,10 @@ object ConnexionManager {
             }
     }
 
-    //Google
+    //Logique Google
     fun connexionGoogle(context: Context, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
         val credentialManager = CredentialManager.create(context)
-        val webClientId = "250685621215-opqldocbb57comvogmj09eag78p7nncn.apps.googleusercontent.com" //clé webcli dispo sur FireBase
+        val webClientId = "250685621215-opqldocbb57comvogmj09eag78p7nncn.apps.googleusercontent.com"
 
         val googleIdOption = GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(false)
@@ -76,55 +81,62 @@ object ConnexionManager {
             .build()
 
         CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val result = credentialManager.getCredential(context, request)
+                val credential = result.credential
 
-            val result = credentialManager.getCredential(context, request)
-            val credential = result.credential
-
-            //récup le token google
-            val googleIdTokenCredential = when {
-                credential is GoogleIdTokenCredential -> credential
-                credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL -> {
-                    GoogleIdTokenCredential.createFrom(credential.data)
-                }
-                else -> null
-            }
-
-            if (googleIdTokenCredential != null) {
-                val firebaseCredential = GoogleAuthProvider.getCredential(googleIdTokenCredential.idToken, null)
-                auth.signInWithCredential(firebaseCredential)
-                    .addOnCompleteListener { task ->
-                        //succes
-                        if (task.isSuccessful) {
-                            SaveManager.charger(context,
-                                onSuccess = { onSuccess() },
-                                onFailure = {
-                                    SaveManager.sauvegarder(onSuccess, onFailure)
-                                }
-                            )
-                        } else {
-                            //fail
-                            onFailure("Erreur Firebase: ${task.exception?.message}")
-                        }
+                val googleIdTokenCredential = when {
+                    credential is GoogleIdTokenCredential -> credential
+                    credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL -> {
+                        GoogleIdTokenCredential.createFrom(credential.data)
                     }
-            } else {
-                Log.e(TAG, "Type reçu inattendu : ${credential.type}")
-                onFailure("Erreur de format Google (${credential.type})")
+                    else -> null
+                }
+
+                if (googleIdTokenCredential != null) {
+                    val firebaseCredential = GoogleAuthProvider.getCredential(googleIdTokenCredential.idToken, null)
+                    auth.signInWithCredential(firebaseCredential)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                SaveManager.charger(context, 
+                                    onSuccess = { onSuccess() },
+                                    onFailure = {
+                                        SaveManager.cloudSyncComplete = true
+                                        SaveManager.sauvegarder(onSuccess, onFailure)
+                                    }
+                                )
+                            } else {
+                                onFailure("Erreur Firebase Google")
+                            }
+                        }
+                } else {
+                    onFailure("Type de credential inattendu")
+                }
+            } catch (e: GetCredentialException) {
+                onFailure("Erreur Google [${e.type}]")
+            } catch (e: Exception) {
+                onFailure(e.message ?: "Action annulée")
             }
         }
     }
 
+    // Reset complet de la BDD (pour le dev)
     fun resetCompte(context: Context, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
-        val user = auth.currentUser
-        //supp local et cloud
+        // 1. Reset local
         SaveManager.deleteLocal(context)
         SaveManager.resetToDefault(context)
 
-        if (user != null) {
-            db.collection("users").document(user.uid).delete()
-                .addOnSuccessListener { onSuccess() }
-                .addOnFailureListener { onFailure(it.message ?: "Erreur cloud") }
-        } else {
-            onSuccess()
-        }
+        // 2. Clear TOUTE la collection users de Firebase
+        db.collection("users").get()
+            .addOnSuccessListener { result ->
+                val batch = db.batch()
+                for (document in result) {
+                    batch.delete(document.reference)
+                }
+                batch.commit()
+                    .addOnSuccessListener { onSuccess() }
+                    .addOnFailureListener { onFailure("Erreur Batch : ${it.message}") }
+            }
+            .addOnFailureListener { onFailure("Erreur accès : ${it.message}") }
     }
 }

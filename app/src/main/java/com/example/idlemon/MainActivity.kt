@@ -49,14 +49,11 @@ class MainActivity : BaseActivity() {
         windowInsetsController?.hide(WindowInsetsCompat.Type.systemBars())
         windowInsetsController?.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 
-        //chargement des donnees direct pour eviter le reset
+        //chargement unique au lancement
         SaveManager.chargerLocal(this)
 
         //setups et listener
-        fieldPokegold.text = Player.getPieces().toString()
-        
-        //change la display du poké de l'accueil
-        updateDisplayPokemon()
+        refreshUI()
 
         teamBtn.setOnClickListener {
             if (!isOnAnim) {
@@ -94,15 +91,21 @@ class MainActivity : BaseActivity() {
         summonGifView = findViewById(R.id.summonGifView)
     }
 
+    //refresh global de l'UI
+    override fun refreshUI() {
+        super.refreshUI()
+        if (::fieldPokegold.isInitialized) {
+            fieldPokegold.text = Player.getPieces().toString()
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         isOnAnim = false
         videoContainer.visibility = View.GONE
         
-        //refresh les pieces et le poké au retour sur l'accueil
-        fieldPokegold.text = Player.getPieces().toString()
-        //change la display du poké de l'accueil
-        updateDisplayPokemon()
+        //refresh au retour
+        refreshUI()
     }
 
     private fun animPlayBtn() {

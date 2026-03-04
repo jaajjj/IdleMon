@@ -22,6 +22,9 @@ class SinglePullActivity : BaseActivity(), PanoramaUI {
     override lateinit var backgroundImage: ImageView
     override lateinit var eggsContainer: FrameLayout
     override lateinit var boussole: ImageView
+    
+    //UI
+    private lateinit var catchBtn: Button
 
     override val context: Context
         get() = this
@@ -30,15 +33,13 @@ class SinglePullActivity : BaseActivity(), PanoramaUI {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_single_pull)
 
+        //init les vues
+        initViews()
+
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
         windowInsetsController.systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-
-        backgroundImage = findViewById(R.id.background360)
-        eggsContainer = findViewById(R.id.eggsContainer)
-        boussole = findViewById(R.id.boussole)
-        val catchBtn = findViewById<Button>(R.id.catchBtn)
 
         capteurManager = CapteurManager(this, eggCount = 5, isTenPull = false)
 
@@ -49,6 +50,7 @@ class SinglePullActivity : BaseActivity(), PanoramaUI {
         boussole.setOnClickListener { capteurManager.toggleMode() }
 
         catchBtn.setOnClickListener {
+            Player.removePieces(100)
             val selected = capteurManager.selectedEgg
             if (selected != null) {
                 val pokemonList = selected.tag as? List<Pokemon>
@@ -68,7 +70,7 @@ class SinglePullActivity : BaseActivity(), PanoramaUI {
                         Player.getBoxPokemon().add(pokemon)
                     }
                     
-                    // --- SAUVEGARDE IMMÉDIATE ---
+                    //save quand on quit
                     SaveManager.sauvegarderLocal(this)
                     if (ConnexionManager.estConnecte()) {
                         SaveManager.sauvegarder()
@@ -80,6 +82,13 @@ class SinglePullActivity : BaseActivity(), PanoramaUI {
                 }
             }
         }
+    }
+
+    private fun initViews() {
+        backgroundImage = findViewById(R.id.background360)
+        eggsContainer = findViewById(R.id.eggsContainer)
+        boussole = findViewById(R.id.boussole)
+        catchBtn = findViewById(R.id.catchBtn)
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
