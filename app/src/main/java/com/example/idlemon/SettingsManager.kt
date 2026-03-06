@@ -7,6 +7,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Switch
@@ -70,14 +71,14 @@ object SettingsManager {
         dialog.setContentView(R.layout.dialog_settings)
         dialog.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
         dialog.window?.setLayout(
-            android.view.ViewGroup.LayoutParams.MATCH_PARENT,
-            android.view.ViewGroup.LayoutParams.MATCH_PARENT
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
         )
 
         //init les vues
         initViewsSettings(dialog)
 
-        // Reset compte sur titre Options
+        //reset compte sur titre Options
         tvOptionsTitle.setOnLongClickListener {
             ConnexionManager.resetCompte(activity, 
                 onSuccess = {
@@ -179,10 +180,11 @@ object SettingsManager {
         val dialog = Dialog(activity)
         dialog.setContentView(R.layout.dialog_register)
         dialog.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
-        dialog.window?.setLayout(
-            android.view.ViewGroup.LayoutParams.MATCH_PARENT,
-            android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-        )
+        val metrics = activity.resources.displayMetrics
+        val width = (metrics.widthPixels * 0.90).toInt()
+        val height = (metrics.heightPixels * 0.90).toInt()
+
+        dialog.window?.setLayout(width, height)
 
         //init les vues
         initViewsRegister(dialog)
@@ -224,6 +226,12 @@ object SettingsManager {
         val dialog = Dialog(activity)
         dialog.setContentView(R.layout.dialog_credit)
         dialog.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
+
+        val metrics = activity.resources.displayMetrics
+        val width = (metrics.widthPixels * 0.90).toInt()
+        val height = (metrics.heightPixels * 0.90).toInt()
+        
+        dialog.window?.setLayout(width, height)
         
         //init les vues
         initViewsCredits(dialog)

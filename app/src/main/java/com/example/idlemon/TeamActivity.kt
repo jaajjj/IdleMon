@@ -38,7 +38,8 @@ class TeamActivity : BaseActivity() {
         //init les vues
         initViews()
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.homePage)) { v, insets ->
+        // 🚨 Correction du crash : appel de l'ID teamPage au lieu de homePage
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.teamPage)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
@@ -72,7 +73,6 @@ class TeamActivity : BaseActivity() {
     }
 
     private fun initViews() {
-        //pokemonDisplay est deja init dans BaseActivity
         pokegold = findViewById(R.id.fieldPokegold)
         changeTeamBtn = findViewById(R.id.changeTeamBtn)
         homeBtn = findViewById(R.id.homeBtn)
@@ -88,7 +88,6 @@ class TeamActivity : BaseActivity() {
         attackBtn1 = findViewById(R.id.attackBtn1)
     }
 
-    //refresh global de l'UI
     override fun refreshUI() {
         super.refreshUI()
         if (::pokegold.isInitialized) {
@@ -100,7 +99,6 @@ class TeamActivity : BaseActivity() {
     fun afficherEquipe() {
         val equipe = Player.getEquipe()
         if (equipe.isEmpty()) {
-            //on vide l'affichage si team vide (ex: reset)
             pokeName1.text = ""
             pokeSprite1.setImageDrawable(null)
             type1Leader.visibility = View.GONE
@@ -131,7 +129,8 @@ class TeamActivity : BaseActivity() {
         //Type 1
         type1Leader.visibility = View.VISIBLE
         type1Leader.setImageResource(DataManager.model.getIconType(leader.species.type[0].nom))
-        //Type 2 si il y a
+
+        //Type 2
         if (leader.species.type.size > 1) {
             type2Leader.visibility = View.VISIBLE
             type2Leader.setImageResource(DataManager.model.getIconType(leader.species.type[1].nom))
@@ -143,7 +142,6 @@ class TeamActivity : BaseActivity() {
         if (teamList.childCount > 1) {
             teamList.removeViews(1, teamList.childCount - 1)
         }
-        //affiche chaque poké de la team
         for (i in 1 until equipe.size) {
             val pokemonView = creeViewPokemonTeam(equipe[i])
             teamList.addView(pokemonView)
@@ -151,7 +149,8 @@ class TeamActivity : BaseActivity() {
     }
 
     private fun creeViewPokemonTeam(pokemon: Pokemon): View {
-        val pokemonView = layoutInflater.inflate(R.layout.item_pokemon_team, null)
+        // 🚨 Correction d'affichage : on attache virtuellement la vue à teamList
+        val pokemonView = layoutInflater.inflate(R.layout.item_pokemon_team, teamList, false)
 
         val pokeSprite = pokemonView.findViewById<ImageView>(R.id.obj1)
         val pokeName = pokemonView.findViewById<TextView>(R.id.pokeName)
@@ -176,9 +175,8 @@ class TeamActivity : BaseActivity() {
             ChangeAttackDialog(this, pokemon).show()
         }
 
-        //Type 1
         type1.setImageResource(DataManager.model.getIconType(pokemon.species.type[0].nom))
-        //Type 2 si il y a
+
         if (pokemon.species.type.size > 1) {
             type2.visibility = View.VISIBLE
             type2.setImageResource(DataManager.model.getIconType(pokemon.species.type[1].nom))

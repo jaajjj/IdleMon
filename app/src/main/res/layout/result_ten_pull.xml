@@ -48,6 +48,8 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:requiresFadingEdge="vertical"
+            android:fadingEdgeLength="60dp"
             android:scrollbars="none">
 
             <LinearLayout

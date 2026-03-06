@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/homePage"
+    android:id="@+id/teamPage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFF5E1">
@@ -21,97 +22,103 @@
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/back_gradient" />
 
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="167dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/title" />
+
+    <ImageView
+        android:id="@+id/settingsBtn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/settings"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView8" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:id="@+id/constraintLayout3"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/pokegold_back"
+        android:paddingStart="35dp"
+        android:paddingEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView8">
 
-        <ImageView
-            android:id="@+id/imageView8"
-            android:layout_width="167dp"
-            android:layout_height="51dp"
-            android:layout_marginTop="40dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/title" />
-
-        <ImageView
-            android:id="@+id/settingsBtn"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="16dp"
-            android:src="@drawable/settings"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView8"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView8" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout3"
+        <TextView
+            android:id="@+id/fieldPokegold"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/pokegold_back"
-            android:paddingStart="35dp"
-            android:paddingEnd="10dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView8"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
+            android:foregroundTint="#D92828"
+            android:text="2676"
+            android:textColor="#D84315"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView8">
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/fieldPokegold"
-                android:layout_width="41dp"
-                android:layout_height="17dp"
-                android:fontFamily="@font/roboto_medium"
-                android:foregroundTint="#D92828"
-                android:text="2676"
-                android:textColor="#D84315"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/goldIcon"
+        android:layout_width="49dp"
+        android:layout_height="51dp"
+        android:layout_marginEnd="-25dp"
+        android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout3"
+        app:layout_constraintEnd_toStartOf="@+id/constraintLayout3"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout3"
+        app:srcCompat="@drawable/gold" />
+
+    <ImageView
+        android:id="@+id/changeTeamBtn"
+        android:layout_width="150dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/boxTeamContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView8"
+        app:srcCompat="@drawable/change_team_btn" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/boxTeamContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/footer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/changeTeamBtn"
+        app:layout_constraintWidth_percent="0.9">
 
         <ImageView
-            android:layout_width="49dp"
-            android:layout_height="51dp"
-            android:layout_marginEnd="55dp"
-            android:elevation="5dp"
-            app:layout_constraintEnd_toEndOf="@+id/constraintLayout3"
-            app:layout_constraintTop_toTopOf="@+id/imageView8"
-            app:srcCompat="@drawable/gold" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/rounded_back_orange" />
 
-        <ImageView
-            android:id="@+id/changeTeamBtn"
-            android:layout_width="150dp"
-            android:layout_height="38dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/boxTeamContainer"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/change_team_btn" />
-
-        <FrameLayout
-            android:id="@+id/boxTeamContainer"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/footer"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.65"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView8"
-            app:layout_constraintVertical_bias="0.7"
-            app:layout_constraintWidth_percent="0.9">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/rounded_back_orange" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:requiresFadingEdge="vertical"
+            android:fadingEdgeLength="60dp"
+            android:fillViewport="true">
 
             <LinearLayout
                 android:id="@+id/teamList"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:clipToPadding="false"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
@@ -185,46 +192,55 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/change_atk_btn" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
             </LinearLayout>
-        </FrameLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/footer"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/footer"
+        android:layout_width="0dp"
+        android:layout_height="90dp"
+        android:background="#FFFFFF"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/teamBtn"
             android:layout_width="0dp"
-            android:layout_height="103dp"
-            android:background="#FFFFFF"
-            android:paddingBottom="12dp"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/homeBtn"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/team_footer" />
+
+        <ImageView
+            android:id="@+id/homeBtn"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/gachaBtn"
+            app:layout_constraintHorizontal_weight="1.2"
+            app:layout_constraintStart_toEndOf="@+id/teamBtn"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/home_footer" />
+
+        <ImageView
+            android:id="@+id/gachaBtn"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <ImageView
-                android:id="@+id/homeBtn"
-                android:layout_width="151dp"
-                android:layout_height="67dp"
-                android:layout_marginBottom="5dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/home_footer" />
-
-            <ImageView
-                android:id="@+id/teamBtn"
-                android:layout_width="126dp"
-                android:layout_height="63dp"
-                app:layout_constraintBottom_toBottomOf="@+id/homeBtn"
-                app:layout_constraintEnd_toStartOf="@+id/homeBtn"
-                app:srcCompat="@drawable/team_footer" />
-
-            <ImageView
-                android:id="@+id/gachaBtn"
-                android:layout_width="135dp"
-                android:layout_height="65dp"
-                app:layout_constraintBottom_toBottomOf="@+id/homeBtn"
-                app:layout_constraintStart_toEndOf="@+id/homeBtn"
-                app:srcCompat="@drawable/loupe" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/homeBtn"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/loupe" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-</RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

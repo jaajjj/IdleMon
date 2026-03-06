@@ -14,7 +14,7 @@ object SaveManager {
     private const val CLE_PLAYER_DATA = "player_data"
     
     var isLoaded = false
-    var cloudSyncComplete = false // Sécurité pour la synchro multi-appareils
+    var cloudSyncComplete = false //Sécurité pour la synchro multi-appareils
 
     private fun toInt(value: Any?): Int {
         return when (value) {
@@ -104,7 +104,7 @@ object SaveManager {
     fun sauvegarder(onSuccess: () -> Unit = {}, onFailure: (String) -> Unit = {}) {
         val user = auth.currentUser ?: return
         
-        // SECURITÉ : On ne save pas sur le cloud si on n'a pas encore fini de charger les données existantes
+        //On ne save pas sur le cloud si on n'a pas encore fini de charger les données existantes
         if (!cloudSyncComplete) return 
 
         val data = hashMapOf(
@@ -126,11 +126,11 @@ object SaveManager {
                 if (doc != null && doc.exists()) {
                     reconstruirePlayerDepuisMap(doc.data!!, context)
                     isLoaded = true
-                    cloudSyncComplete = true // Synchro réussie
+                    cloudSyncComplete = true //Synchro réussie
                     sauvegarderLocal(context)
                     onSuccess()
                 } else {
-                    cloudSyncComplete = true // Pas de save cloud, le local devient la référence
+                    cloudSyncComplete = true //Pas de save cloud, le local devient la référence
                     onFailure()
                 }
             }
