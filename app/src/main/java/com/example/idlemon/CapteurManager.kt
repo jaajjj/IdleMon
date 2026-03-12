@@ -19,7 +19,7 @@ import kotlin.math.abs
 class CapteurManager(
     private val ui: PanoramaUI,
     private val eggCount: Int = 5,
-    private val isTenPull: Boolean = false // On garde le paramètre mais on ne l'utilise plus pour la logique interne
+    private val isTenPull: Boolean = false
 ) : SensorEventListener {
 
     private val sensorManager = ui.context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -53,7 +53,8 @@ class CapteurManager(
         }
     }
 
-    // --- NOUVELLE FONCTION D'AFFICHAGE INSTANTANÉ ---
+    fun isSensorMode(): Boolean = isSensorMode
+
     fun displayPreparedEggs() {
         val preparedEggs = GachaSession.preparedEggs
 
@@ -82,16 +83,12 @@ class CapteurManager(
                 eggLayout.tag = pokemonsInEgg
                 val size = 600
                 eggLayout.layoutParams = FrameLayout.LayoutParams(size, size)
-                // On utilise preparedEggs.size ici pour adapter la position selon le nombre réel d'oeufs
                 eggLayout.x = (i.toFloat() / preparedEggs.size.toFloat() * imgWidth) + offsetSet
                 eggLayout.y = (ui.backgroundImage.height / 2f) - (size / 2f)
                 ui.eggsContainer.addView(eggLayout)
             }
         }
     }
-
-    // ... (Le reste : onSensorChanged, renderPanorama, cleanUpResources, setupPanorama, toggleMode, handleTouch, start, stop RESTE PAREIL) ...
-    // Je remets le reste pour être sûr que tu as tout le bloc si tu copies/colles
 
     override fun onSensorChanged(event: SensorEvent?) {
         if (event?.sensor?.type == Sensor.TYPE_ORIENTATION && isSensorMode) {

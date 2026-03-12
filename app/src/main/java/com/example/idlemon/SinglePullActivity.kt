@@ -22,6 +22,7 @@ class SinglePullActivity : BaseActivity(), PanoramaUI {
     override lateinit var backgroundImage: ImageView
     override lateinit var eggsContainer: FrameLayout
     override lateinit var boussole: ImageView
+    override lateinit var imgIndicator: ImageView
     
     //UI
     private lateinit var catchBtn: Button
@@ -37,17 +38,21 @@ class SinglePullActivity : BaseActivity(), PanoramaUI {
         initViews()
 
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
-        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
-        windowInsetsController.systemBarsBehavior =
+        windowInsetsController?.hide(WindowInsetsCompat.Type.systemBars())
+        windowInsetsController?.systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 
         capteurManager = CapteurManager(this, eggCount = 5, isTenPull = false)
 
         backgroundImage.post {
             capteurManager.displayPreparedEggs()
+            showIndicator()
         }
 
-        boussole.setOnClickListener { capteurManager.toggleMode() }
+        boussole.setOnClickListener { 
+            capteurManager.toggleMode()
+            showIndicator()
+        }
 
         catchBtn.setOnClickListener {
             Player.removePieces(100)
@@ -84,11 +89,22 @@ class SinglePullActivity : BaseActivity(), PanoramaUI {
         }
     }
 
+    private fun showIndicator() {
+        val isSensor = capteurManager.isSensorMode()
+        imgIndicator.setImageResource(if (isSensor) R.drawable.indicator_compas else R.drawable.indicator_fling)
+        imgIndicator.visibility = View.VISIBLE
+        imgIndicator.alpha = 1f
+        imgIndicator.animate().alpha(0f).setDuration(2000).withEndAction {
+            imgIndicator.visibility = View.GONE
+        }.start()
+    }
+
     private fun initViews() {
         backgroundImage = findViewById(R.id.background360)
         eggsContainer = findViewById(R.id.eggsContainer)
         boussole = findViewById(R.id.boussole)
         catchBtn = findViewById(R.id.catchBtn)
+        imgIndicator = findViewById(R.id.imgIndicator)
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {

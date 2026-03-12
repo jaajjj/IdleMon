@@ -9,4 +9,5 @@ interface PanoramaUI {
     val backgroundImage: ImageView
     val eggsContainer: FrameLayout
     val boussole: ImageView
+    val imgIndicator: ImageView
 }

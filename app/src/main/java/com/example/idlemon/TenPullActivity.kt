@@ -25,6 +25,7 @@ class TenPullActivity : BaseActivity(), PanoramaUI {
     override lateinit var backgroundImage: ImageView
     override lateinit var eggsContainer: FrameLayout
     override lateinit var boussole: ImageView
+    override lateinit var imgIndicator: ImageView
     
     //UI
     private lateinit var catchBtn: Button
@@ -47,10 +48,12 @@ class TenPullActivity : BaseActivity(), PanoramaUI {
         capteurManager = CapteurManager(this, eggCount = 7, isTenPull = true)
         backgroundImage.post {
             capteurManager.displayPreparedEggs()
+            showIndicator()
         }
 
         boussole.setOnClickListener {
             capteurManager.toggleMode()
+            showIndicator()
         }
 
         catchBtn.setOnClickListener {
@@ -92,11 +95,22 @@ class TenPullActivity : BaseActivity(), PanoramaUI {
         }
     }
 
+    private fun showIndicator() {
+        val isSensor = capteurManager.isSensorMode()
+        imgIndicator.setImageResource(if (isSensor) R.drawable.indicator_compas else R.drawable.indicator_fling)
+        imgIndicator.visibility = View.VISIBLE
+        imgIndicator.alpha = 1f
+        imgIndicator.animate().alpha(0f).setDuration(2000).withEndAction {
+            imgIndicator.visibility = View.GONE
+        }.start()
+    }
+
     private fun initViews() {
         backgroundImage = findViewById(R.id.background360)
         eggsContainer = findViewById(R.id.eggsContainer)
         boussole = findViewById(R.id.boussole)
         catchBtn = findViewById(R.id.catchBtn)
+        imgIndicator = findViewById(R.id.imgIndicator)
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {

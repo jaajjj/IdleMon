@@ -96,6 +96,7 @@ object SaveManager {
         (map["attacks"] as? List<String>)?.let { names ->
             poke.attacks.clear()
             names.forEach { poke.attacks.add(modelJson.getAttackByNom(it)) }
+
         }
         return poke
     }
