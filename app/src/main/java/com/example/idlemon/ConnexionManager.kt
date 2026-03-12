@@ -24,15 +24,18 @@ object ConnexionManager {
     fun getEmail(): String? = auth.currentUser?.email
 
     //déconnexion
+    //déconnexion
     fun deconnexion(context: Context) {
         auth.signOut()
+        SaveManager.clearPendingPull()
+        SaveManager.deleteLocal(context)
+        SaveManager.resetToDefault(context)
         val credentialManager = CredentialManager.create(context)
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 credentialManager.clearCredentialState(ClearCredentialStateRequest())
             } catch (e: Exception) { }
         }
-        SaveManager.resetToDefault(context)
     }
 
     //inscription

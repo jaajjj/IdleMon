@@ -55,7 +55,6 @@ class SinglePullActivity : BaseActivity(), PanoramaUI {
         }
 
         catchBtn.setOnClickListener {
-            Player.removePieces(100)
             val selected = capteurManager.selectedEgg
             if (selected != null) {
                 val pokemonList = selected.tag as? List<Pokemon>
@@ -63,7 +62,6 @@ class SinglePullActivity : BaseActivity(), PanoramaUI {
 
                 if (pokemon != null) {
                     val estDejaPossede = Player.aDejaLePokemon(pokemon.species.num)
-
                     if(estDejaPossede){
                         when{
                             pokemon.species.rarete == "Legendaire" -> Player.addPieces(500)
@@ -74,7 +72,7 @@ class SinglePullActivity : BaseActivity(), PanoramaUI {
                     } else {
                         Player.getBoxPokemon().add(pokemon)
                     }
-                    
+                    SaveManager.clearPendingPull()
                     //save quand on quit
                     SaveManager.sauvegarderLocal(this)
                     if (ConnexionManager.estConnecte()) {

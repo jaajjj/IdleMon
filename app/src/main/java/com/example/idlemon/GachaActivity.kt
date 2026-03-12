@@ -11,6 +11,10 @@ import android.widget.TextView
 import android.widget.VideoView
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import android.app.AlertDialog
+import android.app.Dialog
+import android.widget.Button
+import androidx.core.view.WindowInsetsCompat
 
 class GachaActivity : BaseActivity() {
 
@@ -37,7 +41,7 @@ class GachaActivity : BaseActivity() {
         initViews()
 
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
-        windowInsetsController?.hide(android.view.WindowInsets.Type.systemBars())
+        windowInsetsController?.hide(WindowInsetsCompat.Type.systemBars())
         windowInsetsController?.systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 
@@ -81,19 +85,42 @@ class GachaActivity : BaseActivity() {
     //refresh global de l'UI
     override fun refreshUI() {
         super.refreshUI()
-        if (::fieldPokegold.isInitialized) {
-            fieldPokegold.text = Player.getPieces().toString()
+        val pieces = Player.getPieces()
+        fieldPokegold.text = pieces.toString()
+
+        //griser 100 gold pull
+        if (pieces >= 100) {
+            singlePullBtn.alpha = 1.0f
+            singlePullBtn.isEnabled = true
+            singlePullBtn.isClickable = true
+        } else {
+            singlePullBtn.alpha = 0.65f
+            singlePullBtn.isEnabled = false
+            singlePullBtn.isClickable = false
         }
+        //griser 1000 gold pull
+        if (pieces >= 1000) {
+            tenPullBtn.alpha = 1.0f
+            tenPullBtn.isEnabled = true
+            tenPullBtn.isClickable = true
+        } else {
+            tenPullBtn.alpha = 0.65f
+            tenPullBtn.isEnabled = false
+            tenPullBtn.isClickable = false
+        }
+
+
     }
 
     override fun onResume() {
         super.onResume()
         videoContainer.visibility = View.GONE
-        //refresh au retour sur la page
         refreshUI()
+        verifierPendingPull()
     }
 
     private fun lancerCalculEnArrierePlan(nbVoeux: Int) {
+        val cout = if (nbVoeux == 10) 1000 else 100
         calculationThread = Thread {
             val list = mutableListOf<Pair<List<Pokemon>, Int>>()
             val eggCount = if (nbVoeux == 10) 7 else 5
@@ -105,6 +132,7 @@ class GachaActivity : BaseActivity() {
                     listOf(DataManager.model.getRandomPokemon())
                 }
 
+                //calcul de la couleur de l'egg
                 val bestPokemon = pokemonsInEgg.maxByOrNull { getRarityScore(it.species.rarete) }
                     ?: pokemonsInEgg.first()
 
@@ -114,10 +142,24 @@ class GachaActivity : BaseActivity() {
                     "Epique" -> R.drawable.egg_epique
                     else -> R.drawable.egg
                 }
-
+                //ajoute le tuple pokés et gif egg à la liste
                 list.add(Pair(pokemonsInEgg, drawableRes))
             }
-            GachaSession.preparedEggs = list
+
+            //regroupe les oeufs dans le Thread principal
+            runOnUiThread {
+                Player.removePieces(cout)
+                refreshUI()
+
+                //ajoute les oeufs à la session
+                GachaSession.preparedEggs = list
+
+                SaveManager.savePendingPull(nbVoeux == 10, list)
+                SaveManager.sauvegarderLocal(this@GachaActivity)
+                if (ConnexionManager.estConnecte()) {
+                    SaveManager.sauvegarder()
+                }
+            }
         }
         calculationThread?.start()
     }
@@ -170,6 +212,41 @@ class GachaActivity : BaseActivity() {
             Intent(this, TenPullActivity::class.java)
         }
         MusicManager.lancerVoeux(this)
+        startActivity(intent)
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+    }
+
+    //pull oeufs
+    private fun verifierPendingPull() {
+        val pending = SaveManager.pendingPullData ?: return
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_alert_pull)
+        dialog.setCancelable(false)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        val btnReprendre = dialog.findViewById<Button>(R.id.btnReprendrePull)
+        btnReprendre.setOnClickListener {
+            dialog.dismiss()
+            reconstruireEtLancerTirage(pending)
+        }
+        dialog.show()
+    }
+
+    private fun reconstruireEtLancerTirage(pending: Map<String, Any>) {
+        val isTenPull = pending["isTenPull"] as? Boolean ?: false
+        val eggsList = pending["eggs"] as? List<Map<String, Any>> ?: return
+        val reconstructedEggs = mutableListOf<Pair<List<Pokemon>, Int>>()
+        val modelJson = ModelJson(this)
+
+        for (egg in eggsList) {
+            val idsDouble = egg["pokemonIds"] as? List<Double> ?: emptyList()
+            val drawableRes = (egg["drawableRes"] as? Double)?.toInt() ?: R.drawable.egg
+            val pokemons = idsDouble.map { modelJson.creerPokemon(it.toInt()) }
+            reconstructedEggs.add(Pair(pokemons, drawableRes))
+        }
+
+        GachaSession.preparedEggs = reconstructedEggs
+
+        val intent = if (isTenPull) Intent(this, TenPullActivity::class.java) else Intent(this, SinglePullActivity::class.java)
         startActivity(intent)
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
     }

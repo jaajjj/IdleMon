@@ -57,7 +57,6 @@ class TenPullActivity : BaseActivity(), PanoramaUI {
         }
 
         catchBtn.setOnClickListener {
-            Player.removePieces(1000)
             val selected = capteurManager.selectedEgg
             if (selected != null) {
                 val pokemonsList = selected.tag as? List<Pokemon>
@@ -80,6 +79,7 @@ class TenPullActivity : BaseActivity(), PanoramaUI {
                         }
                         resultList.add(Pair(pokemon, estDejaPossede))
                     }
+                    SaveManager.clearPendingPull()
 
                     //save quand on quit
                     SaveManager.sauvegarderLocal(this)

@@ -12,6 +12,7 @@ object SaveManager {
     private val auth: FirebaseAuth get() = FirebaseAuth.getInstance()
     private const val NOM_FI_LOCAL = "IdleMonSave"
     private const val CLE_PLAYER_DATA = "player_data"
+    var pendingPullData: Map<String, Any>? = null
     
     var isLoaded = false
     var cloudSyncComplete = false //Sécurité pour la synchro multi-appareils
@@ -30,11 +31,12 @@ object SaveManager {
         val equipeData = Player.getEquipe().map { serializePokemon(it) }
         val boxData = Player.getBoxPokemon().map { serializePokemon(it) }
 
-        val fullData = mapOf(
+        val fullData = mutableMapOf<String, Any>(
             "nbPieces" to Player.getPieces(),
             "equipe" to equipeData,
             "box" to boxData
         )
+        pendingPullData?.let { fullData["pendingPull"] = it }
 
         fichier.edit { putString(CLE_PLAYER_DATA, Gson().toJson(fullData)) }
     }
@@ -87,6 +89,7 @@ object SaveManager {
 
         Player.clearPokemon()
         (data["box"] as? List<Map<String, Any>>)?.forEach { Player.addPokemonToBox(parsePokemon(it, modelJson)) }
+        pendingPullData = data["pendingPull"] as? Map<String, Any>
     }
 
     private fun parsePokemon(map: Map<String, Any>, modelJson: ModelJson): Pokemon {
@@ -104,16 +107,17 @@ object SaveManager {
     //save cloud si login
     fun sauvegarder(onSuccess: () -> Unit = {}, onFailure: (String) -> Unit = {}) {
         val user = auth.currentUser ?: return
-        
-        //On ne save pas sur le cloud si on n'a pas encore fini de charger les données existantes
-        if (!cloudSyncComplete) return 
+        if (!cloudSyncComplete) return
 
-        val data = hashMapOf(
-            "email" to user.email,
+        val data = mutableMapOf<String, Any>(
+            "email" to (user.email ?: ""),
             "nbPieces" to Player.getPieces(),
             "equipe" to Player.getEquipe().map { serializePokemon(it) },
             "box" to Player.getBoxPokemon().map { serializePokemon(it) }
         )
+
+        pendingPullData?.let { data["pendingPull"] = it }
+
         db.collection("users").document(user.uid).set(data)
             .addOnSuccessListener { onSuccess() }
             .addOnFailureListener { onFailure(it.message ?: "Erreur cloud") }
@@ -136,6 +140,22 @@ object SaveManager {
                 }
             }
             .addOnFailureListener { onFailure() }
+    }
+
+    fun savePendingPull(isTenPull: Boolean, eggs: List<Pair<List<Pokemon>, Int>>) {
+        pendingPullData = mapOf(
+            "isTenPull" to isTenPull,
+            "eggs" to eggs.map { pair ->
+                mapOf(
+                    "pokemonIds" to pair.first.map { it.species.num },
+                    "drawableRes" to pair.second
+                )
+            }
+        )
+    }
+
+    fun clearPendingPull() {
+        pendingPullData = null
     }
 
     fun deleteLocal(context: Context) {
