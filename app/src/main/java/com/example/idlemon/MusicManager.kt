@@ -274,12 +274,13 @@ object MusicManager {
     }
 
     fun jouerPlaylistHome(context: Context) {
-        if (currentResId != null && playlistHome.contains(currentResId) && mediaPlayer?.isPlaying == true) {
-            return
-        }
-
-        val musiqueSuivante = playlistHome.random()
-        transitionVersMusique(context, musiqueSuivante, loop = true)
+        if (currentResId == R.raw.home && mediaPlayer?.isPlaying == true) return
+        stop()
+        currentResId = R.raw.home
+        mediaPlayer = MediaPlayer.create(context.applicationContext, R.raw.home)
+        mediaPlayer?.isLooping = true
+        mediaPlayer?.setVolume(1.0f, 1.0f)
+        mediaPlayer?.start()
     }
 
     fun lancerVoeux(context: Context) {
