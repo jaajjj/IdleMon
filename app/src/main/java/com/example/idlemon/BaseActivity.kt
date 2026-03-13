@@ -7,14 +7,14 @@ import com.bumptech.glide.Glide
 open class BaseActivity : AppCompatActivity() {
 
     //UI
-    protected var pokemonDisplay: ImageView? = null
+    protected var pokemonDisplayUmageView: ImageView? = null
 
     override fun onStart() {
         super.onStart()
         MusicManager.onStartActivity()
 
         //init UI
-        pokemonDisplay = findViewById(R.id.pokemonDisplay)
+        pokemonDisplayUmageView = findViewById(R.id.pokemonDisplay)
         
         //chargement local
         SaveManager.chargerLocal(this)
@@ -35,13 +35,13 @@ open class BaseActivity : AppCompatActivity() {
             val leader = Player.getPremierPokemon()
             val model = ModelJson(this)
 
-            pokemonDisplay?.let {
+            pokemonDisplayUmageView?.let {
                 Glide.with(this)
                     .load(model.getFrontSprite(leader.species.num))
                     .into(it)
             }
         } else {
-            pokemonDisplay?.setImageDrawable(null)
+            pokemonDisplayUmageView?.setImageDrawable(null)
         }
     }
 

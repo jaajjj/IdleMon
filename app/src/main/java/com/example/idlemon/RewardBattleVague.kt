@@ -40,7 +40,7 @@ class RewardBattleVague(
         //COMMUNS
         Reward("lvl_1", "Bonbon", "+1 Niveau", R.drawable.bonbon, Rarity.COMMON, 50) { poke ->
             MusicManager.jouerSonBattle("item_active")
-            repeat (32) {poke.monterLevel()}
+            poke.monterLevel()
             "${poke.species.nom} mange un Bonbon et gagne 1 niveau !"
         },
         Reward("atk_1", "Attack +", "+5 Attaque (Perm.)", R.drawable.attaque_plus, Rarity.COMMON, 40) { poke ->
@@ -49,7 +49,7 @@ class RewardBattleVague(
             "L'Attaque de ${poke.species.nom} augmente de 5 !"
         },
         Reward("pv_1", "PV +", "+10 PV Max (Perm.)", R.drawable.pv_plus, Rarity.COMMON, 40) { poke ->
-            MusicManager.jouerSonBattle("heal")
+            MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("pv_plus")
             poke.heal(10)
             "Les PV Max de ${poke.species.nom} augmentent de 10 !"
@@ -74,7 +74,7 @@ class RewardBattleVague(
         //ÉPIQUES
         Reward("lvl_3", "Super Bonbon", "+3 Niveaux", R.drawable.super_bonbon, Rarity.EPIC, 15) { poke ->
             MusicManager.jouerSonBattle("item_active")
-            repeat(32) { poke.monterLevel() }
+            repeat(2) { poke.monterLevel() }
             "${poke.species.nom} engloutit un Super Bonbon et gagne 3 niveaux !"
         },
         Reward("atk_2", "Attack ++", "+10 Attaque (Perm.)", R.drawable.attaque_plus, Rarity.EPIC, 10) { poke ->
@@ -83,7 +83,7 @@ class RewardBattleVague(
             "L'Attaque de ${poke.species.nom} augmente fortement (+10) !"
         },
         Reward("pv_2", "PV ++", "+20 PV Max (Perm.)", R.drawable.pv_plus, Rarity.EPIC, 10) { poke ->
-            MusicManager.jouerSonBattle("heal")
+            MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("pv_plus_plus")
             poke.heal(20)
             "Les PV Max de ${poke.species.nom} augmentent fortement (+20) !"
@@ -111,6 +111,7 @@ class RewardBattleVague(
             "Toute l'équipe est entièrement soignée !"
         },
         Reward("rappel_max", "Rappel Max", "Réanime toute l'équipe (50%)", R.drawable.rappel_max, Rarity.LEGENDARY, 5) { _ ->
+            MusicManager.jouerSonBattle("heal")
             var count = 0
             Player.getEquipe().forEach {
                 if (it.isKO) {

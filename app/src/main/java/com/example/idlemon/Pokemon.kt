@@ -33,9 +33,12 @@ class Pokemon(
         //full HP au début
         currentHp = getMaxHp()
 
-        //attaque par défaut : "Attention, c'est la meilleure... CHARGE !!"
+        //attaque par défaut : 4 attaques random"
         try {
-            addAttack(DataManager.model.getAttackByNom("Charge"))
+            val attaquesDispo = DataManager.model.getAttackDispo(this)
+            attacks.clear()
+            val selectedAttacks = attaquesDispo.shuffled().take(4)
+            for (atk in selectedAttacks) addAttack(atk)
         } catch (e: Exception) { e.printStackTrace() }
     }
 
@@ -155,5 +158,84 @@ class Pokemon(
         if (this.currentHp > 0) {
             this.isKO = false
         }
+    }
+
+    // --- STAGES DE COMBAT (Buffs / Malus) ---
+    // Paliers allant de -5 à +5
+    var stageAtk: Int = 0
+    var stageDef: Int = 0
+    var stageVit: Int = 0
+
+    // Fonction qui convertit le palier en multiplicateur selon tes règles
+    private fun getMultiplicateurStat(stage: Int): Double {
+        return when (stage) {
+            -5 -> 0.33
+            -4 -> 0.50
+            -3 -> 0.60
+            -2 -> 0.70
+            -1 -> 0.80
+            0 -> 1.0
+            1 -> 2.0
+            2 -> 2.5
+            3 -> 3.0
+            4 -> 3.5
+            5 -> 4.0
+            else -> if (stage > 0) 4.0 else 0.33
+        }
+    }
+
+    //stats attack
+    // Ce sont ces variables que tu dois utiliser dans tes formules de dégâts !
+    val battleAtk: Int
+        get() = (currentAtk * getMultiplicateurStat(stageAtk)).toInt()
+
+    val battleDef: Int
+        get() = (currentDef * getMultiplicateurStat(stageDef)).toInt()
+
+    val battleVit: Int
+        get() = (currentVit * getMultiplicateurStat(stageVit)).toInt()
+
+    //Appliquer buff/malus
+    fun modifierStage(stat: String, montant: Int): String {
+        var message = ""
+        val nomPokemon = species.nom
+
+        when (stat.lowercase()) {
+            "atk", "attaque" -> {
+                val oldStage = stageAtk
+                stageAtk = (stageAtk + montant).coerceIn(-5, 5) // Bloque la valeur entre -5 et 5
+                message = genererMessageStat("L'Attaque", oldStage, stageAtk, montant, nomPokemon)
+            }
+            "def", "defense" -> {
+                val oldStage = stageDef
+                stageDef = (stageDef + montant).coerceIn(-5, 5)
+                message = genererMessageStat("La Défense", oldStage, stageDef, montant, nomPokemon)
+            }
+            "vit", "vitesse" -> {
+                val oldStage = stageVit
+                stageVit = (stageVit + montant).coerceIn(-5, 5)
+                message = genererMessageStat("La Vitesse", oldStage, stageVit, montant, nomPokemon)
+            }
+        }
+        return message
+    }
+
+    private fun genererMessageStat(nomStat: String, oldStage: Int, newStage: Int, montant: Int, nomPoke: String): String {
+        if (oldStage == newStage) {
+            return if (montant > 0) "$nomStat de $nomPoke ne peut plus augmenter !"
+            else "$nomStat de $nomPoke ne peut plus diminuer !"
+        }
+        return if (montant > 0) {
+            if (montant >= 2) "$nomStat de $nomPoke augmente fortement !"
+            else "$nomStat de $nomPoke augmente !"
+        } else {
+            if (montant <= -2) "$nomStat de $nomPoke diminue fortement !"
+            else "$nomStat de $nomPoke diminue !"
+        }
+    }
+    fun resetStagesCombat() {
+        stageAtk = 0
+        stageDef = 0
+        stageVit = 0
     }
 }

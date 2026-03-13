@@ -34,8 +34,8 @@
 
     <ImageView
         android:id="@+id/imgPoke"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginTop="16dp"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +51,23 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgPoke" />
+        app:layout_constraintTop_toBottomOf="@+id/imgPoke" >
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/roboto_bold"
+        android:text="Attaques disponibles : "
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/attackDispoScrollView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/attackContainer" />
 
     <ScrollView
         android:id="@+id/attackDispoScrollView"

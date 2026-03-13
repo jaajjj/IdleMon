@@ -19,12 +19,12 @@ import kotlin.math.abs
 class CapteurManager(
     private val ui: PanoramaUI,
     private val eggCount: Int = 5,
-    private val isTenPull: Boolean = false
-) : SensorEventListener {
+    private val isTenPull: Boolean = false)
+    : SensorEventListener {
 
     private val sensorManager = ui.context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
     private val compas = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION)
-    private var panoramaShader: BitmapShader? = null
+    private var panoramaBitmapShader: BitmapShader? = null
     private var shaderPaint: Paint? = null
     private val view360 = Matrix()
     private var imgWidth = 0f
@@ -109,7 +109,7 @@ class CapteurManager(
         val fraction = currentDegree / 360f
         val scrollX = fraction * imgWidth
         view360.setTranslate(-scrollX, 0f)
-        panoramaShader?.setLocalMatrix(view360)
+        panoramaBitmapShader?.setLocalMatrix(view360)
         ui.backgroundImage.invalidate()
 
         val screenWidth = ui.backgroundImage.width.toFloat()
@@ -179,9 +179,9 @@ class CapteurManager(
         val scaledBitmap = Bitmap.createScaledBitmap(bitmap, scaledWidth, ui.backgroundImage.height, true)
 
         imgWidth = scaledWidth.toFloat()
-        panoramaShader = BitmapShader(scaledBitmap, Shader.TileMode.REPEAT, Shader.TileMode.CLAMP)
+        panoramaBitmapShader = BitmapShader(scaledBitmap, Shader.TileMode.REPEAT, Shader.TileMode.CLAMP)
         shaderPaint = Paint().apply {
-            shader = panoramaShader
+            shader = panoramaBitmapShader
             isAntiAlias = true
         }
 

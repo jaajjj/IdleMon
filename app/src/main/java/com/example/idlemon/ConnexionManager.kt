@@ -24,7 +24,6 @@ object ConnexionManager {
     fun getEmail(): String? = auth.currentUser?.email
 
     //déconnexion
-    //déconnexion
     fun deconnexion(context: Context) {
         auth.signOut()
         SaveManager.clearPendingPull()
@@ -43,7 +42,7 @@ object ConnexionManager {
         auth.createUserWithEmailAndPassword(email, pass)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    // Nouveau compte : on autorise la synchro cloud immédiate
+                    //save cloud
                     SaveManager.cloudSyncComplete = true
                     SaveManager.sauvegarder(onSuccess, onFailure)
                 } else {
@@ -123,13 +122,10 @@ object ConnexionManager {
         }
     }
 
-    // Reset complet de la BDD (pour le dev)
+    //reset pour dev
     fun resetCompte(context: Context, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
-        // 1. Reset local
         SaveManager.deleteLocal(context)
         SaveManager.resetToDefault(context)
-
-        // 2. Clear TOUTE la collection users de Firebase
         db.collection("users").get()
             .addOnSuccessListener { result ->
                 val batch = db.batch()

@@ -139,7 +139,7 @@ class ModelJson(context: Context) {
     }
 
     private fun getTypesCompatibles(pokeTypes: List<String>): List<String> {
-        val autorisee = mutableSetOf<String>() // Set pour éviter les doublons
+        val autorisee = mutableSetOf<String>() //éviter les doublons
         autorisee.add("normal")
 
         //Ajoute les attaque de ses types
@@ -204,6 +204,7 @@ class ModelJson(context: Context) {
             in 890..979 -> getRandomPokemonByRarete("Epique")
             in 980..995 -> getRandomPokemonByRarete("Fabuleux")
             else -> getRandomPokemonByRarete("Legendaire")
+
         }
     }
 }

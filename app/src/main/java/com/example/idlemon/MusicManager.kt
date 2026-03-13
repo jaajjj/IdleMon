@@ -297,15 +297,13 @@ object MusicManager {
 
         if (!listeSons.isNullOrEmpty()) {
             val sonChoisiId = listeSons.random()
-            val nomDuSon = mapDeNomsDesSons[sonChoisiId] ?: "Inconnu"
-            Toast.makeText(ctx, "Son joué : $nomDuSon", Toast.LENGTH_SHORT).show()
             soundPool.play(sonChoisiId, 0.5f, 0.5f, 1, 0, 1f)
         }
     }
 
     fun jouerSonBattle(nomSon: String) {
         mapDeSonBattle[nomSon]?.let { soundId ->
-            soundPool.play(soundId, 1f, 1f, 1, 0, 1f)
+            soundPool.play(soundId, 0.5f, 0.5f, 1, 0, 1f)
         }
     }
 
@@ -449,7 +447,7 @@ object MusicManager {
 
     fun sonLevelUpPoke() {
         mapDeSonBattle["levelUp_sound"]?.let { soundId ->
-            soundPool.play(soundId, 1f, 1f, 1, 0, 1f)
+            soundPool.play(soundId, 0.4f, 0.4f, 1, 0, 1f)
         }
     }
     fun sonEvoPoke() {

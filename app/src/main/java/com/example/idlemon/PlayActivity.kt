@@ -307,23 +307,56 @@ class PlayActivity : BaseActivity() {
 
     private fun genererEnnemi() {
         enemyPokemon = modelJson.getRandomPokemon()
-        val baseLvl = playerPokemon.level
-        val randomLvl = (baseLvl - 2..baseLvl + 2).random().coerceAtLeast(1)
+        val estUnBoss = vagueActuelle % 10 == 0
+
+        val baseLvl = vagueActuelle
+        var randomLvl = (baseLvl - 1..baseLvl + 1).random().coerceAtLeast(1)
+
+        if (estUnBoss) {
+            randomLvl += (3..5).random()
+            imgPokeEnemy.scaleX = 1.4f
+            imgPokeEnemy.scaleY = 1.4f
+        } else {
+            imgPokeEnemy.scaleX = 1f
+            imgPokeEnemy.scaleY = 1f
+        }
+
+        //monte le poké de level
         enemyPokemon.level = 1
         for (i in 1 until randomLvl) enemyPokemon.monterLevel()
+
+        val tousLesObjets = listOf(
+            "atk_plus", "def_plus", "vit_plus", "pv_plus",
+            "item_restes", "item_bague_force", "item_veste_combat", "item_cape_vitesse"
+        )
+
+        val nbObjets: Int
+        if (estUnBoss) {
+            //Boss : min = vague/2, max = vague
+            val minObj = vagueActuelle / 2
+            val maxObj = vagueActuelle
+            nbObjets = (minObj..maxObj).random()
+        } else {
+            //Sauvages : min = level/5, max = level/3
+            val minObj = enemyPokemon.level / 5
+            val maxObj = enemyPokemon.level / 3
+            nbObjets = if (minObj <= maxObj) (minObj..maxObj).random() else minObj
+        }
+
+        //ajout objet random
+        repeat(nbObjets) {
+            enemyPokemon.ajouterObjet(tousLesObjets.random())
+        }
         enemyPokemon.currentHp = enemyPokemon.getMaxHp()
 
-        val attaquesDispo = modelJson.getAttackDispo(enemyPokemon)
-        enemyPokemon.attacks.clear()
-        val selectedAttacks = attaquesDispo.shuffled().take(4)
-        for (atk in selectedAttacks) enemyPokemon.addAttack(atk)
         imgPokeEnemy.alpha = 1f
-        imgPokeEnemy.scaleX = 1f
-        imgPokeEnemy.scaleY = 1f
     }
 
     private fun changerPokemon(newPokemon: Pokemon, etaitKo: Boolean) {
         isTurnInProgress = true
+
+        //reset stage hors combats
+        playerPokemon.resetStagesCombat()
 
         BattleAnimator.animateSwitchOut(imgPokePlayer) {
             playerPokemon = newPokemon
@@ -349,8 +382,10 @@ class PlayActivity : BaseActivity() {
         currentTurn++
         numVague.text = "Vague $vagueActuelle | Tour $currentTurn"
         val enemyAttack = enemyPokemon.attacks.random()
-        val pSpeed = playerPokemon.currentVit
-        val eSpeed = enemyPokemon.currentVit
+
+        // On utilise battleVit pour prendre en compte les buffs/malus de vitesse
+        val pSpeed = playerPokemon.battleVit
+        val eSpeed = enemyPokemon.battleVit
         val playerFirst = if (pSpeed == eSpeed) Random.nextBoolean() else pSpeed > eSpeed
 
         if (playerFirst) {
@@ -497,14 +532,15 @@ class PlayActivity : BaseActivity() {
 
     //application des objets (restes...)
     private fun appliquerEffetsFinDeTour(pokemon: Pokemon, onTermine: () -> Unit) {
-        if (pokemon.possedeObjet("item_restes") && !pokemon.isKO && pokemon.currentHp < pokemon.getMaxHp()) {
-            MusicManager.jouerSonBattle("heal")
-            val soinRestes = (pokemon.getMaxHp() / 16).coerceAtLeast(1)
+        val quantiteRestes = pokemon.objets["item_restes"] ?: 0
+
+        if (quantiteRestes > 0 && !pokemon.isKO && pokemon.currentHp < pokemon.getMaxHp()) {
+            MusicManager.jouerSonBattle("item_active")
+            val soinRestes = ((pokemon.getMaxHp() * quantiteRestes) / 16).coerceAtLeast(1)
             pokemon.heal(soinRestes)
             updateUI(true)
-            animateText("${pokemon.species.nom} récupère des PV grâce aux Restes !") {
-                Handler(Looper.getMainLooper()).postDelayed({ onTermine() }, 1000)
-            }
+
+            Handler(Looper.getMainLooper()).postDelayed({ onTermine() }, 500)
         } else {
             onTermine()
         }
@@ -543,7 +579,9 @@ class PlayActivity : BaseActivity() {
 
         //calcul puissance brute
         val levelFactor = (2 * attaquant.level / 5) + 2
-        val statRatio = attaquant.currentAtk.toDouble() / defenseur.currentDef.toDouble()
+
+        // On utilise battleAtk et battleDef pour prendre en compte les buffs/malus
+        val statRatio = attaquant.battleAtk.toDouble() / defenseur.battleDef.toDouble()
         var degats = (((levelFactor * attaque.basePower * statRatio) / 50) + 2).toDouble()
 
         //safe si dmg tres bas
@@ -663,23 +701,8 @@ class PlayActivity : BaseActivity() {
     }
 
     private fun appliquerStatChange(cible: Pokemon, stat: String, niveau: Int): String {
-        val facteur = if (niveau > 0) 1.5 else 0.66
-        var msg = ""
-        when (stat.lowercase()) {
-            "atk" -> {
-                cible.currentAtk = (cible.currentAtk * facteur).toInt()
-                msg = if (niveau > 0) "${cible.species.nom} monte son Attaque !" else "${cible.species.nom} voit son Attaque baisser !"
-            }
-            "def" -> {
-                cible.currentDef = (cible.currentDef * facteur).toInt()
-                msg = if (niveau > 0) "${cible.species.nom} monte sa Défense !" else "${cible.species.nom} voit sa Défense baisser !"
-            }
-            "vit" -> {
-                cible.currentVit = (cible.currentVit * facteur).toInt()
-                msg = if (niveau > 0) "${cible.species.nom} monte sa Vitesse !" else "${cible.species.nom} voit sa Vitesse baisser !"
-            }
-        }
-        return msg
+        // Appelle la nouvelle mécanique de paliers définie dans Pokemon.kt
+        return cible.modifierStage(stat, niveau)
     }
 
     fun ajouterOr(montant: Int) {
@@ -691,7 +714,7 @@ class PlayActivity : BaseActivity() {
             val listeDialogues = ArrayList<String>()
             listeDialogues.add("${enemyPokemon.species.nom} est K.O.")
 
-            val xpGain = 20 + (enemyPokemon.currentAtk + enemyPokemon.currentDef + enemyPokemon.currentVit + enemyPokemon.getMaxHp())/5 + (enemyPokemon.level*20)
+            val xpGain = 20 + (enemyPokemon.currentAtk + enemyPokemon.currentDef + enemyPokemon.currentVit + enemyPokemon.getMaxHp())/5 + (enemyPokemon.level*50)
 
             for(poke in Player.getEquipe()){
                 if(!poke.isKO){
@@ -726,6 +749,9 @@ class PlayActivity : BaseActivity() {
                 if (!isDestroyed && !isFinishing) {
                     val rewardDialog = RewardBattleVague(this, playerPokemon) { messagesReward ->
                         afficherDialoguesSuccessifs(messagesReward) {
+                            // On réinitialise les stats de ton Pokémon à la fin de la vague
+                            playerPokemon.resetStagesCombat()
+
                             vagueActuelle++
                             currentTurn = 1
                             numVague.text = "Vague $vagueActuelle | Tour $currentTurn"
@@ -827,6 +853,10 @@ class PlayActivity : BaseActivity() {
             pokemon.isKO = false
             pokemon.level = 1
             pokemon.exp = 0
+
+            // Remise à zéro des stages lors d'une nouvelle partie
+            pokemon.resetStagesCombat()
+
             pokemon.recalculerStats()
             pokemon.currentHp = pokemon.getMaxHp()
 
