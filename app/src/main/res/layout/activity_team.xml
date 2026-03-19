@@ -23,83 +23,99 @@
         app:srcCompat="@drawable/back_gradient" />
 
     <ImageView
-        android:id="@+id/imageView8"
-        android:layout_width="167dp"
-        android:layout_height="51dp"
+        android:id="@+id/settingsBtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/settings"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/title" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/settingsBtn"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="16dp"
-        android:src="@drawable/settings"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView8"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView8" />
+        android:id="@+id/imageView8"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="32dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toStartOf="@+id/goldContainer"
+        app:layout_constraintStart_toEndOf="@+id/settingsBtn"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.4"
+        app:srcCompat="@drawable/title" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout3"
+        android:id="@+id/goldContainer"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/pokegold_back"
-        android:paddingStart="35dp"
-        android:paddingEnd="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView8">
 
-        <TextView
-            android:id="@+id/fieldPokegold"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_medium"
-            android:foregroundTint="#D92828"
-            android:text="2676"
-            android:textColor="#D84315"
-            android:textStyle="bold"
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/pokegold_back"
+            android:paddingStart="25dp"
+            android:paddingEnd="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/fieldPokegold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="2676"
+                android:textColor="#D84315"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/goldIcon"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:elevation="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/gold" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/goldIcon"
-        android:layout_width="49dp"
-        android:layout_height="51dp"
-        android:layout_marginEnd="-25dp"
-        android:elevation="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout3"
-        app:layout_constraintEnd_toStartOf="@+id/constraintLayout3"
-        app:layout_constraintTop_toTopOf="@+id/constraintLayout3"
-        app:srcCompat="@drawable/gold" />
-
-    <ImageView
-        android:id="@+id/changeTeamBtn"
-        android:layout_width="150dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
+        android:id="@+id/pokedexBtn"
+        android:layout_width="79dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="12dp"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@+id/boxTeamContainer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView8"
-        app:srcCompat="@drawable/change_team_btn" />
+        app:layout_constraintWidth_percent="0.65"
+        app:srcCompat="@drawable/pokedex_btn"
+        tools:srcCompat="@drawable/pokedex_btn" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/boxTeamContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/footer"
+        app:layout_constraintBottom_toTopOf="@+id/changeTeamBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/changeTeamBtn"
+        app:layout_constraintTop_toBottomOf="@+id/pokedexBtn"
         app:layout_constraintWidth_percent="0.9">
 
         <ImageView
@@ -111,9 +127,9 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:requiresFadingEdge="vertical"
             android:fadingEdgeLength="60dp"
-            android:fillViewport="true">
+            android:fillViewport="true"
+            android:requiresFadingEdge="vertical">
 
             <LinearLayout
                 android:id="@+id/teamList"
@@ -127,47 +143,55 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/boxPoke1"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:elevation="8dp">
+                    android:elevation="8dp"
+                    android:minHeight="100dp">
 
                     <ImageView
                         android:id="@+id/imageView2"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="0dp"
                         android:scaleType="fitXY"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/rounded_rouge_black_border" />
 
                     <ImageView
                         android:id="@+id/pokeSprite1"
-                        android:layout_width="71dp"
-                        android:layout_height="73dp"
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
                         android:layout_marginStart="16dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="12dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.407"
                         tools:srcCompat="@android:drawable/ic_menu_help" />
 
                     <TextView
                         android:id="@+id/pokeName1"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="8dp"
                         android:fontFamily="@font/roboto_medium"
                         android:text="Pikachu"
                         android:textColor="#FFFFFF"
                         android:textSize="18sp"
                         android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/pokeType1"
+                        app:layout_constraintEnd_toStartOf="@+id/attackBtn1"
                         app:layout_constraintStart_toEndOf="@+id/pokeSprite1"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="@+id/pokeSprite1"
+                        app:layout_constraintVertical_chainStyle="packed" />
 
                     <ImageView
                         android:id="@+id/pokeType1"
                         android:layout_width="39dp"
                         android:layout_height="21dp"
                         android:layout_marginTop="4dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/pokeSprite1"
                         app:layout_constraintStart_toStartOf="@+id/pokeName1"
                         app:layout_constraintTop_toBottomOf="@+id/pokeName1"
                         tools:srcCompat="@tools:sample/backgrounds/scenic" />
@@ -176,25 +200,40 @@
                         android:id="@+id/pokeType4"
                         android:layout_width="39dp"
                         android:layout_height="21dp"
-                        android:layout_marginTop="4dp"
+                        android:layout_marginStart="4dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/pokeType1"
                         app:layout_constraintStart_toEndOf="@+id/pokeType1"
-                        app:layout_constraintTop_toBottomOf="@+id/pokeName1"
+                        app:layout_constraintTop_toTopOf="@+id/pokeType1"
                         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
                     <ImageView
                         android:id="@+id/attackBtn1"
-                        android:layout_width="106dp"
-                        android:layout_height="44dp"
+                        android:layout_width="100dp"
+                        android:layout_height="40dp"
                         android:layout_marginEnd="12dp"
-                        android:adjustViewBounds="false"
+                        android:scaleType="fitCenter"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/change_atk_btn" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
             </LinearLayout>
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/changeTeamBtn"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="16dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/footer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/boxTeamContainer"
+        app:layout_constraintWidth_percent="0.75"
+        app:srcCompat="@drawable/change_team_btn" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/footer"

@@ -103,6 +103,8 @@ class MainActivity : BaseActivity() {
         super.onResume()
         isOnAnim = false
         videoContainer.visibility = View.GONE
+
+        MusicManager.jouerPlaylistHome(this)
         
         //refresh au retour
         refreshUI()

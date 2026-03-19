@@ -108,14 +108,13 @@ class GachaActivity : BaseActivity() {
             tenPullBtn.isEnabled = false
             tenPullBtn.isClickable = false
         }
-
-
     }
 
     override fun onResume() {
         super.onResume()
         videoContainer.visibility = View.GONE
         refreshUI()
+        MusicManager.jouerPlaylistHome(this)
         verifierPendingPull()
     }
 

@@ -93,9 +93,9 @@ class Pokemon(
                 "atk_plus_plus" -> baseAtk += (10 * qte)
                 "def_plus_plus" -> baseDef += (10 * qte)
                 "vit_plus_plus" -> baseVit += (10 * qte)
-                "item_bague_force" -> baseAtk += (25 * qte)
-                "item_veste_combat" -> baseDef += (25 * qte)
-                "item_cape_vitesse" -> baseVit += (25 * qte)
+                "item_bague_force" -> baseAtk += (baseAtk * 0.15 * qte).toInt()
+                "item_veste_combat" -> baseDef += (baseDef * 0.15 * qte).toInt()
+                "item_cape_vitesse" -> baseVit += (baseVit * 0.15 * qte).toInt()
             }
         }
 
@@ -160,7 +160,7 @@ class Pokemon(
         }
     }
 
-    // --- STAGES DE COMBAT (Buffs / Malus) ---
+    //STAGES DE COMBAT (Buffs / Malus)
     // Paliers allant de -5 à +5
     var stageAtk: Int = 0
     var stageDef: Int = 0

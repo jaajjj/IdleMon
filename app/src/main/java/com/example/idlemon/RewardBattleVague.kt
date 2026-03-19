@@ -127,6 +127,7 @@ class RewardBattleVague(
         },
         Reward("gold", "PokéGold", "Or aléatoire (10-50)", R.drawable.gold, Rarity.LEGENDARY, 35) { _ ->
             MusicManager.jouerSonBattle("item_active")
+            //ROulette entre 20 et 1000
             val amount = Random.nextInt(10, 51)
             if (context is PlayActivity) context.ajouterOr(amount)
             Player.addPieces(amount)

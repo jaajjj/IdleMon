@@ -22,6 +22,8 @@ class TeamActivity : BaseActivity() {
     private lateinit var homeBtn: ImageView
     private lateinit var gachaBtn: ImageView
     private lateinit var teamList: LinearLayout
+    private lateinit var pokedexBtn: ImageView
+
 
     //Leader
     private lateinit var pokeSprite1: ImageView
@@ -70,6 +72,9 @@ class TeamActivity : BaseActivity() {
             dialog.dialog.setOnDismissListener { afficherEquipe() }
             dialog.show()
         }
+        pokedexBtn.setOnClickListener {
+            startActivity(Intent(this, PokedexActivity::class.java))
+        }
     }
 
     private fun initViews() {
@@ -79,6 +84,7 @@ class TeamActivity : BaseActivity() {
         gachaBtn = findViewById(R.id.gachaBtn)
         teamList = findViewById(R.id.teamList)
         settingsBtn = findViewById(R.id.settingsBtn)
+        pokedexBtn = findViewById<ImageView>(R.id.pokedexBtn)
 
         //Leader UI
         pokeSprite1 = findViewById(R.id.pokeSprite1)
@@ -86,6 +92,7 @@ class TeamActivity : BaseActivity() {
         type1Leader = findViewById(R.id.pokeType1)
         type2Leader = findViewById(R.id.pokeType4)
         attackBtn1 = findViewById(R.id.attackBtn1)
+
     }
 
     override fun refreshUI() {

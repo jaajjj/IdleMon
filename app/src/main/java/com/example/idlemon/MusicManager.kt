@@ -239,7 +239,6 @@ object MusicManager {
     }
 
     fun lancerSequenceCombat(context: Context) {
-        //pas de fadeOut
         try {
             mediaPlayer?.stop()
             mediaPlayer?.release()
@@ -247,6 +246,7 @@ object MusicManager {
         } catch (e: Exception) { e.printStackTrace() }
 
         try {
+            currentResId = R.raw.battle1 // <-- AJOUT ICI
             mediaPlayer = MediaPlayer.create(context.applicationContext, R.raw.battle1)
             mediaPlayer?.apply {
                 isLooping = false
@@ -265,11 +265,44 @@ object MusicManager {
     private fun lancerBoucleCombatImmediate(context: Context) {
         mediaPlayer?.release()
         val musiqueSuivante = playlistRoute.random()
+        currentResId = musiqueSuivante // <-- AJOUT ICI
         mediaPlayer = MediaPlayer.create(context.applicationContext, musiqueSuivante)
         mediaPlayer?.apply {
             isLooping = true
             setVolume(1.0f, 1.0f)
             start()
+        }
+    }
+
+    private fun lancerNouvelleMusiqueAvecFadeIn(context: Context, resId: Int, loop: Boolean, onMusicStarted: (() -> Unit)?) {
+        try {
+            currentResId = resId // <-- AJOUT ICI
+            mediaPlayer = MediaPlayer.create(context.applicationContext, resId)
+            mediaPlayer?.apply {
+                isLooping = loop
+                setVolume(0.0f, 0.0f) //on commence silencieux
+                start()
+            }
+
+            onMusicStarted?.invoke()
+
+            //fade In
+            val fadeIn = ValueAnimator.ofFloat(0.0f, 1.0f)
+            fadeIn.duration = FADE_DURATION
+            fadeIn.interpolator = LinearInterpolator()
+
+            fadeIn.addUpdateListener { animation ->
+                try {
+                    val volume = animation.animatedValue as Float
+                    mediaPlayer?.setVolume(volume, volume)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            fadeIn.start()
+
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -349,38 +382,6 @@ object MusicManager {
             lancerNouvelleMusiqueAvecFadeIn(context, resId, loop, onMusicStarted)
         }
     }
-
-    private fun lancerNouvelleMusiqueAvecFadeIn(context: Context, resId: Int, loop: Boolean, onMusicStarted: (() -> Unit)?) {
-        try {
-            mediaPlayer = MediaPlayer.create(context.applicationContext, resId)
-            mediaPlayer?.apply {
-                isLooping = loop
-                setVolume(0.0f, 0.0f) //on commence silencieux
-                start()
-            }
-
-            onMusicStarted?.invoke()
-
-            //fade In
-            val fadeIn = ValueAnimator.ofFloat(0.0f, 1.0f)
-            fadeIn.duration = FADE_DURATION
-            fadeIn.interpolator = LinearInterpolator()
-
-            fadeIn.addUpdateListener { animation ->
-                try {
-                    val volume = animation.animatedValue as Float
-                    mediaPlayer?.setVolume(volume, volume)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-            fadeIn.start()
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
     fun play() {
         if (mediaPlayer?.isPlaying == false) {
             mediaPlayer?.setVolume(0.1f, 0.1f)

@@ -144,6 +144,16 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <LinearLayout
+        android:id="@+id/enemy_items_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="2dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="@+id/enemy_info_container"
+        app:layout_constraintTop_toBottomOf="@+id/enemy_info_container" />
+
     <ImageView
         android:id="@+id/player_platform"
         android:layout_width="0dp"
@@ -179,6 +189,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/return_btn" />
+
+    <LinearLayout
+        android:id="@+id/player_items_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="2dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/player_info_container"
+        app:layout_constraintEnd_toEndOf="@+id/player_info_container" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/player_info_container"

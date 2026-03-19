@@ -3,11 +3,14 @@ package com.example.idlemon
 import android.animation.ObjectAnimator
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.GridLayout
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import android.widget.ImageView
@@ -44,6 +47,7 @@ class PlayActivity : BaseActivity() {
     private lateinit var txtEnemyName: TextView
     private lateinit var txtEnemyLvl: TextView
     private lateinit var enemyHpBar: ProgressBar
+    private lateinit var enemyItemsContainer: LinearLayout
 
     //player
     private lateinit var imgPokePlayer: ImageView
@@ -51,6 +55,7 @@ class PlayActivity : BaseActivity() {
     private lateinit var txtPlayerLvl: TextView
     private lateinit var playerHpBar: ProgressBar
     private lateinit var txtPlayerHpText: TextView
+    private lateinit var playerItemsContainer: LinearLayout
 
     //btn
     private lateinit var btnAttack: ConstraintLayout
@@ -154,12 +159,14 @@ class PlayActivity : BaseActivity() {
         txtEnemyName = findViewById(R.id.txt_enemy_name)
         txtEnemyLvl = findViewById(R.id.txt_enemy_lvl)
         enemyHpBar = findViewById(R.id.enemy_hp_bar)
+        enemyItemsContainer = findViewById(R.id.enemy_items_container)
 
         imgPokePlayer = findViewById(R.id.imgPokePlayer)
         txtPlayerName = findViewById(R.id.txt_player_name)
         txtPlayerLvl = findViewById(R.id.txt_player_lvl)
         playerHpBar = findViewById(R.id.player_hp_bar)
         txtPlayerHpText = findViewById(R.id.txt_player_hp_text)
+        playerItemsContainer = findViewById(R.id.player_items_container)
 
         btnAttack = findViewById(R.id.btn_attack_container)
         btnTeam = findViewById(R.id.btn_team_container)
@@ -332,14 +339,13 @@ class PlayActivity : BaseActivity() {
 
         val nbObjets: Int
         if (estUnBoss) {
-            //Boss : min = vague/2, max = vague
-            val minObj = vagueActuelle / 2
-            val maxObj = vagueActuelle
+            //Boss gagne 1 objet toutes les 2 ou 3 vagues, avec un minimum garanti
+            val minObj = (vagueActuelle / 4).coerceAtLeast(1)
+            val maxObj = (vagueActuelle / 2).coerceAtLeast(2)
             nbObjets = (minObj..maxObj).random()
         } else {
-            //Sauvages : min = level/5, max = level/3
-            val minObj = enemyPokemon.level / 5
-            val maxObj = enemyPokemon.level / 3
+            val minObj = enemyPokemon.level / 10
+            val maxObj = enemyPokemon.level / 5
             nbObjets = if (minObj <= maxObj) (minObj..maxObj).random() else minObj
         }
 
@@ -532,7 +538,7 @@ class PlayActivity : BaseActivity() {
 
     //application des objets (restes...)
     private fun appliquerEffetsFinDeTour(pokemon: Pokemon, onTermine: () -> Unit) {
-        val quantiteRestes = pokemon.objets["item_restes"] ?: 0
+        val quantiteRestes = (pokemon.objets["item_restes"] ?: 0).coerceAtMost(6)
 
         if (quantiteRestes > 0 && !pokemon.isKO && pokemon.currentHp < pokemon.getMaxHp()) {
             MusicManager.jouerSonBattle("item_active")
@@ -896,6 +902,60 @@ class PlayActivity : BaseActivity() {
             updateHpColor(enemyHpBar, enemyPokemon.currentHp, maxHpE)
         }
         Glide.with(this).load(DataManager.model.getFrontSprite(enemyPokemon.species.num)).into(imgPokeEnemy)
+
+        // MAJ des objets équipés
+        afficherObjets(playerPokemon, playerItemsContainer)
+        afficherObjets(enemyPokemon, enemyItemsContainer)
+    }
+
+    private fun afficherObjets(pokemon: Pokemon, container: LinearLayout) {
+        container.removeAllViews()
+        pokemon.objets.forEach { (idObjet, quantite) ->
+            if (quantite > 0) {
+                val frame = FrameLayout(this)
+                val density = resources.displayMetrics.density
+                val sizePx = (24 * density).toInt()
+                val marginPx = (4 * density).toInt()
+
+                val frameParams = LinearLayout.LayoutParams(sizePx, sizePx)
+                frameParams.setMargins(0, 0, marginPx, 0)
+                frame.layoutParams = frameParams
+
+                val img = ImageView(this)
+                img.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
+                img.setImageResource(getIconForObjet(idObjet))
+                frame.addView(img)
+
+                if (quantite > 1) {
+                    val txt = TextView(this)
+                    val txtParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT)
+                    txtParams.gravity = Gravity.BOTTOM or Gravity.END
+                    txt.layoutParams = txtParams
+                    txt.text = "x$quantite"
+                    txt.textSize = 10f
+                    txt.setTextColor(Color.WHITE)
+                    txt.setShadowLayer(3f, 1f, 1f, Color.BLACK)
+                    txt.setTypeface(null, Typeface.BOLD)
+                    frame.addView(txt)
+                }
+
+                container.addView(frame)
+            }
+        }
+    }
+
+    private fun getIconForObjet(id: String): Int {
+        return when (id) {
+            "atk_plus", "atk_plus_plus" -> R.drawable.attaque_plus
+            "def_plus", "def_plus_plus" -> R.drawable.def_plus
+            "vit_plus", "vit_plus_plus" -> R.drawable.vit_plus
+            "pv_plus", "pv_plus_plus" -> R.drawable.pv_plus
+            "item_restes" -> R.drawable.restes
+            "item_bague_force" -> R.drawable.bague_force
+            "item_veste_combat" -> R.drawable.veste_combat
+            "item_cape_vitesse" -> R.drawable.cape_vitesse
+            else -> R.drawable.pokeball
+        }
     }
 
     private fun animateHpChange(bar: ProgressBar, textViewHp: TextView?, targetHp: Int, maxHp: Int) {

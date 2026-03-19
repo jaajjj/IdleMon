@@ -207,4 +207,13 @@ class ModelJson(context: Context) {
 
         }
     }
+
+    //Pokédex
+    fun getAllPokemonSpecies(): List<PokemonSpecies> {
+        val gson = Gson()
+        val typeObjet = object : TypeToken<Map<String, PokemonSpecies>>() {}.type
+        val allSpecies: Map<String, PokemonSpecies> = gson.fromJson(pokemons, typeObjet)
+
+        return allSpecies.values.toList()
+    }
 }
