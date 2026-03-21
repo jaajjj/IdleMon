@@ -2,6 +2,7 @@ package com.example.idlemon
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
@@ -17,7 +18,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.edit
 import androidx.core.graphics.drawable.toDrawable
 
-@SuppressLint("StaticFieldLeak") //C'était juste relou d'avoir tout souligné en jaune ;-;
+@SuppressLint("StaticFieldLeak") // C'était juste relou d'avoir tout souligné en jaune ;-;
 object SettingsManager {
     private const val NOM_FI_PARAM = "MesParametres"
     private const val KEY_MUSIC = "music_enabled"
@@ -65,6 +66,33 @@ object SettingsManager {
         prefs.edit { putBoolean(KEY_FAST_DIALOGUE, enabled) }
     }
 
+    // --- OUTILS DE POPUPS NATIFS ---
+    private fun showSuccessPopup(activity: Activity, title: String, message: String, onDismiss: () -> Unit) {
+        AlertDialog.Builder(activity)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("Super !") { d, _ ->
+                d.dismiss()
+                onDismiss()
+            }
+            .setCancelable(false) // Empêche de fermer en cliquant à côté, force à lire !
+            .show()
+    }
+
+    private fun showConfirmPopup(activity: Activity, title: String, message: String, onConfirm: () -> Unit) {
+        AlertDialog.Builder(activity)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("Oui") { d, _ ->
+                d.dismiss()
+                onConfirm()
+            }
+            .setNegativeButton("Annuler") { d, _ ->
+                d.dismiss()
+            }
+            .show()
+    }
+
     //boite de dialogue options
     fun showSettingsDialog(activity: Activity, onRefreshUI: () -> Unit) {
         val dialog = Dialog(activity)
@@ -80,14 +108,17 @@ object SettingsManager {
 
         //reset compte sur titre Options
         tvOptionsTitle.setOnLongClickListener {
-            ConnexionManager.resetCompte(activity, 
-                onSuccess = {
-                    Toast.makeText(activity, "Sauvegarde réinitialisée !", Toast.LENGTH_SHORT).show()
-                    onRefreshUI()
-                    dialog.dismiss()
-                },
-                onFailure = { Toast.makeText(activity, it, Toast.LENGTH_SHORT).show() }
-            )
+            showConfirmPopup(activity, "Réinitialiser", "Voulez-vous vraiment effacer votre sauvegarde ? Cette action est irréversible.") {
+                ConnexionManager.resetCompte(activity,
+                    onSuccess = {
+                        showSuccessPopup(activity, "Réinitialisé", "La sauvegarde a été réinitialisée.") {
+                            onRefreshUI()
+                            dialog.dismiss()
+                        }
+                    },
+                    onFailure = { Toast.makeText(activity, it, Toast.LENGTH_SHORT).show() }
+                )
+            }
             true
         }
 
@@ -102,11 +133,14 @@ object SettingsManager {
             btnLogin.setBackgroundTintList(android.content.res.ColorStateList.valueOf(Color.RED))
 
             btnLogin.setOnClickListener {
-                ConnexionManager.deconnexion(activity)
-                SaveManager.sauvegarderLocal(activity)
-                Toast.makeText(activity, "Déconnecté", Toast.LENGTH_SHORT).show()
-                onRefreshUI()
-                dialog.dismiss()
+                showConfirmPopup(activity, "Déconnexion", "Voulez-vous vraiment vous déconnecter ?") {
+                    ConnexionManager.deconnexion(activity)
+                    SaveManager.sauvegarderLocal(activity)
+                    showSuccessPopup(activity, "Au revoir", "Vous avez bien été déconnecté.") {
+                        onRefreshUI()
+                        dialog.dismiss()
+                    }
+                }
             }
         } else {
             btnLogin.setOnClickListener {
@@ -115,22 +149,24 @@ object SettingsManager {
                 if (email.isNotEmpty() && pass.isNotEmpty()) {
                     ConnexionManager.connexion(email, pass, activity,
                         onSuccess = {
-                            Toast.makeText(activity, "Connexion réussie !", Toast.LENGTH_SHORT).show()
-                            onRefreshUI()
-                            dialog.dismiss()
+                            showSuccessPopup(activity, "Bon retour !", "Vous êtes maintenant connecté.") {
+                                onRefreshUI()
+                                dialog.dismiss()
+                            }
                         },
                         onFailure = { error -> Toast.makeText(activity, error, Toast.LENGTH_LONG).show() }
                     )
                 }
             }
-            
+
             //Connexion Google
             btnGoogle.setOnClickListener {
                 ConnexionManager.connexionGoogle(activity,
                     onSuccess = {
-                        Toast.makeText(activity, "Connecté avec Google !", Toast.LENGTH_SHORT).show()
-                        onRefreshUI()
-                        dialog.dismiss()
+                        showSuccessPopup(activity, "Connexion Google", "Connexion réussie ! Vos données sont synchronisées.") {
+                            onRefreshUI()
+                            dialog.dismiss()
+                        }
                     },
                     onFailure = { error -> Toast.makeText(activity, error, Toast.LENGTH_LONG).show() }
                 )
@@ -144,7 +180,7 @@ object SettingsManager {
 
         switchMusique.isChecked = isMusicEnabled(activity)
         switchDialogue.isChecked = isFastDialogue(activity)
-        
+
         switchMusique.setOnCheckedChangeListener { _, isChecked ->
             setMusicEnabled(activity, isChecked)
             if (isChecked) MusicManager.resume() else MusicManager.pause()
@@ -201,9 +237,10 @@ object SettingsManager {
             if (email.isNotEmpty() && pass.length >= 6) {
                 ConnexionManager.inscription(email, pass, activity,
                     onSuccess = {
-                        Toast.makeText(activity, "Compte créé !", Toast.LENGTH_SHORT).show()
-                        onRefreshUI()
-                        dialog.dismiss()
+                        showSuccessPopup(activity, "Bienvenue !", "Votre compte a été créé avec succès.") {
+                            onRefreshUI()
+                            dialog.dismiss()
+                        }
                     },
                     onFailure = { error -> Toast.makeText(activity, error, Toast.LENGTH_LONG).show() }
                 )
@@ -230,9 +267,9 @@ object SettingsManager {
         val metrics = activity.resources.displayMetrics
         val width = (metrics.widthPixels * 0.90).toInt()
         val height = (metrics.heightPixels * 0.90).toInt()
-        
+
         dialog.window?.setLayout(width, height)
-        
+
         //init les vues
         initViewsCredits(dialog)
 

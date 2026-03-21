@@ -15,6 +15,7 @@ import android.view.View
 import android.view.Window
 import android.widget.FrameLayout
 import android.widget.GridLayout
+import androidx.activity.OnBackPressedCallback
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -85,6 +86,9 @@ class PlayActivity : BaseActivity() {
     private lateinit var statsButtonEnemy: ImageView
     private lateinit var statsButtonPlayer: ImageView
 
+    //dialog quitter
+    private lateinit var quitDialog: Dialog
+
     //logique jeu
     private lateinit var playerPokemon: Pokemon
     private lateinit var enemyPokemon: Pokemon
@@ -108,6 +112,20 @@ class PlayActivity : BaseActivity() {
         setContentView(R.layout.activity_play)
         setupFullscreen()
 
+        // SÉCURITÉ ULTIME : On remet tout à zéro dès l'ouverture de l'Activity
+        // Cela empêche un "vieux" Pokémon d'apparaître si l'appli a planté
+        resetPartieDonnees()
+
+        // Interception du bouton "Retour" natif d'Android
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (!isTurnInProgress && !isTextWriting) {
+                    quitDialog.findViewById<TextView>(R.id.tvQuitLoot).text = "Butin : $nbPieceGagnee PokéOr"
+                    quitDialog.show()
+                }
+            }
+        })
+
         //param vitesse dialogues
         if (SettingsManager.isFastDialogue(this)) {
             VIT_TEXTE_NORMAL = 2L
@@ -127,6 +145,16 @@ class PlayActivity : BaseActivity() {
 
         //init battle (spawn des pokémon)
         setupBattle()
+    }
+
+    private fun quitterPartie() {
+        val butinTotal = nbPieceGagnee
+        Player.addPieces(butinTotal)
+        Toast.makeText(this, "Vous emportez $butinTotal PokéOr !", Toast.LENGTH_SHORT).show()
+
+        MusicManager.jouerPlaylistHome(this)
+        resetPartieDonnees()
+        finish()
     }
 
     private fun initViews() {
@@ -191,6 +219,28 @@ class PlayActivity : BaseActivity() {
             statsDialog.dismiss()
         }
 
+        //dialog quitter
+        quitDialog = Dialog(this)
+        quitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        quitDialog.setContentView(R.layout.dialog_quit_battle)
+        quitDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        //responsive
+        val widthQuit = (resources.displayMetrics.widthPixels * 0.90).toInt()
+        quitDialog.window?.setLayout(widthQuit, android.view.ViewGroup.LayoutParams.WRAP_CONTENT)
+
+        val quitCloseBtn = quitDialog.findViewById<ImageView>(R.id.quitCloseBtn)
+        val btnConfirmQuit = quitDialog.findViewById<View>(R.id.btnConfirmQuit)
+
+        quitCloseBtn.setOnClickListener {
+            quitDialog.dismiss() //annule la fuite
+        }
+
+        btnConfirmQuit.setOnClickListener {
+            quitDialog.dismiss()
+            quitterPartie()
+        }
+
         //--Listener--
         btnAttack.setOnClickListener {
             if (!isTurnInProgress && !isTextWriting) {
@@ -223,13 +273,10 @@ class PlayActivity : BaseActivity() {
 
         //Ajouter popup
         return_btn.setOnClickListener {
-            val butinTotal = nbPieceGagnee
-            Player.addPieces(butinTotal)
-            Toast.makeText(this, "Vous emportez $butinTotal PokéOr !", Toast.LENGTH_SHORT).show()
-
-            MusicManager.jouerPlaylistHome(this)
-            resetPartieDonnees()
-            finish()
+            if (!isTurnInProgress && !isTextWriting) {
+                quitDialog.findViewById<TextView>(R.id.tvQuitLoot).text = "Butin : $nbPieceGagnee PokéOr"
+                quitDialog.show()
+            }
         }
 
         //stats
@@ -294,10 +341,12 @@ class PlayActivity : BaseActivity() {
             attacksGrid.addView(attackView)
         }
     }
-
-    private fun afficherMenuEquipe(etaitKo: Boolean) {
+    fun afficherMenuEquipe(etaitKo: Boolean, modeSelectionObjet: Boolean = false, onPokemonSelected: ((Pokemon) -> Unit)? = null) {
         layoutMenuEquipe.visibility = View.VISIBLE
         teamListContainer.removeAllViews()
+
+        //en mode sélection on cache la croix pour obliger le joueur à choisir
+        btnCloseTeam.visibility = if (modeSelectionObjet) View.GONE else View.VISIBLE
 
         for (pokemon in Player.getEquipe()) {
             val itemView = layoutInflater.inflate(R.layout.item_team_battle, teamListContainer, false)
@@ -319,13 +368,21 @@ class PlayActivity : BaseActivity() {
             if (pokemon == playerPokemon) name.text = "${pokemon.species.nom} (Actif)"
 
             itemView.setOnClickListener {
-                if (pokemon == playerPokemon) {
-                    Toast.makeText(this, "Déjà au combat !", Toast.LENGTH_SHORT).show()
-                } else if (pokemon.isKO) {
-                    Toast.makeText(this, "Ce Pokémon est K.O.", Toast.LENGTH_SHORT).show()
-                } else {
-                    changerPokemon(pokemon, etaitKo)
+                if (onPokemonSelected != null) {
+                    // Mode sélection: on renvoie le Pokémon cliqué
                     layoutMenuEquipe.visibility = View.GONE
+                    btnCloseTeam.visibility = View.VISIBLE //réactivation de la croix
+                    onPokemonSelected(pokemon)
+                } else {
+                    //mode combat
+                    if (pokemon == playerPokemon) {
+                        Toast.makeText(this, "Déjà au combat !", Toast.LENGTH_SHORT).show()
+                    } else if (pokemon.isKO) {
+                        Toast.makeText(this, "Ce Pokémon est K.O.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        changerPokemon(pokemon, etaitKo)
+                        layoutMenuEquipe.visibility = View.GONE
+                    }
                 }
             }
             teamListContainer.addView(itemView)
@@ -851,11 +908,8 @@ class PlayActivity : BaseActivity() {
                 isTurnInProgress = false
                 if (Player.getEquipe().all { it.isKO }) {
                     animateText("GAME OVER - Butin : $nbPieceGagnee Or") {
-                        Player.addPieces(nbPieceGagnee)
-                        resetPartieDonnees()
-                        MusicManager.jouerPlaylistHome(this)
                         Handler(Looper.getMainLooper()).postDelayed({
-                            finish()
+                            quitterPartie()
                         }, 800)
                     }
                 } else {

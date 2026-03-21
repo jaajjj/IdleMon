@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/backImage"
         android:layout_width="326dp"
-        android:layout_height="182dp"
+        android:layout_height="210dp"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +33,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/containerObj1"
         android:layout_width="82dp"
-        android:layout_height="92dp"
+        android:layout_height="115dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toStartOf="@+id/containerObj2"
         app:layout_constraintHorizontal_chainStyle="spread"
@@ -53,19 +53,34 @@
             android:id="@+id/nomObj1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxLines="1"
             android:text="Objet 1"
             android:textAlignment="center"
             android:textColor="#000000"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imgObj1" />
+
+        <TextView
+            android:id="@+id/btnObj1"
+            android:layout_width="74dp"
+            android:layout_height="28dp"
+            android:background="@drawable/rounded_rouge_black_small_border"
+            android:gravity="center"
+            android:text="Donner objet"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/containerObj2"
         android:layout_width="82dp"
-        android:layout_height="92dp"
+        android:layout_height="115dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toStartOf="@+id/containerObj3"
         app:layout_constraintStart_toEndOf="@+id/containerObj1"
@@ -84,19 +99,34 @@
             android:id="@+id/nomObj2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxLines="1"
             android:text="Objet 2"
             android:textAlignment="center"
             android:textColor="#000000"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imgObj2" />
+
+        <TextView
+            android:id="@+id/btnObj2"
+            android:layout_width="74dp"
+            android:layout_height="28dp"
+            android:background="@drawable/rounded_rouge_black_small_border"
+            android:gravity="center"
+            android:text="Donner objet"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/containerObj3"
         android:layout_width="82dp"
-        android:layout_height="92dp"
+        android:layout_height="115dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="@+id/backImage"
         app:layout_constraintStart_toEndOf="@+id/containerObj2"
@@ -115,13 +145,28 @@
             android:id="@+id/nomObj3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxLines="1"
             android:text="Objet 3"
             android:textAlignment="center"
             android:textColor="#000000"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imgObj3" />
+
+        <TextView
+            android:id="@+id/btnObj3"
+            android:layout_width="74dp"
+            android:layout_height="28dp"
+            android:background="@drawable/rounded_rouge_black_small_border"
+            android:gravity="center"
+            android:text="Donner objet"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -228,7 +228,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_bold"
-        android:text="Info"
+        android:text="Stats"
         android:textColor="#01255B"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/statsButtonPlayer"

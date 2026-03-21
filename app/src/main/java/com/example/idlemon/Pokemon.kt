@@ -161,12 +161,11 @@ class Pokemon(
     }
 
     //STAGES DE COMBAT (Buffs / Malus)
-    // Paliers allant de -5 à +5
     var stageAtk: Int = 0
     var stageDef: Int = 0
     var stageVit: Int = 0
 
-    // Fonction qui convertit le palier en multiplicateur selon tes règles
+    //convertie les palliers en % de dmg
     private fun getMultiplicateurStat(stage: Int): Double {
         return when (stage) {
             -5 -> 0.33
@@ -185,7 +184,7 @@ class Pokemon(
     }
 
     //stats attack
-    // Ce sont ces variables que tu dois utiliser dans tes formules de dégâts !
+    //Var de dégats
     val battleAtk: Int
         get() = (currentAtk * getMultiplicateurStat(stageAtk)).toInt()
 
@@ -203,7 +202,7 @@ class Pokemon(
         when (stat.lowercase()) {
             "atk", "attaque" -> {
                 val oldStage = stageAtk
-                stageAtk = (stageAtk + montant).coerceIn(-5, 5) // Bloque la valeur entre -5 et 5
+                stageAtk = (stageAtk + montant).coerceIn(-5, 5) //bloque la valeur entre -5 et 5 pour na pas stack à l'infini
                 message = genererMessageStat("L'Attaque", oldStage, stageAtk, montant, nomPokemon)
             }
             "def", "defense" -> {
