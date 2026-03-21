@@ -65,6 +65,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/statsButtonEnemy"
+        android:layout_width="82dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/enemy_items_container"
+        app:srcCompat="@drawable/rounded_back_orange_small_border" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_bold"
+        android:text="Info"
+        android:textColor="#5B0101"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/statsButtonEnemy"
+        app:layout_constraintEnd_toEndOf="@+id/statsButtonEnemy"
+        app:layout_constraintStart_toStartOf="@+id/statsButtonEnemy"
+        app:layout_constraintTop_toTopOf="@+id/statsButtonEnemy" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/enemy_info_container"
         android:layout_width="286dp"
@@ -190,6 +213,29 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/return_btn" />
 
+    <ImageView
+        android:id="@+id/statsButtonPlayer"
+        android:layout_width="82dp"
+        android:layout_height="33dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/player_info_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/rounded_back_orange_small_border" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_bold"
+        android:text="Info"
+        android:textColor="#01255B"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/statsButtonPlayer"
+        app:layout_constraintEnd_toEndOf="@+id/statsButtonPlayer"
+        app:layout_constraintStart_toStartOf="@+id/statsButtonPlayer"
+        app:layout_constraintTop_toTopOf="@+id/statsButtonPlayer" />
+
     <LinearLayout
         android:id="@+id/player_items_container"
         android:layout_width="wrap_content"
@@ -198,7 +244,9 @@
         android:layout_marginBottom="2dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/player_info_container"
-        app:layout_constraintEnd_toEndOf="@+id/player_info_container" />
+        app:layout_constraintEnd_toEndOf="@+id/player_info_container" >
+
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/player_info_container"

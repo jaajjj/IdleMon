@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "com.example.idlemon"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.idlemon"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -58,6 +58,7 @@ dependencies {
     // Autres bibliothèques
     implementation(libs.gson)
     implementation(libs.glide)
+    implementation(libs.androidx.ui.android)
 
     // Tests
     testImplementation(libs.junit)

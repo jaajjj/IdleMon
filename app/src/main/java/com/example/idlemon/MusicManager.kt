@@ -322,11 +322,24 @@ object MusicManager {
     }
 
     //BATTLE
-    fun jouerSonAttaque(type: String) {
-        val typeClair = type.lowercase()
+    fun jouerSonAttaque(attaque: Attack) {
+        val typeClair = attaque.type.lowercase()
         val ctx = appContext ?: return
 
-        val listeSons = mapDeMoveSounds[typeClair] ?: mapDeMoveSounds["normal"]
+        val listeSons: List<Int>?
+
+        //0 dmg
+        if (attaque.basePower == 0) {
+            val isBonusOrHeal = !attaque.bonus.isNullOrEmpty() || attaque.heal > 0
+            listeSons = if (isBonusOrHeal) {
+                mapDeMoveSounds["bonus"]
+            } else {
+                mapDeMoveSounds["malus"]
+            }
+        } else {
+            //attack de dégat
+            listeSons = mapDeMoveSounds[typeClair] ?: mapDeMoveSounds["normal"]
+        }
 
         if (!listeSons.isNullOrEmpty()) {
             val sonChoisiId = listeSons.random()
@@ -411,12 +424,6 @@ object MusicManager {
     fun resume() {
         play()
     }
-
-    /*fun playNotif(soundKey: String = "faa") {
-        mapDeSon[soundKey]?.let { soundId ->
-            soundPool.play(soundId, 1f, 1f, 1, 0, 1f)
-        }
-    }*/
 
     fun crierPokemon(pok: Pokemon) {
         //si zacian ou pikachi, son custop, sinon random

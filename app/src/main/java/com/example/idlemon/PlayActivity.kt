@@ -1,15 +1,18 @@
 package com.example.idlemon
 
 import android.animation.ObjectAnimator
+import android.app.Dialog
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.Window
 import android.widget.FrameLayout
 import android.widget.GridLayout
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
@@ -48,6 +51,7 @@ class PlayActivity : BaseActivity() {
     private lateinit var txtEnemyLvl: TextView
     private lateinit var enemyHpBar: ProgressBar
     private lateinit var enemyItemsContainer: LinearLayout
+    private lateinit var enemyInfoContainer: ConstraintLayout
 
     //player
     private lateinit var imgPokePlayer: ImageView
@@ -56,10 +60,30 @@ class PlayActivity : BaseActivity() {
     private lateinit var playerHpBar: ProgressBar
     private lateinit var txtPlayerHpText: TextView
     private lateinit var playerItemsContainer: LinearLayout
+    private lateinit var playerInfoContainer: ConstraintLayout
 
     //btn
     private lateinit var btnAttack: ConstraintLayout
     private lateinit var btnTeam: ConstraintLayout
+
+    //dialog stats
+    private lateinit var statsDialog: Dialog
+    private lateinit var dialogLevel: TextView
+    private lateinit var dialogRarete: TextView
+    private lateinit var dialogImage: ImageView
+    private lateinit var dialogName: TextView
+    private lateinit var dialogType1: ImageView
+    private lateinit var dialogType2: ImageView
+    private lateinit var dialogHp: TextView
+    private lateinit var dialogAtk: TextView
+    private lateinit var dialogDef: TextView
+    private lateinit var dialogVit: TextView
+    private lateinit var dialogItemsContainer: LinearLayout
+    private lateinit var dialogPrevo: TextView
+    private lateinit var dialogEvo: TextView
+    private lateinit var dialogBtnClose: ImageView
+    private lateinit var statsButtonEnemy: ImageView
+    private lateinit var statsButtonPlayer: ImageView
 
     //logique jeu
     private lateinit var playerPokemon: Pokemon
@@ -95,49 +119,14 @@ class PlayActivity : BaseActivity() {
             PAUSE_LECTURE = 100L
         }
 
+        //init la table de type de PokemonType.kt
         PokemonType.initialiserTable()
 
+        //init des vues xml et de tous leurs événements (clics)
         initViews()
+
+        //init battle (spawn des pokémon)
         setupBattle()
-
-        btnAttack.setOnClickListener {
-            if (!isTurnInProgress && !isTextWriting) {
-                layoutMenuPrincipal.visibility = View.GONE
-                layoutMenuAttacks.visibility = View.VISIBLE
-                afficherAttaques(playerPokemon)
-            }
-        }
-
-        btnReturnAttacks.setOnClickListener {
-            layoutMenuAttacks.visibility = View.GONE
-            layoutMenuPrincipal.visibility = View.VISIBLE
-        }
-
-        btnTeam.setOnClickListener {
-            if (!isTurnInProgress && !isTextWriting) {
-                afficherMenuEquipe(false)
-            }
-        }
-
-        btnCloseTeam.setOnClickListener {
-            //si le poké actif est ko, on force le changement de poké
-            if(playerPokemon.isKO){
-                Toast.makeText(this, "Veuillez changer de pokémon", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }else{
-                layoutMenuEquipe.visibility = View.GONE
-            }
-        }
-
-        return_btn.setOnClickListener {
-            val butinTotal = nbPieceGagnee
-            Player.addPieces(butinTotal)
-            Toast.makeText(this, "Vous emportez $butinTotal PokéOr !", Toast.LENGTH_SHORT).show()
-
-            MusicManager.jouerPlaylistHome(this)
-            resetPartieDonnees()
-            finish()
-        }
     }
 
     private fun initViews() {
@@ -155,26 +144,112 @@ class PlayActivity : BaseActivity() {
         teamListContainer = findViewById(R.id.team_list_container)
         btnCloseTeam = findViewById(R.id.btn_close_team)
 
+        //poké enemy
         imgPokeEnemy = findViewById(R.id.imgPokeEnemy)
         txtEnemyName = findViewById(R.id.txt_enemy_name)
         txtEnemyLvl = findViewById(R.id.txt_enemy_lvl)
         enemyHpBar = findViewById(R.id.enemy_hp_bar)
         enemyItemsContainer = findViewById(R.id.enemy_items_container)
+        enemyInfoContainer = findViewById(R.id.enemy_info_container)
+        statsButtonEnemy = findViewById(R.id.statsButtonEnemy)
 
+        //poké player
         imgPokePlayer = findViewById(R.id.imgPokePlayer)
         txtPlayerName = findViewById(R.id.txt_player_name)
         txtPlayerLvl = findViewById(R.id.txt_player_lvl)
         playerHpBar = findViewById(R.id.player_hp_bar)
         txtPlayerHpText = findViewById(R.id.txt_player_hp_text)
         playerItemsContainer = findViewById(R.id.player_items_container)
+        playerInfoContainer = findViewById(R.id.player_info_container)
+        statsButtonPlayer = findViewById(R.id.statsButtonPlayer)
 
         btnAttack = findViewById(R.id.btn_attack_container)
         btnTeam = findViewById(R.id.btn_team_container)
+
+        //dialog de Stats
+        statsDialog = Dialog(this)
+        statsDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        statsDialog.setContentView(R.layout.dialog_pokemon_stats)
+        statsDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        dialogLevel = statsDialog.findViewById(R.id.dialogLevel)
+        dialogRarete = statsDialog.findViewById(R.id.dialogRarete)
+        dialogImage = statsDialog.findViewById(R.id.dialogImage)
+        dialogName = statsDialog.findViewById(R.id.dialogName)
+        dialogType1 = statsDialog.findViewById(R.id.dialogType1)
+        dialogType2 = statsDialog.findViewById(R.id.dialogType2)
+        dialogHp = statsDialog.findViewById(R.id.dialogHp)
+        dialogAtk = statsDialog.findViewById(R.id.dialogAtk)
+        dialogDef = statsDialog.findViewById(R.id.dialogDef)
+        dialogVit = statsDialog.findViewById(R.id.dialogVit)
+        dialogItemsContainer = statsDialog.findViewById(R.id.dialogItemsContainer)
+        dialogPrevo = statsDialog.findViewById(R.id.dialogPrevo)
+        dialogEvo = statsDialog.findViewById(R.id.dialogEvo)
+        dialogBtnClose = statsDialog.findViewById(R.id.dialogBtnClose)
+
+        dialogBtnClose.setOnClickListener {
+            statsDialog.dismiss()
+        }
+
+        //--Listener--
+        btnAttack.setOnClickListener {
+            if (!isTurnInProgress && !isTextWriting) {
+                layoutMenuPrincipal.visibility = View.GONE
+                layoutMenuAttacks.visibility = View.VISIBLE
+                if(::playerPokemon.isInitialized) afficherAttaques(playerPokemon)
+            }
+        }
+
+        btnReturnAttacks.setOnClickListener {
+            layoutMenuAttacks.visibility = View.GONE
+            layoutMenuPrincipal.visibility = View.VISIBLE
+        }
+
+        btnTeam.setOnClickListener {
+            if (!isTurnInProgress && !isTextWriting) {
+                afficherMenuEquipe(false)
+            }
+        }
+
+        btnCloseTeam.setOnClickListener {
+            //si le poké actif est ko, on force le changement de poké
+            if(::playerPokemon.isInitialized && playerPokemon.isKO){
+                Toast.makeText(this, "Veuillez changer de pokémon", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }else{
+                layoutMenuEquipe.visibility = View.GONE
+            }
+        }
+
+        //Ajouter popup
+        return_btn.setOnClickListener {
+            val butinTotal = nbPieceGagnee
+            Player.addPieces(butinTotal)
+            Toast.makeText(this, "Vous emportez $butinTotal PokéOr !", Toast.LENGTH_SHORT).show()
+
+            MusicManager.jouerPlaylistHome(this)
+            resetPartieDonnees()
+            finish()
+        }
+
+        //stats
+        statsButtonPlayer.setOnClickListener {
+            if (!isTurnInProgress && !isTextWriting && ::playerPokemon.isInitialized) {
+                afficherDialogStats(playerPokemon)
+            }
+        }
+
+        statsButtonEnemy.setOnClickListener {
+            if (!isTurnInProgress && !isTextWriting && ::enemyPokemon.isInitialized) {
+                afficherDialogStats(enemyPokemon)
+            }
+        }
     }
 
     private fun afficherAttaques(pokemon: Pokemon) {
         attacksGrid.removeAllViews()
 
+        //récupere la vue attack pour chaque attack du poké
         for (attack in pokemon.attacks) {
             val attackView = LayoutInflater.from(this).inflate(R.layout.item_attack_battle, attacksGrid, false)
 
@@ -185,6 +260,7 @@ class PlayActivity : BaseActivity() {
             params.rowSpec = GridLayout.spec(GridLayout.UNDEFINED, GridLayout.FILL, 1f)
             attackView.layoutParams = params
 
+            //init vues dislog
             val txtNom = attackView.findViewById<TextView>(R.id.nomAttack)
             val txtPp = attackView.findViewById<TextView>(R.id.ppMaxTextView)
             val rootLayout = attackView.findViewById<ConstraintLayout>(R.id.attack_item_root)
@@ -198,23 +274,23 @@ class PlayActivity : BaseActivity() {
 
             rootLayout.backgroundTintList = ColorStateList.valueOf(getColorForType(attack.type))
 
+            //gestion des pp
             if (currentPP == 0) {
                 attackView.alpha = 0.5f
             } else {
                 attackView.alpha = 1.0f
             }
 
+            //si pp, gérer l'attaque, sinon rien
             attackView.setOnClickListener {
                 if (currentPP > 0) {
                     layoutMenuAttacks.visibility = View.GONE
                     layoutMenuPrincipal.visibility = View.VISIBLE
 
                     executerTourDeJeu(attack)
-                } else {
-                    Toast.makeText(this, "Plus de PP pour cette attaque !", Toast.LENGTH_SHORT).show()
                 }
             }
-
+            //on ajoute l'attaque à la grille
             attacksGrid.addView(attackView)
         }
     }
@@ -406,7 +482,7 @@ class PlayActivity : BaseActivity() {
         animateText("${first.species.nom} utilise ${move1.name} !") {
 
             Handler(Looper.getMainLooper()).postDelayed({
-                MusicManager.jouerSonAttaque(move1.type)
+                MusicManager.jouerSonAttaque(move1)
 
                 fun executerImpact1() {
                     val efficaciteMsg = applicationDegats(first, second, move1)
@@ -422,7 +498,7 @@ class PlayActivity : BaseActivity() {
                             Handler(Looper.getMainLooper()).postDelayed({
                                 animateText("${second.species.nom} utilise ${move2.name} !") {
                                     Handler(Looper.getMainLooper()).postDelayed({
-                                        MusicManager.jouerSonAttaque(move2.type)
+                                        MusicManager.jouerSonAttaque(move2)
 
                                         fun executerImpact2() {
                                             val effMsg2 = applicationDegats(second, first, move2)
@@ -495,7 +571,7 @@ class PlayActivity : BaseActivity() {
         animateText("${enemyPokemon.species.nom} utilise ${enemyAttack.name} !") {
 
             Handler(Looper.getMainLooper()).postDelayed({
-                MusicManager.jouerSonAttaque(enemyAttack.type)
+                MusicManager.jouerSonAttaque(enemyAttack)
 
                 fun executerImpactEnnemi() {
                     val effMsg = applicationDegats(enemyPokemon, playerPokemon, enemyAttack)
@@ -942,6 +1018,76 @@ class PlayActivity : BaseActivity() {
                 container.addView(frame)
             }
         }
+    }
+
+    //Fonction pour afficher le dialog des stats du poké :
+    private fun afficherDialogStats(pokemon: Pokemon) {
+        //données de base
+        dialogLevel.text = "Lv. ${pokemon.level}"
+        dialogRarete.text = pokemon.species.rarete
+        dialogName.text = pokemon.species.nom
+
+        //image du Pokémon
+        Glide.with(this).load(DataManager.model.getFrontSprite(pokemon.species.num)).into(dialogImage)
+
+        //gestion des types
+        if (pokemon.species.type.isNotEmpty()) {
+            val type1IconId = DataManager.model.getIconType(pokemon.species.type[0].nom)
+            dialogType1.setImageResource(type1IconId)
+            dialogType1.visibility = View.VISIBLE
+
+            if (pokemon.species.type.size > 1) {
+                dialogType2.visibility = View.VISIBLE
+                val type2IconId = DataManager.model.getIconType(pokemon.species.type[1].nom)
+                dialogType2.setImageResource(type2IconId)
+            } else {
+                dialogType2.visibility = View.GONE
+            }
+        } else {
+            dialogType1.visibility = View.GONE
+            dialogType2.visibility = View.GONE
+        }
+
+        //Stats
+        dialogHp.text = "PV : ${pokemon.currentHp}/${pokemon.getMaxHp()}"
+        dialogAtk.text = "ATK : ${pokemon.currentAtk}"
+        dialogDef.text = "DEF : ${pokemon.currentDef}"
+        dialogVit.text = "VIT : ${pokemon.currentVit}"
+
+        //Objets équipés
+        dialogItemsContainer.removeAllViews()
+        val objetsEquipes = pokemon.objets.filterValues { it > 0 }
+
+        if (objetsEquipes.isEmpty()) {
+            val noItemText = TextView(this).apply {
+                text = "Aucun objet équipé"
+                setTextColor(Color.DKGRAY)
+                textSize = 12f
+                gravity = Gravity.CENTER
+            }
+            dialogItemsContainer.addView(noItemText)
+        } else {
+            afficherObjets(pokemon, dialogItemsContainer)
+        }
+
+        //Évolutions
+        if (pokemon.species.prevo != null) {
+            dialogPrevo.text = "← Évolue depuis : ${pokemon.species.prevo}"
+            dialogPrevo.visibility = View.VISIBLE
+        } else {
+            dialogPrevo.visibility = View.GONE
+        }
+
+        if (pokemon.species.evo != null && pokemon.species.evoLevel != null) {
+            dialogEvo.text = "→ Évolue en : ${pokemon.species.evo} (Niv. ${pokemon.species.evoLevel})"
+        } else {
+            dialogEvo.text = "Évolution finale"
+        }
+
+        //width responsive à 90% de largeur
+        val width = (resources.displayMetrics.widthPixels * 0.90).toInt()
+        statsDialog.window?.setLayout(width, android.view.ViewGroup.LayoutParams.WRAP_CONTENT)
+        statsDialog.show()
     }
 
     private fun getIconForObjet(id: String): Int {

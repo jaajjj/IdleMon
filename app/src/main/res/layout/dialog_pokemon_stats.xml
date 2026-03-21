@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_back_orange_small_border">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/dialogLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#80000000"
+                android:fontFamily="@font/roboto_bold"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="2dp"
+                android:text="Lv. 5"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/dialogRarete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#E6000000"
+                android:fontFamily="@font/roboto_bold"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:text="Commun"
+                android:textColor="#FFC107"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/dialogImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="58dp" />
+
+            <TextView
+                android:id="@+id/dialogName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Bulbizarre"
+                android:textColor="#333333"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialogImage" />
+
+            <LinearLayout
+                android:id="@+id/dialogTypesContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialogName">
+
+                <ImageView
+                    android:id="@+id/dialogType1"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="8dp" />
+
+                <ImageView
+                    android:id="@+id/dialogType2"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/dialogSeparator1"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="#40000000"
+                app:layout_constraintTop_toBottomOf="@+id/dialogTypesContainer" />
+
+            <TextView
+                android:id="@+id/dialogStatsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/pixel"
+                android:text="STATISTIQUES"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialogSeparator1" />
+
+            <GridLayout
+                android:id="@+id/dialogStatsGrid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:columnCount="2"
+                android:rowCount="2"
+                app:layout_constraintTop_toBottomOf="@+id/dialogStatsTitle">
+
+                <TextView
+                    android:id="@+id/dialogHp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center"
+                    android:text="PV : 20/20"
+                    android:textColor="#228B22" />
+
+                <TextView
+                    android:id="@+id/dialogAtk"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center"
+                    android:text="ATK : 15"
+                    android:textColor="#B22222" />
+
+                <TextView
+                    android:id="@+id/dialogDef"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center"
+                    android:text="DEF : 12"
+                    android:textColor="#4169E1" />
+
+                <TextView
+                    android:id="@+id/dialogVit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center"
+                    android:text="VIT : 10"
+                    android:textColor="#DAA520" />
+            </GridLayout>
+
+            <View
+                android:id="@+id/dialogSeparator2"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:background="#40000000"
+                app:layout_constraintTop_toBottomOf="@+id/dialogStatsGrid" />
+
+            <TextView
+                android:id="@+id/dialogItemsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/pixel"
+                android:text="OBJETS ÉQUIPÉS"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialogSeparator2" />
+
+            <HorizontalScrollView
+                android:id="@+id/dialogItemsScroll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:scrollbars="none"
+                app:layout_constraintTop_toBottomOf="@+id/dialogItemsTitle">
+
+                <LinearLayout
+                    android:id="@+id/dialogItemsContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="8dp" />
+            </HorizontalScrollView>
+
+            <View
+                android:id="@+id/dialogSeparator3"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="8dp"
+                android:background="#40000000"
+                app:layout_constraintTop_toBottomOf="@+id/dialogItemsScroll" />
+
+            <TextView
+                android:id="@+id/dialogEvoTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/pixel"
+                android:text="GÉNÉALOGIE"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialogSeparator3" />
+
+            <TextView
+                android:id="@+id/dialogPrevo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:text="← Évolue depuis : ???"
+                android:textColor="#4E4E4E"
+                android:textSize="14sp"
+                android:textStyle="italic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialogEvoTitle" />
+
+            <TextView
+                android:id="@+id/dialogEvo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:text="→ Évolue en : ??? (Niv. ?)"
+                android:textColor="#333333"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialogPrevo" />
+
+            <ImageView
+                android:id="@+id/dialogBtnClose"
+                android:layout_width="201dp"
+                android:layout_height="49dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/retour_btn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialogEvo" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:text="RETOUR"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/dialogBtnClose"
+                app:layout_constraintEnd_toEndOf="@+id/dialogBtnClose"
+                app:layout_constraintStart_toStartOf="@+id/dialogBtnClose"
+                app:layout_constraintTop_toTopOf="@+id/dialogBtnClose" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</FrameLayout>
