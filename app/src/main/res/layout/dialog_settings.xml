@@ -41,7 +41,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-
         app:layout_constraintTop_toBottomOf="@+id/textView4">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -221,6 +220,30 @@
                 app:layout_constraintTop_toBottomOf="@+id/loginButtonsLayout" />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/rulesBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/btn_summon_multi"
+                android:elevation="8dp"
+                android:gravity="center|center_horizontal|center_vertical"
+                android:minHeight="55dp"
+                android:paddingBottom="20dp"
+                android:shadowColor="#7F000000"
+                android:shadowDx="1"
+                android:shadowDy="2"
+                android:shadowRadius="3"
+                android:text="Règles"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/creditBtn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCreateAccount"
+                app:layout_constraintWidth_percent="0.40" />
+
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/creditBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -240,9 +263,9 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/rulesBtn"
                 app:layout_constraintTop_toBottomOf="@+id/tvCreateAccount"
-                app:layout_constraintWidth_percent="0.45" />
+                app:layout_constraintWidth_percent="0.40" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

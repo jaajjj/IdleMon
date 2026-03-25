@@ -196,7 +196,7 @@ class RewardBattleVague(
         Glide.with(context).load(reward.imageRes).into(img)
 
         // Si la récompense cible un Pokémon en particulier, on demande à "Choisir"
-        btn.text = if (reward.isTargeted) "Choisir Poké" else "Récupérer"
+        btn.text = if (reward.isTargeted) "Donner" else "Récupérer"
 
         container.setOnClickListener {
             if (reward.isTargeted && context is PlayActivity) {

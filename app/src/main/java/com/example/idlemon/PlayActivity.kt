@@ -369,7 +369,7 @@ class PlayActivity : BaseActivity() {
 
             itemView.setOnClickListener {
                 if (onPokemonSelected != null) {
-                    // Mode sélection: on renvoie le Pokémon cliqué
+                    //Mode sélection: on renvoie le Pokémon cliqué
                     layoutMenuEquipe.visibility = View.GONE
                     btnCloseTeam.visibility = View.VISIBLE //réactivation de la croix
                     onPokemonSelected(pokemon)
