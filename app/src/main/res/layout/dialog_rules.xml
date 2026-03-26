@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_margin="16dp"
     android:background="@drawable/rounded_back_orange"
     android:padding="20dp">
@@ -31,34 +31,42 @@
     <ImageView
         android:id="@+id/imgRule"
         android:layout_width="259dp"
-        android:layout_height="351dp"
-        android:layout_marginTop="24dp"
+        android:layout_height="308dp"
+        android:layout_marginTop="10dp"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvRulesTitle"
         tools:srcCompat="@drawable/pokeball" />
 
-    <TextView
-        android:id="@+id/tvRuleText"
+    <ScrollView
+        android:id="@+id/scrollViewText"
         android:layout_width="0dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/roboto_medium"
-        android:gravity="center"
-        android:text="Texte d'explication..."
-        android:textColor="#333333"
-        android:textSize="16sp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgRule" />
+        app:layout_constraintTop_toBottomOf="@+id/imgRule">
+
+        <TextView
+            android:id="@+id/tvRuleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            tools:text="Texte"/>
+    </ScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottomNavigationLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvRuleText">
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageView
             android:id="@+id/btnPrevRule"
@@ -76,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_bold"
-            android:text="1 / 4"
+            android:text="1 / 6"
             android:textColor="#000000"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"

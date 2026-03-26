@@ -111,12 +111,10 @@ class PlayActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_play)
         setupFullscreen()
-
-        // SÉCURITÉ ULTIME : On remet tout à zéro dès l'ouverture de l'Activity
-        // Cela empêche un "vieux" Pokémon d'apparaître si l'appli a planté
+        //reset à chaque début de game par sécurité
         resetPartieDonnees()
 
-        // Interception du bouton "Retour" natif d'Android
+        //interception du bouton "Retour" d'Android
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (!isTurnInProgress && !isTextWriting) {
@@ -132,9 +130,9 @@ class PlayActivity : BaseActivity() {
             VIT_TEXTE_XP = 1L
             PAUSE_LECTURE = 30L
         } else {
-            VIT_TEXTE_NORMAL = 8L
-            VIT_TEXTE_XP = 3L
-            PAUSE_LECTURE = 100L
+            VIT_TEXTE_NORMAL = 15L
+            VIT_TEXTE_XP = 5L
+            PAUSE_LECTURE = 200L
         }
 
         //init la table de type de PokemonType.kt

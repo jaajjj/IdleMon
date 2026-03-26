@@ -6,7 +6,6 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
@@ -17,7 +16,6 @@ import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.edit
 import androidx.core.graphics.drawable.toDrawable
-import androidx.core.text.HtmlCompat
 
 @SuppressLint("StaticFieldLeak")
 object SettingsManager {
@@ -37,7 +35,7 @@ object SettingsManager {
     private lateinit var tvOptionsTitle: TextView
     private lateinit var closeBtn: ImageView
     private lateinit var creditBtn: AppCompatButton
-    private lateinit var rulesBtn: AppCompatButton // <-- Nouveau bouton
+    private lateinit var rulesBtn: AppCompatButton
 
     //UI Register
     private lateinit var labEmail: EditText
@@ -199,7 +197,10 @@ object SettingsManager {
         // --- CLIC SUR LE BOUTON RÈGLES ---
         rulesBtn.setOnClickListener {
             dialog.dismiss()
-            showRulesDialog(activity)
+            // On appelle l'objet RulesManager, et on lui donne l'instruction "Rouvre les Settings" quand tu te fermes.
+            RulesManager.showRulesDialog(activity) {
+                showSettingsDialog(activity, onRefreshUI)
+            }
         }
 
         closeBtn.setOnClickListener { dialog.dismiss() }
@@ -218,74 +219,7 @@ object SettingsManager {
         tvOptionsTitle = dialog.findViewById(R.id.textView4)
         closeBtn = dialog.findViewById(R.id.closeBtn)
         creditBtn = dialog.findViewById(R.id.creditBtn)
-        rulesBtn = dialog.findViewById(R.id.rulesBtn) // <-- ID CORRIGÉ ICI
-    }
-
-    private fun showRulesDialog(activity: Activity) {
-        val dialog = Dialog(activity)
-        dialog.setContentView(R.layout.dialog_rules)
-        dialog.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
-
-        val width = (activity.resources.displayMetrics.widthPixels * 0.90).toInt()
-        dialog.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
-
-        val closeRulesBtn = dialog.findViewById<ImageView>(R.id.closeRulesBtn)
-        val imgRule = dialog.findViewById<ImageView>(R.id.imgRule)
-        val tvRuleText = dialog.findViewById<TextView>(R.id.tvRuleText)
-        val btnPrevRule = dialog.findViewById<ImageView>(R.id.btnPrevRule)
-        val btnNextRule = dialog.findViewById<ImageView>(R.id.btnNextRule)
-        val tvPageIndicator = dialog.findViewById<TextView>(R.id.tvPageIndicator)
-
-        // Structure de données pour stocker chaque page (Image + Texte avec mots clés)
-        data class RulePage(val imageRes: Int, val htmlText: String)
-
-        // Textes et images à volonté
-        val pages = listOf(
-            RulePage(R.drawable.attack_btn_battle, "Affrontez des <font color='#D84315'><b>Vagues d'ennemis</b></font> sans fin pour gagner de l'expérience et du butin. Tous les 10 niveaux, un <font color='#D84315'><b>Boss redoutable</b></font> apparaît !"),
-            RulePage(R.drawable.team_footer, "Gérez votre équipe de <font color='#D84315'><b>6 Pokémon maximum</b></font>. Si l'un de vos Pokémon tombe K.O., vous devrez rapidement en choisir un autre !"),
-            RulePage(R.drawable.gold, "Utilisez vos <font color='#D84315'><b>PokéOr</b></font> pour invoquer de nouveaux monstres au Gacha. Récupérer un doublon augmentera de façon permanente ses <font color='#D84315'><b>statistiques</b></font>."),
-            RulePage(R.drawable.pokedex_btn, "En montant de niveau, vos Pokémon peuvent <font color='#D84315'><b>évoluer</b></font> pour changer de forme et devenir beaucoup plus puissants. Attrapez-les tous !")
-        )
-
-        var currentPage = 0
-
-        // Fonction pour mettre à jour l'affichage selon la page actuelle
-        fun updatePage() {
-            val page = pages[currentPage]
-            imgRule.setImageResource(page.imageRes)
-
-            // Le HtmlCompat permet d'interpréter les balises HTML dans un string Android
-            tvRuleText.text = HtmlCompat.fromHtml(page.htmlText, HtmlCompat.FROM_HTML_MODE_LEGACY)
-
-            tvPageIndicator.text = "${currentPage + 1} / ${pages.size}"
-
-            // Afficher/Cacher les flèches
-            btnPrevRule.visibility = if (currentPage == 0) View.INVISIBLE else View.VISIBLE
-            btnNextRule.visibility = if (currentPage == pages.size - 1) View.INVISIBLE else View.VISIBLE
-        }
-
-        btnPrevRule.setOnClickListener {
-            if (currentPage > 0) {
-                currentPage--
-                updatePage()
-            }
-        }
-
-        btnNextRule.setOnClickListener {
-            if (currentPage < pages.size - 1) {
-                currentPage++
-                updatePage()
-            }
-        }
-
-        closeRulesBtn.setOnClickListener {
-            dialog.dismiss()
-            showSettingsDialog(activity) {} // Réouvre les paramètres en quittant
-        }
-
-        // On charge la page 1 au démarrage
-        updatePage()
-        dialog.show()
+        rulesBtn = dialog.findViewById(R.id.rulesBtn)
     }
 
     //boite de dialogue inscription
@@ -352,7 +286,7 @@ object SettingsManager {
 
         closeBtnCredits.setOnClickListener {
             dialog.dismiss()
-            showSettingsDialog(activity, {})
+            showSettingsDialog(activity) {}
         }
         dialog.show()
     }

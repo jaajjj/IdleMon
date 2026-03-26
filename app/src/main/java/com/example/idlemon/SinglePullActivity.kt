@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -25,7 +26,7 @@ class SinglePullActivity : BaseActivity(), PanoramaUI {
     override lateinit var imgIndicator: ImageView
     
     //UI
-    private lateinit var catchBtn: Button
+    private lateinit var catchConstraintLayout: ConstraintLayout
 
     override val context: Context
         get() = this
@@ -54,7 +55,7 @@ class SinglePullActivity : BaseActivity(), PanoramaUI {
             showIndicator()
         }
 
-        catchBtn.setOnClickListener {
+        catchConstraintLayout.setOnClickListener {
             val selected = capteurManager.selectedEgg
             if (selected != null) {
                 val pokemonList = selected.tag as? List<Pokemon>
@@ -101,7 +102,7 @@ class SinglePullActivity : BaseActivity(), PanoramaUI {
         backgroundImage = findViewById(R.id.background360)
         eggsContainer = findViewById(R.id.eggsContainer)
         boussole = findViewById(R.id.boussole)
-        catchBtn = findViewById(R.id.catchBtn)
+        catchConstraintLayout = findViewById(R.id.catchConstraintLayout)
         imgIndicator = findViewById(R.id.imgIndicator)
     }
 
