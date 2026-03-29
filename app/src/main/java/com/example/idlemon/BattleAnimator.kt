@@ -12,7 +12,8 @@ import android.widget.ImageView
 
 object BattleAnimator {
 
-    fun animateEntry(view: View, isPlayer: Boolean) {
+    // NOUVEAU : Ajout du paramètre scaleTarget (1f par défaut)
+    fun animateEntry(view: View, isPlayer: Boolean, scaleTarget: Float = 1f) {
         view.translationX = if (isPlayer) -500f else 500f
         view.alpha = 0f
         view.scaleX = 0.5f
@@ -20,8 +21,8 @@ object BattleAnimator {
         view.animate()
             .translationX(0f)
             .alpha(1f)
-            .scaleX(1f)
-            .scaleY(1f)
+            .scaleX(scaleTarget) // Vise la taille finale cible (1.4f pour le boss)
+            .scaleY(scaleTarget)
             .setDuration(800)
             .setInterpolator(DecelerateInterpolator())
             .start()

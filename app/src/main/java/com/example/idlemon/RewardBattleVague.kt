@@ -33,12 +33,12 @@ class RewardBattleVague(
         val imageRes: Int,
         val rarity: Rarity,
         val weight: Int,
-        val isTargeted: Boolean = true, // Permet de savoir s'il faut ouvrir le menu Pokémon (true par défaut)
+        val isTargeted: Boolean = true,
         val action: (Pokemon) -> String
     )
 
     private val availableRewards = listOf(
-        //COMMUNS (Applicables sur un Pokémon spécifique)
+        //COMMUNS
         Reward("lvl_1", "Bonbon", "+1 Niveau", R.drawable.bonbon, Rarity.COMMON, 50, true) { poke ->
             MusicManager.jouerSonBattle("item_active")
             poke.monterLevel()
@@ -49,11 +49,11 @@ class RewardBattleVague(
             poke.ajouterObjet("atk_plus")
             "L'Attaque de ${poke.species.nom} augmente de 5 !"
         },
-        Reward("pv_1", "PV +", "+10 PV Max (Perm.)", R.drawable.pv_plus, Rarity.COMMON, 40, true) { poke ->
+        Reward("pv_1", "PV +", "+5 PV Max (Perm.)", R.drawable.pv_plus, Rarity.COMMON, 40, true) { poke ->
             MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("pv_plus")
-            poke.heal(10)
-            "Les PV Max de ${poke.species.nom} augmentent de 10 !"
+            poke.heal(5)
+            "Les PV Max de ${poke.species.nom} augmentent de 5 !"
         },
         Reward("def_1", "Defense +", "+5 Défense (Perm.)", R.drawable.def_plus, Rarity.COMMON, 40, true) { poke ->
             MusicManager.jouerSonBattle("item_active")
@@ -72,32 +72,32 @@ class RewardBattleVague(
             "${poke.species.nom} récupère 50% de ses PV !"
         },
 
-        //ÉPIQUES (Applicables sur un Pokémon spécifique)
-        Reward("lvl_3", "Super Bonbon", "+3 Niveaux", R.drawable.super_bonbon, Rarity.EPIC, 15, true) { poke ->
+        //ÉPIQUES
+        Reward("lvl_3", "Super Bonbon", "+2 Niveaux", R.drawable.super_bonbon, Rarity.EPIC, 15, true) { poke ->
             MusicManager.jouerSonBattle("item_active")
             repeat(2) { poke.monterLevel() }
-            "${poke.species.nom} engloutit un Super Bonbon et gagne 3 niveaux !"
+            "${poke.species.nom} engloutit un Super Bonbon et gagne 2 niveaux !"
         },
-        Reward("atk_2", "Attack ++", "+10 Attaque (Perm.)", R.drawable.attaque_plus, Rarity.EPIC, 10, true) { poke ->
+        Reward("atk_2", "Attack ++", "+8 Attaque (Perm.)", R.drawable.attaque_plus, Rarity.EPIC, 10, true) { poke ->
             MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("atk_plus_plus")
-            "L'Attaque de ${poke.species.nom} augmente fortement (+10) !"
+            "L'Attaque de ${poke.species.nom} augmente fortement (+8) !"
         },
-        Reward("pv_2", "PV ++", "+20 PV Max (Perm.)", R.drawable.pv_plus, Rarity.EPIC, 10, true) { poke ->
+        Reward("pv_2", "PV ++", "+8 PV Max (Perm.)", R.drawable.pv_plus, Rarity.EPIC, 10, true) { poke ->
             MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("pv_plus_plus")
-            poke.heal(20)
-            "Les PV Max de ${poke.species.nom} augmentent fortement (+20) !"
+            poke.heal(8)
+            "Les PV Max de ${poke.species.nom} augmentent fortement (+8) !"
         },
-        Reward("def_2", "Defense ++", "+10 Défense (Perm.)", R.drawable.def_plus, Rarity.EPIC, 10, true) { poke ->
+        Reward("def_2", "Defense ++", "+8 Défense (Perm.)", R.drawable.def_plus, Rarity.EPIC, 10, true) { poke ->
             MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("def_plus_plus")
-            "La Défense de ${poke.species.nom} augmente fortement (+10) !"
+            "La Défense de ${poke.species.nom} augmente fortement (+8) !"
         },
-        Reward("vit_2", "Vitesse ++", "+10 Vitesse (Perm.)", R.drawable.vit_plus, Rarity.EPIC, 10, true) { poke ->
+        Reward("vit_2", "Vitesse ++", "+8 Vitesse (Perm.)", R.drawable.vit_plus, Rarity.EPIC, 10, true) { poke ->
             MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("vit_plus_plus")
-            "La Vitesse de ${poke.species.nom} augmente fortement (+10) !"
+            "La Vitesse de ${poke.species.nom} augmente fortement (+8) !"
         },
         Reward("heal_100", "Super Soin", "Soin 100%", R.drawable.super_potion, Rarity.EPIC, 25, true) { poke ->
             MusicManager.jouerSonBattle("heal")
@@ -126,10 +126,9 @@ class RewardBattleVague(
                 "$count Pokémon réanimés !"
             } else "Aucun Pokémon n'était K.O."
         },
-        Reward("gold", "PokéGold", "Or aléatoire (10-50)", R.drawable.gold, Rarity.LEGENDARY, 35, false) { _ ->
+        Reward("gold", "PokéGold", "Or aléatoire (50-300)", R.drawable.gold, Rarity.LEGENDARY, 35, false) { _ ->
             MusicManager.jouerSonBattle("item_active")
-            //Roulette entre 20 et 1000
-            val amount = Random.nextInt(10, 51)
+            val amount = Random.nextInt(50, 30)
             if (context is PlayActivity) context.ajouterOr(amount)
             Player.addPieces(amount)
             "Vous trouvez $amount PokéGold supplémentaires !"
@@ -142,17 +141,17 @@ class RewardBattleVague(
         Reward("item_bague_force", "Bague Force", "+25 Attaque", R.drawable.bague_force, Rarity.LEGENDARY, 5, true) { poke ->
             MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("item_bague_force")
-            "L'Attaque de ${poke.species.nom} explose (+25) !"
+            "L'Attaque de ${poke.species.nom} explose (+15) !"
         },
         Reward("item_veste_combat", "Veste de Combat", "+25 defense", R.drawable.veste_combat, Rarity.LEGENDARY, 5, true) { poke ->
             MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("item_veste_combat")
-            "La Défense de ${poke.species.nom} explose (+25) !"
+            "La Défense de ${poke.species.nom} explose (+15) !"
         },
         Reward("item_cape_vitesse", "Cape Vitesse", "+25 vitesse", R.drawable.cape_vitesse, Rarity.LEGENDARY, 5, true) { poke ->
             MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("item_cape_vitesse")
-            "La Vitesse de ${poke.species.nom} explose (+25) !"
+            "La Vitesse de ${poke.species.nom} explose (+15) !"
         }
     )
 
@@ -176,7 +175,6 @@ class RewardBattleVague(
 
         val selectedRewards = pickRandomRewards(3)
 
-        // Ajout de l'ID des boutons pour modifier dynamiquement le texte
         setupRewardView(selectedRewards[0], R.id.containerObj1, R.id.imgObj1, R.id.nomObj1, R.id.btnObj1)
         setupRewardView(selectedRewards[1], R.id.containerObj2, R.id.imgObj2, R.id.nomObj2, R.id.btnObj2)
         setupRewardView(selectedRewards[2], R.id.containerObj3, R.id.imgObj3, R.id.nomObj3, R.id.btnObj3)
@@ -195,7 +193,7 @@ class RewardBattleVague(
 
         Glide.with(context).load(reward.imageRes).into(img)
 
-        // Si la récompense cible un Pokémon en particulier, on demande à "Choisir"
+        //si la récompense cible un Pokémon en particulier --> on demande à "Choisir"
         btn.text = if (reward.isTargeted) "Donner" else "Récupérer"
 
         container.setOnClickListener {
@@ -218,7 +216,7 @@ class RewardBattleVague(
         val messageReward = reward.action(targetPokemon)
         messages.add(messageReward)
 
-        // On vérifie l'évolution uniquement si l'objet s'appliquait à un Pokémon précis
+        //on vérif si évo
         if (reward.isTargeted && targetPokemon.species.evoLevel != null && targetPokemon.species.evoLevel!! <= targetPokemon.level) {
             messages.add("Hein ? ${targetPokemon.species.nom} évolue !")
             val oldName = targetPokemon.species.nom

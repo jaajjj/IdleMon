@@ -92,26 +92,47 @@
             app:srcCompat="@drawable/gold" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ImageView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/pokedexBtn"
-        android:layout_width="79dp"
-        android:layout_height="58dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="12dp"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toTopOf="@+id/boxTeamContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/btn_summon_multi"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView8"
-        app:layout_constraintWidth_percent="0.65"
-        app:srcCompat="@drawable/pokedex_btn"
-        tools:srcCompat="@drawable/pokedex_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/goldContainer">
+
+        <ImageView
+            android:id="@+id/pokedexIcon"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/pokedex_btn" />
+
+        <TextView
+            android:id="@+id/pokedexText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Pokédex"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pokedexIcon" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/boxTeamContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toTopOf="@+id/changeTeamBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

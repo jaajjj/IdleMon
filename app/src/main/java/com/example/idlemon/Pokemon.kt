@@ -90,12 +90,12 @@ class Pokemon(
                 "atk_plus" -> baseAtk += (5 * qte)
                 "def_plus" -> baseDef += (5 * qte)
                 "vit_plus" -> baseVit += (5 * qte)
-                "atk_plus_plus" -> baseAtk += (10 * qte)
-                "def_plus_plus" -> baseDef += (10 * qte)
-                "vit_plus_plus" -> baseVit += (10 * qte)
-                "item_bague_force" -> baseAtk += (baseAtk * 0.15 * qte).toInt()
-                "item_veste_combat" -> baseDef += (baseDef * 0.15 * qte).toInt()
-                "item_cape_vitesse" -> baseVit += (baseVit * 0.15 * qte).toInt()
+                "atk_plus_plus" -> baseAtk += (8 * qte)
+                "def_plus_plus" -> baseDef += (8 * qte)
+                "vit_plus_plus" -> baseVit += (8 * qte)
+                "item_bague_force" -> baseAtk += (15 * qte)
+                "item_veste_combat" -> baseDef += (15 * qte)
+                "item_cape_vitesse" -> baseVit += (15 * qte)
             }
         }
 
@@ -165,7 +165,7 @@ class Pokemon(
     var stageDef: Int = 0
     var stageVit: Int = 0
 
-    //convertie les palliers en % de dmg
+    //convertit les palliers en % de dmg
     private fun getMultiplicateurStat(stage: Int): Double {
         return when (stage) {
             -5 -> 0.33

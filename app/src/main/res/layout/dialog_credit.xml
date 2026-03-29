@@ -21,7 +21,7 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/pixel"
+        android:fontFamily="@font/roboto_bold"
         android:text="CREDITS"
         android:textColor="#000000"
         android:textSize="60sp"
@@ -64,7 +64,7 @@
                 android:id="@+id/textView8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/pixel"
+                android:fontFamily="@font/roboto_bold"
                 android:text="Design &amp; Dév"
                 android:textColor="#000000"
                 android:textSize="32sp" />
@@ -73,8 +73,9 @@
                 android:id="@+id/textView9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/pixel"
+                android:fontFamily="@font/roboto_medium"
                 android:text="Sami Hajadi"
+                android:textColor="#1252CE"
                 android:textSize="30sp" />
 
             <View
@@ -86,7 +87,7 @@
                 android:id="@+id/textView11"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/pixel"
+                android:fontFamily="@font/roboto_bold"
                 android:gravity="center"
                 android:text="Musique Combats"
                 android:textColor="#000000"
@@ -96,9 +97,10 @@
                 android:id="@+id/textView12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/pixel"
+                android:fontFamily="@font/roboto_medium"
                 android:gravity="center"
                 android:text="Nintendo &amp; Pokémon Company"
+                android:textColor="#1055CD"
                 android:textSize="30sp" />
 
             <View
@@ -110,9 +112,10 @@
                 android:id="@+id/textView19"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/pixel"
+                android:fontFamily="@font/roboto_medium"
                 android:gravity="center"
                 android:text="OMORI Sound Team"
+                android:textColor="#1055CD"
                 android:textSize="30sp" />
 
             <View
@@ -124,7 +127,7 @@
                 android:id="@+id/textView13"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/pixel"
+                android:fontFamily="@font/roboto_bold"
                 android:gravity="center"
                 android:text="Musique Accueil"
                 android:textColor="#000000"
@@ -134,9 +137,10 @@
                 android:id="@+id/textView17"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/pixel"
+                android:fontFamily="@font/roboto_medium"
                 android:gravity="center"
                 android:text="Sami Hajadi"
+                android:textColor="#1055CD"
                 android:textSize="30sp" />
 
             <View
@@ -148,7 +152,7 @@
                 android:id="@+id/textView22"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/pixel"
+                android:fontFamily="@font/roboto_bold"
                 android:gravity="center"
                 android:text="Musique Voeux"
                 android:textColor="#000000"
@@ -158,9 +162,10 @@
                 android:id="@+id/textView23"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/pixel"
+                android:fontFamily="@font/roboto_medium"
                 android:gravity="center"
                 android:text="Pokémon Company"
+                android:textColor="#1055CD"
                 android:textSize="30sp" />
 
             <View
@@ -172,7 +177,7 @@
                 android:id="@+id/textView24"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/pixel"
+                android:fontFamily="@font/roboto_bold"
                 android:gravity="center"
                 android:text="Animation Voeux"
                 android:textColor="#000000"
@@ -182,9 +187,10 @@
                 android:id="@+id/textView25"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/pixel"
+                android:fontFamily="@font/roboto_medium"
                 android:gravity="center"
                 android:text="Gémini IA"
+                android:textColor="#1055CD"
                 android:textSize="30sp" />
 
             <View
@@ -196,7 +202,7 @@
                 android:id="@+id/textView26"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/pixel"
+                android:fontFamily="@font/roboto_bold"
                 android:gravity="center"
                 android:text="Suivi &amp; Accompagnement"
                 android:textColor="#000000"
@@ -217,7 +223,7 @@
                 android:id="@+id/textView30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/pixel"
+                android:fontFamily="@font/roboto_bold"
                 android:text="Merci d'avoir joué !"
                 android:textColor="#232F71"
                 android:textSize="34sp" />
@@ -231,18 +237,18 @@
                 android:id="@+id/textView31"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_bold"
+                android:fontFamily="@font/roboto_medium"
                 android:text="Sami Hajadi 3 Mars 2026"
-                android:textColor="#79797A"
+                android:textColor="#1055CD"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/textView32"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_bold"
+                android:fontFamily="@font/roboto_medium"
                 android:text="Version 0.1"
-                android:textColor="#79797A"
+                android:textColor="#1055CD"
                 android:textSize="16sp" />
 
         </LinearLayout>
