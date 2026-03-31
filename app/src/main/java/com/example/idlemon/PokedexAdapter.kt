@@ -39,19 +39,19 @@ class PokedexAdapter(
             holder.imgPokeSprite.clearColorFilter()
             holder.imgPokeSprite.alpha = 1.0f
 
-            // Chargement normal
+            //Chargement normal
             Glide.with(holder.itemView.context)
                 .load(DataManager.model.getFrontSprite(species.num))
                 .into(holder.imgPokeSprite)
         } else {
             holder.txtPokeName.text = "???"
 
-            // Saturation à 0 (Noir et blanc pour faire effet "silhouette")
+            //saturation à 0
             val matrix = ColorMatrix().apply { setSaturation(0f) }
             holder.imgPokeSprite.colorFilter = ColorMatrixColorFilter(matrix)
-            holder.imgPokeSprite.alpha = 0.5f // Un peu transparent, mais net
+            holder.imgPokeSprite.alpha = 0.5f //Un peu transparent
 
-            // Chargement normal SANS le flou
+            //Chargement normal
             Glide.with(holder.itemView.context)
                 .load(DataManager.model.getFrontSprite(species.num))
                 .into(holder.imgPokeSprite)
@@ -64,7 +64,7 @@ class PokedexAdapter(
 
     override fun getItemCount() = listePokemon.size
 
-    // Fonction vitale pour la barre de recherche et les filtres
+    //applique les filtres
     fun updateData(nouvelleListe: List<PokemonSpecies>) {
         this.listePokemon = nouvelleListe
         notifyDataSetChanged()

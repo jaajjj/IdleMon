@@ -12,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.bumptech.glide.Glide
+import android.graphics.drawable.Animatable
 
 class MainActivity : BaseActivity() {
 
@@ -24,7 +25,8 @@ class MainActivity : BaseActivity() {
     private lateinit var settingsBtn: ImageView
     private lateinit var videoContainer: FrameLayout
     private lateinit var summonGifView: ImageView
-    
+    //private lateinit var imageFondWebp: ImageView
+
     private var isOnAnim = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +49,8 @@ class MainActivity : BaseActivity() {
         //cache les barres sys
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
         windowInsetsController?.hide(WindowInsetsCompat.Type.systemBars())
-        windowInsetsController?.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        windowInsetsController?.systemBarsBehavior =
+            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 
         //chargement unique au lancement
         SaveManager.chargerLocal(this)
@@ -73,14 +76,14 @@ class MainActivity : BaseActivity() {
                 animPlayBtn()
             }
         }
-        
+
         settingsBtn.setOnClickListener {
             showSettingsDialog()
         }
     }
 
     private fun initViews() {
-        //pokemonDisplay est deja init dans BaseActivity
+        //imageFondWebp = findViewById(R.id.imageFondWebp)
         playBtn = findViewById(R.id.playBtn)
         homeBtn = findViewById(R.id.homeBtn)
         teamBtn = findViewById(R.id.teamBtn)
@@ -89,6 +92,7 @@ class MainActivity : BaseActivity() {
         settingsBtn = findViewById(R.id.settingsBtn)
         videoContainer = findViewById(R.id.videoContainer)
         summonGifView = findViewById(R.id.summonGifView)
+
     }
 
     //refresh global de l'UI
@@ -105,8 +109,13 @@ class MainActivity : BaseActivity() {
         videoContainer.visibility = View.GONE
 
         MusicManager.jouerPlaylistHome(this)
-        
-        //refresh au retour
+
+        /*Glide.with(this)
+            .load(R.drawable.anim_accueil)
+            .diskCacheStrategy(com.bumptech.glide.load.engine.DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
+            .into(imageFondWebp)*/
+
         refreshUI()
     }
 

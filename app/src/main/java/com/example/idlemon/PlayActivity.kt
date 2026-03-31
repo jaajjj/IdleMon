@@ -550,7 +550,7 @@ class PlayActivity : BaseActivity() {
 
         //Boss très fort
         if (estUnBoss) {
-            randomLvl += (5..8).random() //Gap de niveau bien plus grand
+            randomLvl += (1..2).random()
         } else {
             imgPokeEnemy.scaleX = 1f; imgPokeEnemy.scaleY = 1f
         }
@@ -750,7 +750,7 @@ class PlayActivity : BaseActivity() {
             }
 
             //formule pour exp
-            var xpGain = 20 + (enemyPokemon.currentAtk + enemyPokemon.currentDef + enemyPokemon.currentVit + enemyPokemon.getMaxHp())/5 + (enemyPokemon.level*20)
+            var xpGain = 20 + (enemyPokemon.currentAtk + enemyPokemon.currentDef + enemyPokemon.currentVit + enemyPokemon.getMaxHp())/5 + (enemyPokemon.level*40)
             if (estUnBoss) xpGain *= 2 //x2 XP pour un boss
 
             for(poke in Player.getEquipe()){

@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">IdleMon</string>
+    <string name="passer"><![CDATA[PASSER >>]]></string>
+    <string name="x1000">x1000</string>
+    <string name="_10_v_ux">10 VŒUX</string>
+    <string name="_2676">2676</string>
+    <string name="pikachu">Pikachu</string>
+    <string name="placeholder_Gold">2676</string>
+    <string name="choisissez_votre_r_compense">Choisissez votre récompense</string>
+    <string name="objet_1">Objet 1</string>
+    <string name="donner">Donner</string>
+    <string name="objet_2">Objet 2</string>
+    <string name="donner_obj">Donner</string>
+    <string name="objet_3">Objet 3</string>
+    <string name="donner_3">Donner</string>
+    <string name="f_licitation">Félicitation !</string>
+    <string name="reward_10">Vous avez obtenu 10 Pokémon :</string>
+    <string name="f_licitation2">Félicitation !</string>
+    <string name="obtainText">Vous avez obtenu :</string>
+    <string name="pikachuText">Pikachu</string>
+    <string name="rare">Rare</string>
+    <string name="r_cup_rer">Récupérer</string>
+    <string name="pikachuPlaceholder">Pikachu</string>
+    <string name="rare2">Rare</string>
+    <string name="pikachuText2">Pikachu</string>
+    <string name="lv_50">Lv. 50</string>
+    <string name="_50_100">50/100</string>
 </resources>

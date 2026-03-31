@@ -39,32 +39,38 @@ class RewardBattleVague(
 
     private val availableRewards = listOf(
         //COMMUNS
+        //Gagne 1 lvl
         Reward("lvl_1", "Bonbon", "+1 Niveau", R.drawable.bonbon, Rarity.COMMON, 50, true) { poke ->
             MusicManager.jouerSonBattle("item_active")
             poke.monterLevel()
             "${poke.species.nom} mange un Bonbon et gagne 1 niveau !"
         },
+        //Gagne 5 d'attaque
         Reward("atk_1", "Attack +", "+5 Attaque (Perm.)", R.drawable.attaque_plus, Rarity.COMMON, 40, true) { poke ->
             MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("atk_plus")
             "L'Attaque de ${poke.species.nom} augmente de 5 !"
         },
+        //gagne 5 de pv max
         Reward("pv_1", "PV +", "+5 PV Max (Perm.)", R.drawable.pv_plus, Rarity.COMMON, 40, true) { poke ->
             MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("pv_plus")
             poke.heal(5)
             "Les PV Max de ${poke.species.nom} augmentent de 5 !"
         },
+        //gagne 5 de défense
         Reward("def_1", "Defense +", "+5 Défense (Perm.)", R.drawable.def_plus, Rarity.COMMON, 40, true) { poke ->
             MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("def_plus")
             "La Défense de ${poke.species.nom} augmente de 5 !"
         },
+        //gagne 5 de vitesse
         Reward("vit_1", "Vitesse +", "+5 Vitesse (Perm.)", R.drawable.vit_plus, Rarity.COMMON, 40, true) { poke ->
             MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("vit_plus")
             "La Vitesse de ${poke.species.nom} augmente de 5 !"
         },
+        //heal ou revive 50% des pv d'un Poké
         Reward("heal_50", "Soin", "Soin 50%", R.drawable.potion, Rarity.COMMON, 60, true) { poke ->
             MusicManager.jouerSonBattle("heal")
             val amount = (poke.getMaxHp() * 0.5).toInt()
@@ -73,66 +79,60 @@ class RewardBattleVague(
         },
 
         //ÉPIQUES
+        //gagne 2 lvl
         Reward("lvl_3", "Super Bonbon", "+2 Niveaux", R.drawable.super_bonbon, Rarity.EPIC, 15, true) { poke ->
             MusicManager.jouerSonBattle("item_active")
             repeat(2) { poke.monterLevel() }
             "${poke.species.nom} engloutit un Super Bonbon et gagne 2 niveaux !"
         },
+        //gagne 8 d'attaque
         Reward("atk_2", "Attack ++", "+8 Attaque (Perm.)", R.drawable.attaque_plus, Rarity.EPIC, 10, true) { poke ->
             MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("atk_plus_plus")
             "L'Attaque de ${poke.species.nom} augmente fortement (+8) !"
         },
+        //gagne 8 de pv max
         Reward("pv_2", "PV ++", "+8 PV Max (Perm.)", R.drawable.pv_plus, Rarity.EPIC, 10, true) { poke ->
             MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("pv_plus_plus")
             poke.heal(8)
             "Les PV Max de ${poke.species.nom} augmentent fortement (+8) !"
         },
+        //gagne 8 de défense
         Reward("def_2", "Defense ++", "+8 Défense (Perm.)", R.drawable.def_plus, Rarity.EPIC, 10, true) { poke ->
             MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("def_plus_plus")
             "La Défense de ${poke.species.nom} augmente fortement (+8) !"
         },
+        //gagne 8 de vitesse
         Reward("vit_2", "Vitesse ++", "+8 Vitesse (Perm.)", R.drawable.vit_plus, Rarity.EPIC, 10, true) { poke ->
             MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("vit_plus_plus")
             "La Vitesse de ${poke.species.nom} augmente fortement (+8) !"
         },
+        //heal un poké de toutes ses hp
         Reward("heal_100", "Super Soin", "Soin 100%", R.drawable.super_potion, Rarity.EPIC, 25, true) { poke ->
             MusicManager.jouerSonBattle("heal")
             poke.heal(poke.getMaxHp())
             "${poke.species.nom} est entièrement soigné !"
         },
 
-        //LÉGENDAIRES (Mix d'effets de zone et d'équipements)
+        //LÉGENDAIRES
+        //heal toute l'équipe
         Reward("heal_team", "Hyper Soin", "Soin Équipe 100%", R.drawable.hyper_potion, Rarity.LEGENDARY, 5, false) { _ ->
             MusicManager.jouerSonBattle("heal")
             Player.getEquipe().forEach { it.heal(it.getMaxHp()) }
             "Toute l'équipe est entièrement soignée !"
         },
-        Reward("rappel_max", "Rappel Max", "Réanime toute l'équipe (50%)", R.drawable.rappel_max, Rarity.LEGENDARY, 5, false) { _ ->
-            MusicManager.jouerSonBattle("heal")
-            var count = 0
-            Player.getEquipe().forEach {
-                if (it.isKO) {
-                    it.isKO = false
-                    it.currentHp = it.getMaxHp() / 2
-                    count++
-                }
-            }
-            if(count > 0) {
-                MusicManager.jouerSonBattle("heal")
-                "$count Pokémon réanimés !"
-            } else "Aucun Pokémon n'était K.O."
-        },
+        //gaid random d'OR
         Reward("gold", "PokéGold", "Or aléatoire (50-300)", R.drawable.gold, Rarity.LEGENDARY, 35, false) { _ ->
             MusicManager.jouerSonBattle("item_active")
-            val amount = Random.nextInt(50, 30)
+            val amount = Random.nextInt(50, 300) //gain entre 50 et 300 d'or
             if (context is PlayActivity) context.ajouterOr(amount)
             Player.addPieces(amount)
             "Vous trouvez $amount PokéGold supplémentaires !"
         },
+        //heal après chaque tour pour 1 poké
         Reward("item_restes", "Restes", "Soigne à chaque tour", R.drawable.restes, Rarity.LEGENDARY, 5, true) { poke ->
             MusicManager.jouerSonBattle("item_active")
             poke.ajouterObjet("item_restes")
@@ -199,12 +199,12 @@ class RewardBattleVague(
         container.setOnClickListener {
             if (reward.isTargeted && context is PlayActivity) {
                 dialog.dismiss()
-                // On réutilise la fonction de PlayActivity avec le mode "sélection d'objet" à true
+                //On réutilise la fonction de PlayActivity avec le mode "sélection d'objet" à true
                 context.afficherMenuEquipe(etaitKo = false, modeSelectionObjet = true) { selectedPokemon ->
                     applyReward(reward, selectedPokemon)
                 }
             } else {
-                // Pas besoin de choisir un Poké pour l'or ou le soin d'équipe
+                //Pas besoin de choisir un Poké pour l'or ou le soin d'équipe
                 dialog.dismiss()
                 applyReward(reward, activePokemon)
             }

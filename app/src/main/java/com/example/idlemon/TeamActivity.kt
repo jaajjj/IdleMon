@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowCompat
@@ -22,7 +23,7 @@ class TeamActivity : BaseActivity() {
     private lateinit var homeBtn: ImageView
     private lateinit var gachaBtn: ImageView
     private lateinit var teamList: LinearLayout
-    private lateinit var pokedexBtn: ImageView
+    private lateinit var pokedexBtn: ConstraintLayout
 
 
     //Leader
@@ -84,7 +85,7 @@ class TeamActivity : BaseActivity() {
         gachaBtn = findViewById(R.id.gachaBtn)
         teamList = findViewById(R.id.teamList)
         settingsBtn = findViewById(R.id.settingsBtn)
-        pokedexBtn = findViewById<ImageView>(R.id.pokedexBtn)
+        pokedexBtn = findViewById<ConstraintLayout>(R.id.pokedexBtn)
 
         //Leader UI
         pokeSprite1 = findViewById(R.id.pokeSprite1)

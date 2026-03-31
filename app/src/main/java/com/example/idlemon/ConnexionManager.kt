@@ -57,7 +57,7 @@ object ConnexionManager {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     SaveManager.charger(context, onSuccess, onFailure = {
-                        // Pas de save cloud : on autorise le local actuel à devenir la référence
+                        //pas de save cloud : on autorise le local actuel à devenir la référence
                         SaveManager.cloudSyncComplete = true
                         SaveManager.sauvegarder(onSuccess, onFailure)
                     })
